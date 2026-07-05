@@ -1,6 +1,8 @@
-# Website Sekolah
+# Website SMP Negeri 3 Besuki
 
-Website sekolah dengan halaman publik (profil, pengumuman, berita, materi, akses aplikasi sekolah) dan panel admin + guru untuk mengelola konten.
+Website sekolah dengan halaman publik (profil, berita, pengumuman, agenda kegiatan, galeri foto, materi, akses aplikasi sekolah, kontak) dan panel admin + guru untuk mengelola konten.
+
+**Live**: https://website-sekolah-roan.vercel.app (Vercel, auto-deploy dari push ke `main`)
 
 ## Yang sudah dibuatkan otomatis
 - Project Supabase baru: `website-sekolah` (region ap-southeast-1, tier gratis)
@@ -20,16 +22,10 @@ npm install
 npm run dev
 ```
 
-## Cara deploy ke Vercel (subdomain gratis *.vercel.app)
-Saya tidak bisa deploy otomatis dari sisi saya untuk project ini — sandbox saya tidak punya akses jaringan ke vercel.com. Langkah manual (5 menit):
+## Deploy ke Vercel
+Sudah di-deploy dan di-link ke Vercel project `bayusetiadji07s-projects/website-sekolah`, terhubung ke GitHub repo ini — **auto-deploy tiap push ke `main`**. Env vars (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`) sudah diset di Vercel Production.
 
-1. Push folder ini ke repo GitHub baru.
-2. Buka vercel.com -> Add New Project -> import repo tadi.
-3. Framework preset otomatis terdeteksi: Vite.
-4. Sebelum klik Deploy, buka Environment Variables, tambahkan dua variabel di atas (VITE_SUPABASE_URL dan VITE_SUPABASE_ANON_KEY).
-5. Klik Deploy. Selesai, dapat URL nama-project.vercel.app.
-
-Alternatif tanpa GitHub: install Vercel CLI (npm i -g vercel), jalankan `vercel` di folder ini, ikuti prompt login, lalu `vercel --prod`.
+Untuk deploy manual dari lokal: `npx vercel --prod` (folder ini, sudah login sebagai bayusetiadji07).
 
 ## Membuat akun admin pertama
 1. Di Supabase Dashboard -> Authentication -> Users -> Add user, isi email & password.
@@ -41,10 +37,21 @@ Alternatif tanpa GitHub: install Vercel CLI (npm i -g vercel), jalankan `vercel`
 2. Admin masuk ke `/admin/pengguna`, set role guru tersebut menjadi `guru`, isi mapel di tabel `profiles` bila perlu.
 
 ## Struktur halaman
-- `/` `/pengumuman` `/berita` `/materi` `/aplikasi` -- publik
+- `/` `/profil` `/berita` `/pengumuman` `/agenda` `/galeri` `/materi` `/aplikasi` `/kontak` -- publik
 - `/masuk` -- login admin & guru
-- `/admin/*` -- panel admin (pengumuman, berita, semua materi, aplikasi sekolah, kelola guru)
+- `/admin/*` -- panel admin (profil & kontak, pengumuman, berita, agenda, galeri, semua materi, aplikasi sekolah, kelola guru)
 - `/guru` -- panel guru (upload materi sendiri, file atau link)
+
+## Mengisi konten profil & kontak
+Setelah punya akun admin, buka `/admin/profil` untuk mengisi sambutan kepala sekolah, visi/misi, sejarah, foto sekolah, alamat, telepon, email, jam operasional, link Google Maps embed, dan media sosial. Halaman publik `/profil` dan `/kontak` akan menampilkan data ini otomatis begitu diisi.
+
+## Aplikasi sekolah yang sudah ditautkan
+Dikelola di `/admin/aplikasi`:
+- **E-Asesmen** (https://e-asesmen.vercel.app) — aktif
+- **SI Diswa** (https://si-diswa.vercel.app) — aktif
+- **Administrasi Guru** — dinonaktifkan sementara (belum ada URL publik karena produknya berbasis template Google Sheets "buat salinan"). Isi URL yang sesuai lalu aktifkan lewat `/admin/aplikasi` kalau ingin ditampilkan.
 
 ## Catatan keamanan
 Ada 1 warning minor dari Supabase advisor (kebijakan baca file publik memungkinkan listing isi bucket media). Tidak kritikal untuk kasus ini karena bucket memang publik, tapi kalau nanti ingin dikunci lebih rapat, bisa diubah jadi policy per-folder.
+
+**Perbaikan penting**: sempat ada bug rekursi RLS pada tabel `profiles` (kebijakan "admin baca semua profil" mengecek `profiles` dari dalam kebijakan `profiles` sendiri) yang menyebabkan SEMUA query publik (pengumuman, berita, materi, aplikasi) gagal dengan error 500. Sudah diperbaiki dengan helper function `is_admin()` (SECURITY DEFINER) yang dipakai di semua kebijakan admin, menghindari rekursi.

@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Bitter", Georgia, serif;
-  --font-body: "Work Sans", system-ui, sans-serif;
+  --font-display: "Poppins", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  --color-chalkboard: #1f3a2e;
-  --color-chalkboard-light: #2d4f3d;
-  --color-paper: #f7f3e8;
-  --color-ink: #23272b;
-  --color-amber: #e8a33d;
-  --color-rust: #b5502f;
+  --color-chalkboard: #0f2e4d;
+  --color-chalkboard-light: #1b4a73;
+  --color-paper: #f4f8fc;
+  --color-ink: #16232f;
+  --color-amber: #38bdf8;
+  --color-rust: #2563eb;
 }
 
 body {
@@ -24,7 +24,7 @@ h1, h2, h3, .font-display {
 }
 
 .chalk-divider {
-  height: 3px;
-  background-image: repeating-linear-gradient(90deg, var(--color-amber) 0 10px, transparent 10px 16px);
-  border-radius: 2px;
+  height: 4px;
+  background-image: linear-gradient(90deg, var(--color-amber), var(--color-rust));
+  border-radius: 999px;
 }
