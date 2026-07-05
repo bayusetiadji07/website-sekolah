@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -16,6 +16,7 @@ import Login from './pages/Login'
 
 import AdminDashboard from './pages/admin/Dashboard'
 import KelolaProfil from './pages/admin/KelolaProfil'
+import KelolaTampilan from './pages/admin/KelolaTampilan'
 import KelolaPengumuman from './pages/admin/KelolaPengumuman'
 import KelolaBerita from './pages/admin/KelolaBerita'
 import KelolaAgenda from './pages/admin/KelolaAgenda'
@@ -27,10 +28,11 @@ import KelolaMateriAdmin from './pages/admin/KelolaMateri'
 import KelolaMateriGuru from './pages/guru/KelolaMateri'
 
 function PublicLayout({ children }) {
+  const location = useLocation()
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1">{children}</main>
+      <main key={location.pathname} className="flex-1 page-transition">{children}</main>
       <Footer />
     </div>
   )
@@ -52,6 +54,7 @@ export default function App() {
 
       <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
       <Route path="/admin/profil" element={<ProtectedRoute allowedRoles={['admin']}><KelolaProfil /></ProtectedRoute>} />
+      <Route path="/admin/tampilan" element={<ProtectedRoute allowedRoles={['admin']}><KelolaTampilan /></ProtectedRoute>} />
       <Route path="/admin/pengumuman" element={<ProtectedRoute allowedRoles={['admin']}><KelolaPengumuman /></ProtectedRoute>} />
       <Route path="/admin/berita" element={<ProtectedRoute allowedRoles={['admin']}><KelolaBerita /></ProtectedRoute>} />
       <Route path="/admin/agenda" element={<ProtectedRoute allowedRoles={['admin']}><KelolaAgenda /></ProtectedRoute>} />

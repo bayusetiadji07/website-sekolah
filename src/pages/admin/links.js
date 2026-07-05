@@ -1,6 +1,7 @@
 export const adminLinks = [
   { to: '/admin', label: 'Ringkasan' },
   { to: '/admin/profil', label: 'Profil & Kontak' },
+  { to: '/admin/tampilan', label: 'Pengaturan Tampilan' },
   { to: '/admin/pengumuman', label: 'Pengumuman' },
   { to: '/admin/berita', label: 'Berita' },
   { to: '/admin/agenda', label: 'Agenda Kegiatan' },

@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { supabase } from '../lib/supabase'
 
 const links = [
   { to: '/', label: 'Beranda' },
@@ -16,12 +17,21 @@ const links = [
 export default function Navbar() {
   const location = useLocation()
   const [open, setOpen] = useState(false)
+  const [logoUrl, setLogoUrl] = useState('')
+
+  useEffect(() => {
+    supabase.from('pengaturan_sekolah').select('logo_url').eq('id', 1).single()
+      .then(({ data }) => setLogoUrl(data?.logo_url || ''))
+  }, [])
 
   return (
-    <header className="bg-chalkboard text-paper sticky top-0 z-40">
+    <header className="glass-dark text-paper sticky top-0 z-40">
       <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-        <Link to="/" className="font-display text-lg font-bold text-amber shrink-0">
-          SMPN 3 Besuki
+        <Link to="/" className="flex items-center gap-2 font-display text-lg font-bold text-amber shrink-0">
+          {logoUrl ? (
+            <img src={logoUrl} alt="Logo SMPN 3 Besuki" className="h-9 w-9 object-contain rounded bg-white/10 p-1" />
+          ) : null}
+          <span>SMPN 3 Besuki</span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-5 text-sm">
@@ -36,12 +46,6 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
-          <Link
-            to="/masuk"
-            className="border border-amber text-amber px-3 py-1.5 rounded hover:bg-amber hover:text-chalkboard transition-colors"
-          >
-            Masuk
-          </Link>
         </nav>
 
         <button
@@ -65,13 +69,6 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
-          <Link
-            to="/masuk"
-            onClick={() => setOpen(false)}
-            className="py-2 text-amber font-medium"
-          >
-            Masuk
-          </Link>
         </nav>
       )}
     </header>

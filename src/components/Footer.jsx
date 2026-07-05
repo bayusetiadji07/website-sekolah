@@ -15,10 +15,15 @@ export default function Footer() {
   }, [])
 
   return (
-    <footer className="bg-chalkboard text-paper/70 mt-16">
+    <footer className="glass-dark text-paper/70 mt-16">
       <div className="max-w-6xl mx-auto px-5 py-10 grid md:grid-cols-3 gap-8 text-sm">
         <div>
-          <p className="font-display font-bold text-paper text-lg mb-2">SMP Negeri 3 Besuki</p>
+          <div className="flex items-center gap-2 mb-2">
+            {pengaturan?.logo_url && (
+              <img src={pengaturan.logo_url} alt="Logo" className="h-8 w-8 object-contain rounded bg-white/10 p-1" />
+            )}
+            <p className="font-display font-bold text-paper text-lg">SMP Negeri 3 Besuki</p>
+          </div>
           <p>{pengaturan?.tagline || 'Mendidik dengan hati, berprestasi dengan karakter.'}</p>
         </div>
         <div>
@@ -35,7 +40,6 @@ export default function Footer() {
           <div className="flex flex-col gap-1">
             <Link to="/profil" className="hover:text-amber">Profil Sekolah</Link>
             <Link to="/aplikasi" className="hover:text-amber">Aplikasi Sekolah</Link>
-            <Link to="/masuk" className="hover:text-amber">Masuk Admin/Guru</Link>
           </div>
         </div>
       </div>

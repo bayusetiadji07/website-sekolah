@@ -7,7 +7,7 @@ export default function DashboardLayout({ links, title, children }) {
 
   return (
     <div className="min-h-screen flex bg-paper">
-      <aside className="w-56 bg-chalkboard text-paper flex flex-col shrink-0">
+      <aside className="w-56 glass-dark text-paper flex flex-col shrink-0">
         <div className="px-5 py-5 border-b border-paper/10">
           <p className="font-display font-bold text-amber">{title}</p>
           <p className="text-xs text-paper/60 mt-1">{profile?.nama || profile?.role}</p>
@@ -37,7 +37,7 @@ export default function DashboardLayout({ links, title, children }) {
       </aside>
 
       <main className="flex-1 min-w-0">
-        <div className="md:hidden flex justify-between items-center bg-chalkboard text-paper px-4 py-3">
+        <div className="md:hidden flex justify-between items-center glass-dark text-paper px-4 py-3">
           <span className="font-display font-bold text-amber">{title}</span>
           <button
             onClick={signOut}
@@ -46,7 +46,7 @@ export default function DashboardLayout({ links, title, children }) {
             Keluar
           </button>
         </div>
-        <div className="p-6 max-w-4xl">{children}</div>
+        <div key={location.pathname} className="p-6 max-w-4xl page-transition">{children}</div>
       </main>
     </div>
   )

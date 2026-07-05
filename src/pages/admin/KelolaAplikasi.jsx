@@ -9,6 +9,7 @@ export default function KelolaAplikasi() {
   const [items, setItems] = useState([])
   const [form, setForm] = useState(empty)
   const [editingId, setEditingId] = useState(null)
+  const [uploading, setUploading] = useState(false)
 
   async function load() {
     const { data } = await supabase.from('app_links').select('*').order('urutan')
@@ -16,6 +17,19 @@ export default function KelolaAplikasi() {
   }
 
   useEffect(() => { load() }, [])
+
+  async function handleUpload(e) {
+    const file = e.target.files[0]
+    if (!file) return
+    setUploading(true)
+    const path = `aplikasi/${Date.now()}-${file.name}`
+    const { error } = await supabase.storage.from('media').upload(path, file)
+    if (!error) {
+      const { data } = supabase.storage.from('media').getPublicUrl(path)
+      setForm((f) => ({ ...f, ikon_url: data.publicUrl }))
+    }
+    setUploading(false)
+  }
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -68,6 +82,12 @@ export default function KelolaAplikasi() {
           onChange={(e) => setForm({ ...form, deskripsi: e.target.value })}
           className="w-full border border-ink/20 rounded px-3 py-2 text-sm"
         />
+        <div>
+          <span className="block text-xs text-ink/60 mb-1">Logo aplikasi (opsional, jika kosong pakai huruf inisial)</span>
+          <input type="file" accept="image/*" onChange={handleUpload} className="text-sm" />
+          {uploading && <p className="text-xs text-ink/50 mt-1">Mengunggah logo...</p>}
+          {form.ikon_url && <img src={form.ikon_url} alt="preview" className="h-16 w-16 object-contain mt-2 rounded bg-white border border-ink/10 p-1" />}
+        </div>
         <div className="flex gap-3">
           <button className="bg-chalkboard text-paper px-4 py-2 rounded text-sm font-medium">
             {editingId ? 'Simpan Perubahan' : 'Tambah Aplikasi'}
@@ -83,9 +103,18 @@ export default function KelolaAplikasi() {
       <div className="space-y-3">
         {items.map((item) => (
           <div key={item.id} className="bg-white border border-ink/10 rounded-lg p-4 flex items-center justify-between gap-4">
-            <div>
-              <h3 className="font-display font-bold">{item.nama}</h3>
-              <p className="text-sm text-ink/60">{item.url}</p>
+            <div className="flex items-center gap-3">
+              {item.ikon_url ? (
+                <img src={item.ikon_url} alt={item.nama} className="w-10 h-10 object-contain rounded bg-paper border border-ink/10 p-1 shrink-0" />
+              ) : (
+                <div className="w-10 h-10 rounded bg-chalkboard/10 flex items-center justify-center font-display font-bold text-chalkboard shrink-0">
+                  {item.nama?.[0]}
+                </div>
+              )}
+              <div>
+                <h3 className="font-display font-bold">{item.nama}</h3>
+                <p className="text-sm text-ink/60">{item.url}</p>
+              </div>
             </div>
             <div className="flex items-center gap-3 shrink-0">
               <button

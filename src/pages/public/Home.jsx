@@ -2,6 +2,16 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 
+const sectionInfo = {
+  profil: { to: '/profil', label: 'Profil Sekolah', desc: 'Sambutan, visi & misi, sejarah' },
+  berita: { to: '/berita', label: 'Berita & Kegiatan', desc: 'Kabar terbaru seputar sekolah' },
+  agenda: { to: '/agenda', label: 'Agenda Kegiatan', desc: 'Jadwal kegiatan mendatang' },
+  galeri: { to: '/galeri', label: 'Galeri Foto', desc: 'Dokumentasi kegiatan sekolah' },
+  aplikasi: { to: '/aplikasi', label: 'Aplikasi Sekolah', desc: 'E-Asesmen, SI Diswa, dan lainnya' },
+  kontak: { to: '/kontak', label: 'Kontak', desc: 'Alamat, telepon, dan lokasi sekolah' },
+}
+const defaultSections = ['profil', 'berita', 'agenda', 'galeri', 'aplikasi', 'kontak'].map((key) => ({ key, aktif: true }))
+
 export default function Home() {
   const [pengumuman, setPengumuman] = useState([])
   const [pengaturan, setPengaturan] = useState(null)
@@ -19,14 +29,8 @@ export default function Home() {
       .then(({ data }) => setPengaturan(data))
   }, [])
 
-  const quickLinks = [
-    { to: '/profil', label: 'Profil Sekolah', desc: 'Sambutan, visi & misi, sejarah' },
-    { to: '/berita', label: 'Berita & Kegiatan', desc: 'Kabar terbaru seputar sekolah' },
-    { to: '/agenda', label: 'Agenda Kegiatan', desc: 'Jadwal kegiatan mendatang' },
-    { to: '/galeri', label: 'Galeri Foto', desc: 'Dokumentasi kegiatan sekolah' },
-    { to: '/aplikasi', label: 'Aplikasi Sekolah', desc: 'E-Asesmen, SI Diswa, dan lainnya' },
-    { to: '/kontak', label: 'Kontak', desc: 'Alamat, telepon, dan lokasi sekolah' },
-  ]
+  const sections = pengaturan?.beranda_sections?.length ? pengaturan.beranda_sections : defaultSections
+  const quickLinks = sections.filter((s) => s.aktif && sectionInfo[s.key]).map((s) => ({ ...sectionInfo[s.key], key: s.key }))
 
   return (
     <div>
@@ -58,21 +62,23 @@ export default function Home() {
         <div className="chalk-divider" />
       </section>
 
-      <section className="max-w-6xl mx-auto px-5 py-14">
-        <h2 className="font-display text-2xl font-bold mb-6">Jelajahi Website</h2>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
-          {quickLinks.map((q) => (
-            <Link
-              key={q.to}
-              to={q.to}
-              className="bg-white border border-ink/10 rounded-lg p-5 hover:border-amber transition-colors"
-            >
-              <h3 className="font-display font-bold text-lg mb-1">{q.label}</h3>
-              <p className="text-sm text-ink/60">{q.desc}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {quickLinks.length > 0 && (
+        <section className="max-w-6xl mx-auto px-5 py-14">
+          <h2 className="font-display text-2xl font-bold mb-6">Jelajahi Website</h2>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
+            {quickLinks.map((q) => (
+              <Link
+                key={q.to}
+                to={q.to}
+                className="glass shadow-sm rounded-lg p-5 hover:border-amber hover:shadow-md transition-all"
+              >
+                <h3 className="font-display font-bold text-lg mb-1">{q.label}</h3>
+                <p className="text-sm text-ink/60">{q.desc}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="max-w-6xl mx-auto px-5 py-14">
         <h2 className="font-display text-2xl font-bold mb-6">Pengumuman Terbaru</h2>
@@ -81,14 +87,19 @@ export default function Home() {
         ) : (
           <div className="grid md:grid-cols-3 gap-5">
             {pengumuman.map((p) => (
-              <article key={p.id} className="bg-white border border-ink/10 rounded-lg p-5">
-                <p className="text-xs text-rust font-medium mb-2">
-                  {new Date(p.created_at).toLocaleDateString('id-ID', {
-                    day: 'numeric', month: 'long', year: 'numeric',
-                  })}
-                </p>
-                <h3 className="font-display font-bold text-lg mb-2">{p.judul}</h3>
-                <p className="text-sm text-ink/70 line-clamp-3">{p.isi}</p>
+              <article key={p.id} className="bg-white border border-ink/10 rounded-lg overflow-hidden">
+                {p.foto_url && (
+                  <img src={p.foto_url} alt={p.judul} className="w-full h-36 object-cover" />
+                )}
+                <div className="p-5">
+                  <p className="text-xs text-rust font-medium mb-2">
+                    {new Date(p.created_at).toLocaleDateString('id-ID', {
+                      day: 'numeric', month: 'long', year: 'numeric',
+                    })}
+                  </p>
+                  <h3 className="font-display font-bold text-lg mb-2">{p.judul}</h3>
+                  <p className="text-sm text-ink/70 line-clamp-3">{p.isi}</p>
+                </div>
               </article>
             ))}
           </div>

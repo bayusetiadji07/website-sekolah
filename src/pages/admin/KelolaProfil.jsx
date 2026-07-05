@@ -4,7 +4,7 @@ import { supabase } from '../../lib/supabase'
 import { adminLinks } from './links'
 
 const empty = {
-  tagline: '', sambutan_kepala_sekolah: '', nama_kepala_sekolah: '', foto_kepala_sekolah_url: '',
+  logo_url: '', tagline: '', sambutan_kepala_sekolah: '', nama_kepala_sekolah: '', foto_kepala_sekolah_url: '',
   visi: '', misi: '', sejarah: '', foto_sekolah_url: '',
   alamat: '', telepon: '', email: '', jam_operasional: '', maps_embed_url: '',
   instagram_url: '', facebook_url: '', youtube_url: '',
@@ -62,6 +62,11 @@ export default function KelolaProfil() {
       <form onSubmit={handleSubmit} className="space-y-8 max-w-2xl">
         <section className="bg-white border border-ink/10 rounded-lg p-5 space-y-3">
           <h2 className="font-display font-bold">Umum</h2>
+          <Field label="Logo sekolah (tampil di navigasi & footer)">
+            <input type="file" accept="image/*" onChange={(e) => handleUpload(e, 'logo_url')} className="text-sm" />
+            {uploading === 'logo_url' && <p className="text-xs text-ink/50">Mengunggah...</p>}
+            {form.logo_url && <img src={form.logo_url} className="h-16 mt-2 rounded bg-paper border border-ink/10 p-1" />}
+          </Field>
           <Field label="Tagline / slogan sekolah">
             <input className={inputCls} value={form.tagline} onChange={(e) => setForm({ ...form, tagline: e.target.value })} />
           </Field>

@@ -29,14 +29,19 @@ export default function Pengumuman() {
 
       <div className="space-y-5">
         {data.map((p) => (
-          <article key={p.id} className="bg-white border border-ink/10 rounded-lg p-6">
-            <p className="text-xs text-rust font-medium mb-2">
-              {new Date(p.created_at).toLocaleDateString('id-ID', {
-                day: 'numeric', month: 'long', year: 'numeric',
-              })}
-            </p>
-            <h2 className="font-display font-bold text-xl mb-2">{p.judul}</h2>
-            <p className="text-ink/80 whitespace-pre-line">{p.isi}</p>
+          <article key={p.id} className="bg-white border border-ink/10 rounded-lg overflow-hidden">
+            {p.foto_url && (
+              <img src={p.foto_url} alt={p.judul} className="w-full h-48 object-cover" />
+            )}
+            <div className="p-6">
+              <p className="text-xs text-rust font-medium mb-2">
+                {new Date(p.created_at).toLocaleDateString('id-ID', {
+                  day: 'numeric', month: 'long', year: 'numeric',
+                })}
+              </p>
+              <h2 className="font-display font-bold text-xl mb-2">{p.judul}</h2>
+              <p className="text-ink/80 whitespace-pre-line">{p.isi}</p>
+            </div>
           </article>
         ))}
       </div>

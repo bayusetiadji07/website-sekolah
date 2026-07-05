@@ -3,12 +3,13 @@ import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
 import { adminLinks } from './links'
 
-const empty = { judul: '', deskripsi: '', tanggal_mulai: '', tanggal_selesai: '', lokasi: '', status: 'draft' }
+const empty = { judul: '', deskripsi: '', tanggal_mulai: '', tanggal_selesai: '', lokasi: '', status: 'draft', foto_url: '' }
 
 export default function KelolaAgenda() {
   const [items, setItems] = useState([])
   const [form, setForm] = useState(empty)
   const [editingId, setEditingId] = useState(null)
+  const [uploading, setUploading] = useState(false)
 
   async function load() {
     const { data } = await supabase.from('agenda').select('*').order('tanggal_mulai', { ascending: false })
@@ -16,6 +17,19 @@ export default function KelolaAgenda() {
   }
 
   useEffect(() => { load() }, [])
+
+  async function handleUpload(e) {
+    const file = e.target.files[0]
+    if (!file) return
+    setUploading(true)
+    const path = `agenda/${Date.now()}-${file.name}`
+    const { error } = await supabase.storage.from('media').upload(path, file)
+    if (!error) {
+      const { data } = supabase.storage.from('media').getPublicUrl(path)
+      setForm((f) => ({ ...f, foto_url: data.publicUrl }))
+    }
+    setUploading(false)
+  }
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -72,6 +86,11 @@ export default function KelolaAgenda() {
           onChange={(e) => setForm({ ...form, lokasi: e.target.value })}
           className={`w-full ${inputCls}`}
         />
+        <div>
+          <input type="file" accept="image/*" onChange={handleUpload} className="text-sm" />
+          {uploading && <p className="text-xs text-ink/50 mt-1">Mengunggah foto...</p>}
+          {form.foto_url && <img src={form.foto_url} alt="preview" className="h-24 mt-2 rounded" />}
+        </div>
         <div className="flex items-center gap-3">
           <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className={inputCls}>
             <option value="draft">Draft</option>
@@ -91,7 +110,11 @@ export default function KelolaAgenda() {
       <div className="space-y-3">
         {items.map((item) => (
           <div key={item.id} className="bg-white border border-ink/10 rounded-lg p-4 flex items-start justify-between gap-4">
-            <div>
+            <div className="flex items-start gap-3">
+              {item.foto_url && (
+                <img src={item.foto_url} alt={item.judul} className="w-16 h-16 object-cover rounded shrink-0" />
+              )}
+              <div>
               <span className={`text-xs font-medium px-2 py-0.5 rounded ${item.status === 'published' ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/60'}`}>
                 {item.status === 'published' ? 'Terpublikasi' : 'Draft'}
               </span>
@@ -100,10 +123,11 @@ export default function KelolaAgenda() {
                 {item.tanggal_mulai}{item.tanggal_selesai && item.tanggal_selesai !== item.tanggal_mulai ? ` – ${item.tanggal_selesai}` : ''}
                 {item.lokasi ? ` · ${item.lokasi}` : ''}
               </p>
+              </div>
             </div>
             <div className="flex gap-2 shrink-0">
               <button
-                onClick={() => { setForm({ judul: item.judul, deskripsi: item.deskripsi || '', tanggal_mulai: item.tanggal_mulai, tanggal_selesai: item.tanggal_selesai || '', lokasi: item.lokasi || '', status: item.status }); setEditingId(item.id) }}
+                onClick={() => { setForm({ judul: item.judul, deskripsi: item.deskripsi || '', tanggal_mulai: item.tanggal_mulai, tanggal_selesai: item.tanggal_selesai || '', lokasi: item.lokasi || '', status: item.status, foto_url: item.foto_url || '' }); setEditingId(item.id) }}
                 className="text-sm text-chalkboard underline"
               >
                 Ubah

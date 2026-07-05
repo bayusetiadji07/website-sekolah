@@ -34,14 +34,17 @@ export default function Agenda() {
             <p className="text-xl font-display font-bold text-amber">{new Date(a.tanggal_mulai).getDate()}</p>
           </div>
         </div>
-        <div>
+        <div className="flex-1">
           <h3 className="font-display font-bold text-lg">{a.judul}</h3>
           <p className="text-xs text-rust font-medium mb-1">
             {formatTanggal(a.tanggal_mulai)}
             {a.tanggal_selesai && a.tanggal_selesai !== a.tanggal_mulai ? ` – ${formatTanggal(a.tanggal_selesai)}` : ''}
             {a.lokasi ? ` · ${a.lokasi}` : ''}
           </p>
-          {a.deskripsi && <p className="text-sm text-ink/70 whitespace-pre-line">{a.deskripsi}</p>}
+          {a.deskripsi && <p className="text-sm text-ink/70 whitespace-pre-line mb-3">{a.deskripsi}</p>}
+          {a.foto_url && (
+            <img src={a.foto_url} alt={a.judul} className="w-full max-h-64 object-cover rounded-lg" />
+          )}
         </div>
       </article>
     )
