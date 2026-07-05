@@ -59,7 +59,7 @@ export default function KelolaPembelajaran() {
   return (
     <DashboardLayout links={adminLinks} title="Admin">
       <h1 className="font-display text-2xl font-bold mb-6">Kelola Pembelajaran</h1>
-      <p className="text-sm text-ink/60 mb-4">
+      <p className="text-sm text-ink/70 mb-4">
         Tautkan web atau site pribadi guru untuk materi pembelajaran ke halaman "Pembelajaran" pada navigasi.
       </p>
 
@@ -91,9 +91,9 @@ export default function KelolaPembelajaran() {
           className={inputCls}
         />
         <div>
-          <span className="block text-xs text-ink/60 mb-1">Foto/ikon (opsional, jika kosong pakai huruf inisial)</span>
+          <span className="block text-xs text-ink/70 mb-1">Foto/ikon (opsional, jika kosong pakai huruf inisial)</span>
           <input type="file" accept="image/*" onChange={handleUpload} className="text-sm" />
-          {uploading && <p className="text-xs text-ink/50 mt-1">Mengunggah...</p>}
+          {uploading && <p className="text-xs text-ink/70 mt-1">Mengunggah...</p>}
           {form.ikon_url && <img src={form.ikon_url} alt="preview" className="h-16 w-16 object-cover rounded-full mt-2" />}
         </div>
         <div className="flex gap-3">
@@ -101,7 +101,7 @@ export default function KelolaPembelajaran() {
             {editingId ? 'Simpan Perubahan' : 'Tambah Tautan'}
           </button>
           {editingId && (
-            <button type="button" onClick={() => { setForm(empty); setEditingId(null) }} className="text-sm text-ink/60">
+            <button type="button" onClick={() => { setForm(empty); setEditingId(null) }} className="text-sm text-ink/70">
               Batal
             </button>
           )}
@@ -121,13 +121,13 @@ export default function KelolaPembelajaran() {
               )}
               <div>
                 <h3 className="font-display font-bold">{item.nama_guru}</h3>
-                <p className="text-sm text-ink/60">{item.mapel ? `${item.mapel} · ` : ''}{item.url}</p>
+                <p className="text-sm text-ink/70">{item.mapel ? `${item.mapel} · ` : ''}{item.url}</p>
               </div>
             </div>
             <div className="flex items-center gap-3 shrink-0">
               <button
                 onClick={() => toggleAktif(item)}
-                className={`text-xs font-medium px-3 py-1 rounded ${item.aktif ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/60'}`}
+                className={`text-xs font-medium px-3 py-1 rounded ${item.aktif ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/70'}`}
               >
                 {item.aktif ? 'Tampil' : 'Disembunyikan'}
               </button>

@@ -21,7 +21,7 @@ export default function KelolaUser() {
   return (
     <DashboardLayout links={adminLinks} title="Admin">
       <h1 className="font-display text-2xl font-bold mb-2">Kelola Guru & Pengguna</h1>
-      <p className="text-sm text-ink/60 mb-6">
+      <p className="text-sm text-ink/70 mb-6">
         Akun baru dibuat lewat Supabase Authentication (undangan email), lalu tetapkan perannya di sini.
       </p>
 
@@ -30,7 +30,7 @@ export default function KelolaUser() {
           <div key={item.id} className="bg-white border border-ink/10 rounded-lg p-4 flex items-center justify-between gap-4">
             <div>
               <p className="font-medium">{item.nama || item.email || item.id}</p>
-              <p className="text-xs text-ink/50">{item.email}</p>
+              <p className="text-xs text-ink/70">{item.email}</p>
             </div>
             <select
               value={item.role || ''}
@@ -43,7 +43,7 @@ export default function KelolaUser() {
             </select>
           </div>
         ))}
-        {items.length === 0 && <p className="text-ink/60 text-sm">Belum ada pengguna terdaftar.</p>}
+        {items.length === 0 && <p className="text-ink/70 text-sm">Belum ada pengguna terdaftar.</p>}
       </div>
     </DashboardLayout>
   )

@@ -73,7 +73,7 @@ export default function Home() {
                 className="glass shadow-sm rounded-lg p-5 hover:border-amber hover:shadow-md transition-all"
               >
                 <h3 className="font-display font-bold text-lg mb-1">{q.label}</h3>
-                <p className="text-sm text-ink/60">{q.desc}</p>
+                <p className="text-sm text-ink/70">{q.desc}</p>
               </Link>
             ))}
           </div>
@@ -83,7 +83,7 @@ export default function Home() {
       <section className="max-w-6xl mx-auto px-5 py-14">
         <h2 className="font-display text-2xl font-bold mb-6">Pengumuman Terbaru</h2>
         {pengumuman.length === 0 ? (
-          <p className="text-ink/60">Belum ada pengumuman yang dipublikasikan.</p>
+          <p className="text-ink/70">Belum ada pengumuman yang dipublikasikan.</p>
         ) : (
           <div className="grid md:grid-cols-3 gap-5">
             {pengumuman.map((p) => (

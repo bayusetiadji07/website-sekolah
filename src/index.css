@@ -19,6 +19,18 @@ body {
   font-family: var(--font-body);
 }
 
+a, button {
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease,
+    opacity 0.15s ease, box-shadow 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a, button, .page-transition, .marquee-track {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 h1, h2, h3, .font-display {
   font-family: var(--font-display);
 }

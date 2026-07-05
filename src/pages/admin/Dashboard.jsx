@@ -54,7 +54,7 @@ export default function AdminDashboard() {
         ].map((c) => (
           <div key={c.label} className="bg-white border border-ink/10 rounded-lg p-5">
             <p className="text-2xl font-display font-bold">{c.value}</p>
-            <p className="text-sm text-ink/60">{c.label}</p>
+            <p className="text-sm text-ink/70">{c.label}</p>
           </div>
         ))}
       </div>

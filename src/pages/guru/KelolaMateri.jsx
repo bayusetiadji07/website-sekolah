@@ -71,7 +71,7 @@ export default function KelolaMateriGuru() {
   return (
     <DashboardLayout links={guruLinks} title="Guru">
       <h1 className="font-display text-2xl font-bold mb-1">Materi Saya</h1>
-      <p className="text-sm text-ink/60 mb-6">{profile?.mapel && `Mapel: ${profile.mapel}`}</p>
+      <p className="text-sm text-ink/70 mb-6">{profile?.mapel && `Mapel: ${profile.mapel}`}</p>
 
       <form onSubmit={handleSubmit} className="bg-white border border-ink/10 rounded-lg p-5 mb-8 space-y-3">
         <input
@@ -133,7 +133,7 @@ export default function KelolaMateriGuru() {
             {saving ? 'Menyimpan...' : editingId ? 'Simpan Perubahan' : 'Tambah Materi'}
           </button>
           {editingId && (
-            <button type="button" onClick={() => { setForm(empty); setEditingId(null) }} className="text-sm text-ink/60">
+            <button type="button" onClick={() => { setForm(empty); setEditingId(null) }} className="text-sm text-ink/70">
               Batal
             </button>
           )}
@@ -144,11 +144,11 @@ export default function KelolaMateriGuru() {
         {items.map((item) => (
           <div key={item.id} className="bg-white border border-ink/10 rounded-lg p-4 flex items-start justify-between gap-4">
             <div>
-              <span className={`text-xs font-medium px-2 py-0.5 rounded ${item.status === 'published' ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/60'}`}>
+              <span className={`text-xs font-medium px-2 py-0.5 rounded ${item.status === 'published' ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/70'}`}>
                 {item.status === 'published' ? 'Terpublikasi' : 'Draft'}
               </span>
               <h3 className="font-display font-bold mt-1">{item.judul}</h3>
-              <p className="text-xs text-ink/50">{item.mapel} · {item.kelas}</p>
+              <p className="text-xs text-ink/70">{item.mapel} · {item.kelas}</p>
             </div>
             <div className="flex gap-2 shrink-0">
               <button
@@ -167,7 +167,7 @@ export default function KelolaMateriGuru() {
             </div>
           </div>
         ))}
-        {items.length === 0 && <p className="text-ink/60 text-sm">Belum ada materi yang diunggah.</p>}
+        {items.length === 0 && <p className="text-ink/70 text-sm">Belum ada materi yang diunggah.</p>}
       </div>
     </DashboardLayout>
   )

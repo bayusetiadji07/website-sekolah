@@ -20,7 +20,7 @@ export default function GaleriGrid({ kategori, title, emptyText }) {
       <h1 className="font-display text-3xl font-bold mb-2">{title}</h1>
       <div className="chalk-divider w-24 mb-8" />
 
-      {items.length === 0 && <p className="text-ink/60">{emptyText}</p>}
+      {items.length === 0 && <p className="text-ink/70">{emptyText}</p>}
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {items.map((g) => (

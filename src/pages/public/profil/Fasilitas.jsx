@@ -16,7 +16,7 @@ export default function Fasilitas() {
 
       <h2 className="font-display text-xl font-bold mb-4">Fasilitas Sekolah</h2>
       {data.length === 0 ? (
-        <p className="text-ink/60">Belum ada data fasilitas.</p>
+        <p className="text-ink/70">Belum ada data fasilitas.</p>
       ) : (
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
           {data.map((f) => (
@@ -24,7 +24,7 @@ export default function Fasilitas() {
               {f.foto_url && <img src={f.foto_url} alt={f.nama} className="w-full h-40 object-cover" />}
               <div className="p-4">
                 <p className="font-display font-bold mb-1">{f.nama}</p>
-                {f.deskripsi && <p className="text-sm text-ink/60">{f.deskripsi}</p>}
+                {f.deskripsi && <p className="text-sm text-ink/70">{f.deskripsi}</p>}
               </div>
             </div>
           ))}

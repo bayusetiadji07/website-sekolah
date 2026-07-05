@@ -42,7 +42,7 @@ export default function Login() {
         className="bg-white border border-ink/10 rounded-lg p-8 w-full max-w-sm"
       >
         <h1 className="font-display text-2xl font-bold mb-1">Masuk</h1>
-        <p className="text-sm text-ink/60 mb-6">Untuk admin dan guru sekolah</p>
+        <p className="text-sm text-ink/70 mb-6">Untuk admin dan guru sekolah</p>
 
         {error && (
           <p className="text-sm text-rust bg-rust/10 border border-rust/30 rounded px-3 py-2 mb-4">

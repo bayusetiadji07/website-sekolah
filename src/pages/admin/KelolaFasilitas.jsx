@@ -77,7 +77,7 @@ export default function KelolaFasilitas() {
         />
         <div>
           <input type="file" accept="image/*" onChange={handleUpload} className="text-sm" />
-          {uploading && <p className="text-xs text-ink/50 mt-1">Mengunggah foto...</p>}
+          {uploading && <p className="text-xs text-ink/70 mt-1">Mengunggah foto...</p>}
           {form.foto_url && <img src={form.foto_url} alt="preview" className="h-24 mt-2 rounded" />}
         </div>
         <div className="flex gap-3">
@@ -85,7 +85,7 @@ export default function KelolaFasilitas() {
             {editingId ? 'Simpan Perubahan' : 'Tambah Fasilitas'}
           </button>
           {editingId && (
-            <button type="button" onClick={() => { setForm(empty); setEditingId(null) }} className="text-sm text-ink/60">
+            <button type="button" onClick={() => { setForm(empty); setEditingId(null) }} className="text-sm text-ink/70">
               Batal
             </button>
           )}
@@ -101,7 +101,7 @@ export default function KelolaFasilitas() {
               <div className="flex items-center justify-between mt-2">
                 <button
                   onClick={() => toggleAktif(item)}
-                  className={`text-xs font-medium px-2 py-0.5 rounded ${item.aktif ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/60'}`}
+                  className={`text-xs font-medium px-2 py-0.5 rounded ${item.aktif ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/70'}`}
                 >
                   {item.aktif ? 'Tampil' : 'Disembunyikan'}
                 </button>

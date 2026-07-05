@@ -19,7 +19,7 @@ export default function GaleriOverview() {
             className="glass shadow-sm rounded-lg p-6 hover:border-amber hover:shadow-md transition-all"
           >
             <h3 className="font-display font-bold text-lg mb-1">{c.label}</h3>
-            <p className="text-sm text-ink/60">{c.desc}</p>
+            <p className="text-sm text-ink/70">{c.desc}</p>
           </Link>
         ))}
       </div>

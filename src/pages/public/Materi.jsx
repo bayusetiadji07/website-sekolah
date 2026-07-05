@@ -31,7 +31,7 @@ export default function Materi() {
   return (
     <div className="max-w-5xl mx-auto px-5 py-12">
       <h1 className="font-display text-3xl font-bold mb-2">Materi Pembelajaran</h1>
-      <div className="chalk-divider w-24 mb-6" />
+      <div className="chalk-divider w-24 mb-8" />
 
       <div className="flex flex-wrap gap-3 mb-8">
         <select
@@ -56,9 +56,9 @@ export default function Materi() {
         </select>
       </div>
 
-      {loading && <p className="text-ink/60">Memuat...</p>}
+      {loading && <p className="text-ink/70">Memuat...</p>}
       {!loading && filtered.length === 0 && (
-        <p className="text-ink/60">Belum ada materi yang cocok.</p>
+        <p className="text-ink/70">Belum ada materi yang cocok.</p>
       )}
 
       <div className="space-y-3">

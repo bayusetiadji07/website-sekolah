@@ -25,7 +25,7 @@ export default function TenagaPendidik() {
               </div>
             )}
             <p className="font-display font-bold">{t.nama}</p>
-            <p className="text-sm text-ink/60">{t.jabatan}</p>
+            <p className="text-sm text-ink/70">{t.jabatan}</p>
           </div>
         ))}
       </div>
@@ -39,14 +39,14 @@ export default function TenagaPendidik() {
 
       <h2 className="font-display text-xl font-bold mb-4">Tenaga Pendidik</h2>
       {pendidik.length === 0 ? (
-        <p className="text-ink/60 mb-10">Belum ada data.</p>
+        <p className="text-ink/70 mb-10">Belum ada data.</p>
       ) : (
         <div className="mb-10"><Grid items={pendidik} /></div>
       )}
 
       <h2 className="font-display text-xl font-bold mb-4">Tenaga Kependidikan</h2>
       {kependidikan.length === 0 ? (
-        <p className="text-ink/60">Belum ada data.</p>
+        <p className="text-ink/70">Belum ada data.</p>
       ) : (
         <Grid items={kependidikan} />
       )}

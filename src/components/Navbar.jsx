@@ -87,7 +87,7 @@ export default function Navbar() {
 
           <NavDropdown label="Pembelajaran" active={location.pathname === '/pembelajaran'}>
             {pembelajaran.length === 0 ? (
-              <p className="px-4 py-2 text-sm text-ink/50">Belum ada tautan pembelajaran.</p>
+              <p className="px-4 py-2 text-sm text-ink/70">Belum ada tautan pembelajaran.</p>
             ) : (
               pembelajaran.map((p) => (
                 <a
@@ -106,7 +106,7 @@ export default function Navbar() {
                   )}
                   <span>
                     {p.nama_guru}
-                    {p.mapel && <span className="block text-xs text-ink/50">{p.mapel}</span>}
+                    {p.mapel && <span className="block text-xs text-ink/70">{p.mapel}</span>}
                   </span>
                 </a>
               ))
@@ -115,7 +115,7 @@ export default function Navbar() {
 
           <NavDropdown label="Aplikasi Sekolah" active={location.pathname === '/aplikasi'}>
             {apps.length === 0 ? (
-              <p className="px-4 py-2 text-sm text-ink/50">Belum ada aplikasi ditautkan.</p>
+              <p className="px-4 py-2 text-sm text-ink/70">Belum ada aplikasi ditautkan.</p>
             ) : (
               apps.map((a) => (
                 <a

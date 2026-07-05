@@ -79,7 +79,7 @@ export default function KelolaPengumuman() {
         />
         <div>
           <input type="file" accept="image/*" onChange={handleUpload} className="text-sm" />
-          {uploading && <p className="text-xs text-ink/50 mt-1">Mengunggah foto...</p>}
+          {uploading && <p className="text-xs text-ink/70 mt-1">Mengunggah foto...</p>}
           {form.foto_url && <img src={form.foto_url} alt="preview" className="h-24 mt-2 rounded" />}
         </div>
         <div className="flex items-center gap-3">
@@ -98,7 +98,7 @@ export default function KelolaPengumuman() {
             <button
               type="button"
               onClick={() => { setForm(empty); setEditingId(null) }}
-              className="text-sm text-ink/60"
+              className="text-sm text-ink/70"
             >
               Batal
             </button>
@@ -114,11 +114,11 @@ export default function KelolaPengumuman() {
                 <img src={item.foto_url} alt={item.judul} className="w-16 h-16 object-cover rounded shrink-0" />
               )}
               <div>
-                <span className={`text-xs font-medium px-2 py-0.5 rounded ${item.status === 'published' ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/60'}`}>
+                <span className={`text-xs font-medium px-2 py-0.5 rounded ${item.status === 'published' ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/70'}`}>
                   {item.status === 'published' ? 'Terpublikasi' : 'Draft'}
                 </span>
                 <h3 className="font-display font-bold mt-1">{item.judul}</h3>
-                <p className="text-sm text-ink/60 line-clamp-2">{item.isi}</p>
+                <p className="text-sm text-ink/70 line-clamp-2">{item.isi}</p>
               </div>
             </div>
             <div className="flex gap-2 shrink-0">

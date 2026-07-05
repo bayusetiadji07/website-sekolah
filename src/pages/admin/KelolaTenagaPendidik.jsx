@@ -81,7 +81,7 @@ export default function KelolaTenagaPendidik() {
         </select>
         <div>
           <input type="file" accept="image/*" onChange={handleUpload} className="text-sm" />
-          {uploading && <p className="text-xs text-ink/50 mt-1">Mengunggah foto...</p>}
+          {uploading && <p className="text-xs text-ink/70 mt-1">Mengunggah foto...</p>}
           {form.foto_url && <img src={form.foto_url} alt="preview" className="h-20 w-20 rounded-full object-cover mt-2" />}
         </div>
         <div className="flex gap-3">
@@ -89,7 +89,7 @@ export default function KelolaTenagaPendidik() {
             {editingId ? 'Simpan Perubahan' : 'Tambah Data'}
           </button>
           {editingId && (
-            <button type="button" onClick={() => { setForm(empty); setEditingId(null) }} className="text-sm text-ink/60">
+            <button type="button" onClick={() => { setForm(empty); setEditingId(null) }} className="text-sm text-ink/70">
               Batal
             </button>
           )}
@@ -109,13 +109,13 @@ export default function KelolaTenagaPendidik() {
               )}
               <div>
                 <h3 className="font-display font-bold">{item.nama}</h3>
-                <p className="text-sm text-ink/60">{item.jabatan} · {item.kategori === 'pendidik' ? 'Pendidik' : 'Kependidikan'}</p>
+                <p className="text-sm text-ink/70">{item.jabatan} · {item.kategori === 'pendidik' ? 'Pendidik' : 'Kependidikan'}</p>
               </div>
             </div>
             <div className="flex items-center gap-3 shrink-0">
               <button
                 onClick={() => toggleAktif(item)}
-                className={`text-xs font-medium px-3 py-1 rounded ${item.aktif ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/60'}`}
+                className={`text-xs font-medium px-3 py-1 rounded ${item.aktif ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/70'}`}
               >
                 {item.aktif ? 'Tampil' : 'Disembunyikan'}
               </button>

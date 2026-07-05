@@ -55,8 +55,8 @@ export default function Agenda() {
       <h1 className="font-display text-3xl font-bold mb-2">Agenda Kegiatan</h1>
       <div className="chalk-divider w-24 mb-8" />
 
-      {loading && <p className="text-ink/60">Memuat...</p>}
-      {!loading && items.length === 0 && <p className="text-ink/60">Belum ada agenda kegiatan.</p>}
+      {loading && <p className="text-ink/70">Memuat...</p>}
+      {!loading && items.length === 0 && <p className="text-ink/70">Belum ada agenda kegiatan.</p>}
 
       {mendatang.length > 0 && (
         <section className="mb-10">
@@ -69,7 +69,7 @@ export default function Agenda() {
 
       {lampau.length > 0 && (
         <section>
-          <h2 className="font-display text-xl font-bold mb-4 text-ink/60">Sudah Berlalu</h2>
+          <h2 className="font-display text-xl font-bold mb-4 text-ink/70">Sudah Berlalu</h2>
           <div className="space-y-4 opacity-70">
             {lampau.map((a) => <Card key={a.id} a={a} />)}
           </div>

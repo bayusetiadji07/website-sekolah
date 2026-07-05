@@ -36,7 +36,7 @@ export default function Kontak() {
         <div className="bg-white border border-ink/10 rounded-lg p-6">
           <h2 className="font-display text-xl font-bold mb-4">Informasi Kontak</h2>
           {items.length === 0 ? (
-            <p className="text-ink/60">Informasi kontak belum diisi.</p>
+            <p className="text-ink/70">Informasi kontak belum diisi.</p>
           ) : (
             <dl className="space-y-3 text-sm">
               {items.map((i) => (
@@ -58,7 +58,7 @@ export default function Kontak() {
                   rel="noreferrer"
                   aria-label={s.label}
                   title={s.label}
-                  className="text-chalkboard hover:text-amber transition-colors"
+                  className="text-chalkboard hover:text-rust transition-colors"
                 >
                   <SocialIcon name={s.icon} />
                 </a>
@@ -76,7 +76,7 @@ export default function Kontak() {
               title="Lokasi Sekolah"
             />
           ) : (
-            <div className="w-full h-full min-h-64 flex items-center justify-center text-ink/50 text-sm p-6 text-center">
+            <div className="w-full h-full min-h-64 flex items-center justify-center text-ink/70 text-sm p-6 text-center">
               Peta lokasi belum ditambahkan.
             </div>
           )}

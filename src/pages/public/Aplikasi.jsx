@@ -22,7 +22,7 @@ export default function Aplikasi() {
       </p>
 
       {data.length === 0 && (
-        <p className="text-ink/60">Belum ada aplikasi yang ditautkan.</p>
+        <p className="text-ink/70">Belum ada aplikasi yang ditautkan.</p>
       )}
 
       <div className="grid md:grid-cols-2 gap-5">
@@ -43,7 +43,7 @@ export default function Aplikasi() {
             )}
             <div>
               <h3 className="font-display font-bold text-lg">{a.nama}</h3>
-              {a.deskripsi && <p className="text-sm text-ink/60">{a.deskripsi}</p>}
+              {a.deskripsi && <p className="text-sm text-ink/70">{a.deskripsi}</p>}
             </div>
           </a>
         ))}

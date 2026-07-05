@@ -74,7 +74,7 @@ export default function KelolaBerita() {
         />
         <div>
           <input type="file" accept="image/*" onChange={handleUpload} className="text-sm" />
-          {uploading && <p className="text-xs text-ink/50 mt-1">Mengunggah foto...</p>}
+          {uploading && <p className="text-xs text-ink/70 mt-1">Mengunggah foto...</p>}
           {form.foto_url && <img src={form.foto_url} alt="preview" className="h-24 mt-2 rounded" />}
         </div>
         <div className="flex items-center gap-3">
@@ -90,7 +90,7 @@ export default function KelolaBerita() {
             {editingId ? 'Simpan Perubahan' : 'Tambah Berita'}
           </button>
           {editingId && (
-            <button type="button" onClick={() => { setForm(empty); setEditingId(null) }} className="text-sm text-ink/60">
+            <button type="button" onClick={() => { setForm(empty); setEditingId(null) }} className="text-sm text-ink/70">
               Batal
             </button>
           )}
@@ -101,7 +101,7 @@ export default function KelolaBerita() {
         {items.map((item) => (
           <div key={item.id} className="bg-white border border-ink/10 rounded-lg p-4 flex items-start justify-between gap-4">
             <div>
-              <span className={`text-xs font-medium px-2 py-0.5 rounded ${item.status === 'published' ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/60'}`}>
+              <span className={`text-xs font-medium px-2 py-0.5 rounded ${item.status === 'published' ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/70'}`}>
                 {item.status === 'published' ? 'Terpublikasi' : 'Draft'}
               </span>
               <h3 className="font-display font-bold mt-1">{item.judul}</h3>

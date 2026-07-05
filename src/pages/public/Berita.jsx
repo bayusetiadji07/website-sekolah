@@ -22,9 +22,9 @@ export default function Berita() {
       <h1 className="font-display text-3xl font-bold mb-2">Berita & Kegiatan</h1>
       <div className="chalk-divider w-24 mb-8" />
 
-      {loading && <p className="text-ink/60">Memuat...</p>}
+      {loading && <p className="text-ink/70">Memuat...</p>}
       {!loading && data.length === 0 && (
-        <p className="text-ink/60">Belum ada berita.</p>
+        <p className="text-ink/70">Belum ada berita.</p>
       )}
 
       <div className="grid md:grid-cols-2 gap-6">

@@ -57,14 +57,14 @@ export default function KelolaProfil() {
   return (
     <DashboardLayout links={adminLinks} title="Admin">
       <h1 className="font-display text-2xl font-bold mb-6">Profil & Kontak Sekolah</h1>
-      <p className="text-sm text-ink/60 mb-4">Konten ini tampil di halaman publik "Profil" dan "Kontak".</p>
+      <p className="text-sm text-ink/70 mb-4">Konten ini tampil di halaman publik "Profil" dan "Kontak".</p>
 
       <form onSubmit={handleSubmit} className="space-y-8 max-w-2xl">
         <section className="bg-white border border-ink/10 rounded-lg p-5 space-y-3">
           <h2 className="font-display font-bold">Umum</h2>
           <Field label="Logo sekolah (tampil di navigasi & footer)">
             <input type="file" accept="image/*" onChange={(e) => handleUpload(e, 'logo_url')} className="text-sm" />
-            {uploading === 'logo_url' && <p className="text-xs text-ink/50">Mengunggah...</p>}
+            {uploading === 'logo_url' && <p className="text-xs text-ink/70">Mengunggah...</p>}
             {form.logo_url && <img src={form.logo_url} className="h-16 mt-2 rounded bg-paper border border-ink/10 p-1" />}
           </Field>
           <Field label="Tagline / slogan sekolah">
@@ -72,7 +72,7 @@ export default function KelolaProfil() {
           </Field>
           <Field label="Foto sekolah (untuk halaman profil)">
             <input type="file" accept="image/*" onChange={(e) => handleUpload(e, 'foto_sekolah_url')} className="text-sm" />
-            {uploading === 'foto_sekolah_url' && <p className="text-xs text-ink/50">Mengunggah...</p>}
+            {uploading === 'foto_sekolah_url' && <p className="text-xs text-ink/70">Mengunggah...</p>}
             {form.foto_sekolah_url && <img src={form.foto_sekolah_url} className="h-20 mt-2 rounded" />}
           </Field>
         </section>
@@ -84,7 +84,7 @@ export default function KelolaProfil() {
           </Field>
           <Field label="Foto kepala sekolah">
             <input type="file" accept="image/*" onChange={(e) => handleUpload(e, 'foto_kepala_sekolah_url')} className="text-sm" />
-            {uploading === 'foto_kepala_sekolah_url' && <p className="text-xs text-ink/50">Mengunggah...</p>}
+            {uploading === 'foto_kepala_sekolah_url' && <p className="text-xs text-ink/70">Mengunggah...</p>}
             {form.foto_kepala_sekolah_url && <img src={form.foto_kepala_sekolah_url} className="h-20 w-20 rounded-full object-cover mt-2" />}
           </Field>
           <Field label="Isi sambutan">
@@ -113,7 +113,7 @@ export default function KelolaProfil() {
           <Field label="Jam operasional"><input className={inputCls} placeholder="Senin - Sabtu, 07.00 - 14.00" value={form.jam_operasional} onChange={(e) => setForm({ ...form, jam_operasional: e.target.value })} /></Field>
           <Field label="Lokasi peta (ketik alamat sekolah, atau tempel link Google Maps)">
             <input className={inputCls} placeholder="Contoh: SMP Negeri 3 Besuki, Situbondo" value={form.maps_embed_url} onChange={(e) => setForm({ ...form, maps_embed_url: e.target.value })} />
-            <p className="text-xs text-ink/50 mt-1">
+            <p className="text-xs text-ink/70 mt-1">
               Paling mudah: ketik saja alamat/nama sekolah. Link "Bagikan" singkat dari Google Maps
               (maps.app.goo.gl/...) tidak bisa dibaca otomatis — kalau itu yang ditempel, peta akan
               otomatis memakai kolom Alamat di bawah sebagai gantinya. Kalau punya link "Sematkan peta"

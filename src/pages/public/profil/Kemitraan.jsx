@@ -16,7 +16,7 @@ export default function Kemitraan() {
 
       <h2 className="font-display text-xl font-bold mb-4">Kemitraan Sekolah</h2>
       {data.length === 0 ? (
-        <p className="text-ink/60">Belum ada data kemitraan.</p>
+        <p className="text-ink/70">Belum ada data kemitraan.</p>
       ) : (
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
           {data.map((k) => {
@@ -31,7 +31,7 @@ export default function Kemitraan() {
                 )}
                 <div>
                   <p className="font-display font-bold">{k.nama}</p>
-                  {k.deskripsi && <p className="text-sm text-ink/60">{k.deskripsi}</p>}
+                  {k.deskripsi && <p className="text-sm text-ink/70">{k.deskripsi}</p>}
                 </div>
               </div>
             )

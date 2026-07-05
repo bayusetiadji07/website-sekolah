@@ -72,11 +72,11 @@ export default function KelolaAgenda() {
         />
         <div className="grid grid-cols-2 gap-3">
           <label className="block">
-            <span className="block text-xs text-ink/60 mb-1">Tanggal mulai</span>
+            <span className="block text-xs text-ink/70 mb-1">Tanggal mulai</span>
             <input type="date" required value={form.tanggal_mulai} onChange={(e) => setForm({ ...form, tanggal_mulai: e.target.value })} className={`w-full ${inputCls}`} />
           </label>
           <label className="block">
-            <span className="block text-xs text-ink/60 mb-1">Tanggal selesai (opsional)</span>
+            <span className="block text-xs text-ink/70 mb-1">Tanggal selesai (opsional)</span>
             <input type="date" value={form.tanggal_selesai} onChange={(e) => setForm({ ...form, tanggal_selesai: e.target.value })} className={`w-full ${inputCls}`} />
           </label>
         </div>
@@ -88,7 +88,7 @@ export default function KelolaAgenda() {
         />
         <div>
           <input type="file" accept="image/*" onChange={handleUpload} className="text-sm" />
-          {uploading && <p className="text-xs text-ink/50 mt-1">Mengunggah foto...</p>}
+          {uploading && <p className="text-xs text-ink/70 mt-1">Mengunggah foto...</p>}
           {form.foto_url && <img src={form.foto_url} alt="preview" className="h-24 mt-2 rounded" />}
         </div>
         <div className="flex items-center gap-3">
@@ -100,7 +100,7 @@ export default function KelolaAgenda() {
             {editingId ? 'Simpan Perubahan' : 'Tambah Agenda'}
           </button>
           {editingId && (
-            <button type="button" onClick={() => { setForm(empty); setEditingId(null) }} className="text-sm text-ink/60">
+            <button type="button" onClick={() => { setForm(empty); setEditingId(null) }} className="text-sm text-ink/70">
               Batal
             </button>
           )}
@@ -115,11 +115,11 @@ export default function KelolaAgenda() {
                 <img src={item.foto_url} alt={item.judul} className="w-16 h-16 object-cover rounded shrink-0" />
               )}
               <div>
-              <span className={`text-xs font-medium px-2 py-0.5 rounded ${item.status === 'published' ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/60'}`}>
+              <span className={`text-xs font-medium px-2 py-0.5 rounded ${item.status === 'published' ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/70'}`}>
                 {item.status === 'published' ? 'Terpublikasi' : 'Draft'}
               </span>
               <h3 className="font-display font-bold mt-1">{item.judul}</h3>
-              <p className="text-xs text-ink/60">
+              <p className="text-xs text-ink/70">
                 {item.tanggal_mulai}{item.tanggal_selesai && item.tanggal_selesai !== item.tanggal_mulai ? ` – ${item.tanggal_selesai}` : ''}
                 {item.lokasi ? ` · ${item.lokasi}` : ''}
               </p>

@@ -48,7 +48,7 @@ export default function KelolaTampilan() {
   return (
     <DashboardLayout links={adminLinks} title="Admin">
       <h1 className="font-display text-2xl font-bold mb-2">Pengaturan Tampilan</h1>
-      <p className="text-sm text-ink/60 mb-6">
+      <p className="text-sm text-ink/70 mb-6">
         Atur urutan dan tampilkan/sembunyikan bagian "Jelajahi Website" di halaman Beranda.
       </p>
 
@@ -61,7 +61,7 @@ export default function KelolaTampilan() {
                   type="button"
                   onClick={() => move(i, -1)}
                   disabled={i === 0}
-                  className="text-ink/50 hover:text-chalkboard disabled:opacity-20 leading-none text-xs"
+                  className="text-ink/70 hover:text-chalkboard disabled:opacity-20 leading-none text-xs"
                   aria-label="Naikkan urutan"
                 >
                   ▲
@@ -70,7 +70,7 @@ export default function KelolaTampilan() {
                   type="button"
                   onClick={() => move(i, 1)}
                   disabled={i === sections.length - 1}
-                  className="text-ink/50 hover:text-chalkboard disabled:opacity-20 leading-none text-xs"
+                  className="text-ink/70 hover:text-chalkboard disabled:opacity-20 leading-none text-xs"
                   aria-label="Turunkan urutan"
                 >
                   ▼
@@ -81,7 +81,7 @@ export default function KelolaTampilan() {
             <button
               type="button"
               onClick={() => toggleAktif(s.key)}
-              className={`text-xs font-medium px-3 py-1 rounded shrink-0 ${s.aktif ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/60'}`}
+              className={`text-xs font-medium px-3 py-1 rounded shrink-0 ${s.aktif ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/70'}`}
             >
               {s.aktif ? 'Tampil' : 'Disembunyikan'}
             </button>
