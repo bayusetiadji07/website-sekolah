@@ -133,6 +133,77 @@ create policy "admin full akses app_links" on app_links
     exists (select 1 from profiles where id = auth.uid() and role = 'admin')
   );
 
+-- 6. PENGATURAN SEKOLAH (singleton: profil + kontak)
+create table pengaturan_sekolah (
+  id int primary key default 1 check (id = 1),
+  nama_sekolah text default 'SMP Negeri 3 Besuki',
+  tagline text default '',
+  sambutan_kepala_sekolah text default '',
+  nama_kepala_sekolah text default '',
+  foto_kepala_sekolah_url text default '',
+  visi text default '',
+  misi text default '',
+  sejarah text default '',
+  foto_sekolah_url text default '',
+  alamat text default '',
+  telepon text default '',
+  email text default '',
+  jam_operasional text default '',
+  maps_embed_url text default '',
+  instagram_url text default '',
+  facebook_url text default '',
+  youtube_url text default '',
+  updated_at timestamptz default now()
+);
+insert into pengaturan_sekolah (id) values (1);
+
+-- 7. GALERI FOTO
+create table galeri (
+  id uuid primary key default gen_random_uuid(),
+  judul text not null,
+  foto_url text not null,
+  keterangan text,
+  aktif boolean default true,
+  urutan int default 0,
+  created_at timestamptz default now()
+);
+
+-- 8. AGENDA KEGIATAN
+create table agenda (
+  id uuid primary key default gen_random_uuid(),
+  judul text not null,
+  deskripsi text,
+  tanggal_mulai date not null,
+  tanggal_selesai date,
+  lokasi text,
+  status text default 'draft' check (status in ('draft', 'published')),
+  created_at timestamptz default now()
+);
+
+alter table pengaturan_sekolah enable row level security;
+create policy "publik baca pengaturan" on pengaturan_sekolah
+  for select using (true);
+create policy "admin ubah pengaturan" on pengaturan_sekolah
+  for update using (
+    exists (select 1 from profiles where id = auth.uid() and role = 'admin')
+  );
+
+alter table galeri enable row level security;
+create policy "publik baca galeri aktif" on galeri
+  for select using (aktif = true);
+create policy "admin full akses galeri" on galeri
+  for all using (
+    exists (select 1 from profiles where id = auth.uid() and role = 'admin')
+  );
+
+alter table agenda enable row level security;
+create policy "publik baca agenda published" on agenda
+  for select using (status = 'published');
+create policy "admin full akses agenda" on agenda
+  for all using (
+    exists (select 1 from profiles where id = auth.uid() and role = 'admin')
+  );
+
 -- ============================================
 -- STORAGE BUCKET untuk file materi & foto berita
 -- ============================================

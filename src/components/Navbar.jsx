@@ -3,10 +3,14 @@ import { useState } from 'react'
 
 const links = [
   { to: '/', label: 'Beranda' },
+  { to: '/profil', label: 'Profil' },
+  { to: '/berita', label: 'Berita' },
   { to: '/pengumuman', label: 'Pengumuman' },
-  { to: '/berita', label: 'Berita & Kegiatan' },
-  { to: '/materi', label: 'Materi Pembelajaran' },
+  { to: '/agenda', label: 'Agenda' },
+  { to: '/galeri', label: 'Galeri' },
+  { to: '/materi', label: 'Materi' },
   { to: '/aplikasi', label: 'Aplikasi Sekolah' },
+  { to: '/kontak', label: 'Kontak' },
 ]
 
 export default function Navbar() {
@@ -16,11 +20,11 @@ export default function Navbar() {
   return (
     <header className="bg-chalkboard text-paper sticky top-0 z-40">
       <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-        <Link to="/" className="font-display text-xl font-bold text-amber">
-          Nama Sekolah
+        <Link to="/" className="font-display text-lg font-bold text-amber shrink-0">
+          SMPN 3 Besuki
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6 text-sm">
+        <nav className="hidden lg:flex items-center gap-5 text-sm">
           {links.map((l) => (
             <Link
               key={l.to}
@@ -41,7 +45,7 @@ export default function Navbar() {
         </nav>
 
         <button
-          className="md:hidden text-paper"
+          className="lg:hidden text-paper"
           onClick={() => setOpen(!open)}
           aria-label="Buka menu"
         >
@@ -50,7 +54,7 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <nav className="md:hidden flex flex-col gap-1 px-5 pb-4 text-sm">
+        <nav className="lg:hidden flex flex-col gap-1 px-5 pb-4 text-sm">
           {links.map((l) => (
             <Link
               key={l.to}
