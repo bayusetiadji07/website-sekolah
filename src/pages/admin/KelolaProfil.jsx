@@ -7,7 +7,7 @@ const empty = {
   logo_url: '', tagline: '', sambutan_kepala_sekolah: '', nama_kepala_sekolah: '', foto_kepala_sekolah_url: '',
   visi: '', misi: '', sejarah: '', foto_sekolah_url: '',
   alamat: '', telepon: '', email: '', jam_operasional: '', maps_embed_url: '',
-  instagram_url: '', facebook_url: '', youtube_url: '',
+  instagram_url: '', facebook_url: '', youtube_url: '', tiktok_url: '',
 }
 
 function Field({ label, children }) {
@@ -111,12 +111,19 @@ export default function KelolaProfil() {
           <Field label="Telepon"><input className={inputCls} value={form.telepon} onChange={(e) => setForm({ ...form, telepon: e.target.value })} /></Field>
           <Field label="Email"><input className={inputCls} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></Field>
           <Field label="Jam operasional"><input className={inputCls} placeholder="Senin - Sabtu, 07.00 - 14.00" value={form.jam_operasional} onChange={(e) => setForm({ ...form, jam_operasional: e.target.value })} /></Field>
-          <Field label="Link embed Google Maps (src iframe)">
-            <input className={inputCls} placeholder="https://www.google.com/maps/embed?..." value={form.maps_embed_url} onChange={(e) => setForm({ ...form, maps_embed_url: e.target.value })} />
+          <Field label="Lokasi peta (ketik alamat sekolah, atau tempel link Google Maps)">
+            <input className={inputCls} placeholder="Contoh: SMP Negeri 3 Besuki, Situbondo" value={form.maps_embed_url} onChange={(e) => setForm({ ...form, maps_embed_url: e.target.value })} />
+            <p className="text-xs text-ink/50 mt-1">
+              Paling mudah: ketik saja alamat/nama sekolah. Link "Bagikan" singkat dari Google Maps
+              (maps.app.goo.gl/...) tidak bisa dibaca otomatis — kalau itu yang ditempel, peta akan
+              otomatis memakai kolom Alamat di bawah sebagai gantinya. Kalau punya link "Sematkan peta"
+              (embed) dari Google Maps, itu paling akurat dan bisa ditempel di sini.
+            </p>
           </Field>
           <Field label="Instagram (URL)"><input className={inputCls} value={form.instagram_url} onChange={(e) => setForm({ ...form, instagram_url: e.target.value })} /></Field>
           <Field label="Facebook (URL)"><input className={inputCls} value={form.facebook_url} onChange={(e) => setForm({ ...form, facebook_url: e.target.value })} /></Field>
           <Field label="YouTube (URL)"><input className={inputCls} value={form.youtube_url} onChange={(e) => setForm({ ...form, youtube_url: e.target.value })} /></Field>
+          <Field label="TikTok (URL)"><input className={inputCls} value={form.tiktok_url} onChange={(e) => setForm({ ...form, tiktok_url: e.target.value })} /></Field>
         </section>
 
         <div className="flex items-center gap-3">

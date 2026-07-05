@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import { buildMapsEmbedSrc } from '../../lib/maps'
+import SocialIcon from '../../components/SocialIcon'
 
 export default function Kontak() {
   const [p, setP] = useState(null)
@@ -17,10 +19,13 @@ export default function Kontak() {
   ].filter((i) => i.value)
 
   const socials = [
-    { label: 'Instagram', value: p?.instagram_url },
-    { label: 'Facebook', value: p?.facebook_url },
-    { label: 'YouTube', value: p?.youtube_url },
+    { icon: 'instagram', label: 'Instagram', value: p?.instagram_url },
+    { icon: 'facebook', label: 'Facebook', value: p?.facebook_url },
+    { icon: 'youtube', label: 'YouTube', value: p?.youtube_url },
+    { icon: 'tiktok', label: 'TikTok', value: p?.tiktok_url },
   ].filter((s) => s.value)
+
+  const mapsSrc = buildMapsEmbedSrc(p?.maps_embed_url, p?.alamat)
 
   return (
     <div className="max-w-4xl mx-auto px-5 py-12">
@@ -44,10 +49,18 @@ export default function Kontak() {
           )}
 
           {socials.length > 0 && (
-            <div className="mt-5 pt-5 border-t border-ink/10 flex gap-4 text-sm">
+            <div className="mt-5 pt-5 border-t border-ink/10 flex gap-4">
               {socials.map((s) => (
-                <a key={s.label} href={s.value} target="_blank" rel="noreferrer" className="text-chalkboard font-medium hover:text-amber">
-                  {s.label}
+                <a
+                  key={s.label}
+                  href={s.value}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={s.label}
+                  title={s.label}
+                  className="text-chalkboard hover:text-amber transition-colors"
+                >
+                  <SocialIcon name={s.icon} />
                 </a>
               ))}
             </div>
@@ -55,9 +68,9 @@ export default function Kontak() {
         </div>
 
         <div className="rounded-lg overflow-hidden border border-ink/10 bg-white min-h-64">
-          {p?.maps_embed_url ? (
+          {mapsSrc ? (
             <iframe
-              src={p.maps_embed_url}
+              src={mapsSrc}
               className="w-full h-full min-h-64"
               loading="lazy"
               title="Lokasi Sekolah"
