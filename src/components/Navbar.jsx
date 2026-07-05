@@ -11,7 +11,6 @@ const galeriTabs = [
 
 const links = [
   { to: '/berita', label: 'Berita' },
-  { to: '/pengumuman', label: 'Pengumuman' },
 ]
 
 export default function Navbar() {
@@ -143,6 +142,13 @@ export default function Navbar() {
           </NavDropdown>
 
           <Link
+            to="/pengumuman"
+            className={`hover:text-amber transition-colors ${location.pathname === '/pengumuman' ? 'text-amber' : 'text-paper/85'}`}
+          >
+            Pengumuman
+          </Link>
+
+          <Link
             to="/kontak"
             className={`hover:text-amber transition-colors ${location.pathname === '/kontak' ? 'text-amber' : 'text-paper/85'}`}
           >
@@ -210,7 +216,8 @@ export default function Navbar() {
               Lihat Semua Aplikasi →
             </Link>
           </div>
-          <Link to="/kontak" onClick={() => setOpen(false)} className="py-2 text-paper/90 hover:text-amber border-t border-paper/10 mt-1 pt-3">Kontak</Link>
+          <Link to="/pengumuman" onClick={() => setOpen(false)} className="py-2 text-paper/90 hover:text-amber border-t border-paper/10 mt-1 pt-3">Pengumuman</Link>
+          <Link to="/kontak" onClick={() => setOpen(false)} className="py-2 text-paper/90 hover:text-amber">Kontak</Link>
         </nav>
       )}
     </header>
