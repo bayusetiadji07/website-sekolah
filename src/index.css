@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Bitter", Georgia, serif;
+  --font-body: "Work Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-chalkboard: #1f3a2e;
+  --color-chalkboard-light: #2d4f3d;
+  --color-paper: #f7f3e8;
+  --color-ink: #23272b;
+  --color-amber: #e8a33d;
+  --color-rust: #b5502f;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+}
+
+.chalk-divider {
+  height: 3px;
+  background-image: repeating-linear-gradient(90deg, var(--color-amber) 0 10px, transparent 10px 16px);
+  border-radius: 2px;
+}
