@@ -4,9 +4,8 @@ import { supabase } from '../../lib/supabase'
 import { adminLinks } from './links'
 
 const defaultSections = [
-  { key: 'profil', label: 'Profil Sekolah', aktif: true },
+  { key: 'profil', label: 'Tentang Kami', aktif: true },
   { key: 'berita', label: 'Berita & Kegiatan', aktif: true },
-  { key: 'agenda', label: 'Agenda Kegiatan', aktif: true },
   { key: 'galeri', label: 'Galeri Foto', aktif: true },
   { key: 'aplikasi', label: 'Aplikasi Sekolah', aktif: true },
   { key: 'kontak', label: 'Kontak', aktif: true },

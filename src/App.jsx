@@ -1,10 +1,9 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ProtectedRoute from './components/ProtectedRoute'
 
 import Home from './pages/public/Home'
-import Profil from './pages/public/Profil'
 import Sejarah from './pages/public/profil/Sejarah'
 import Sambutan from './pages/public/profil/Sambutan'
 import VisiMisi from './pages/public/profil/VisiMisi'
@@ -14,7 +13,9 @@ import Kemitraan from './pages/public/profil/Kemitraan'
 import Pengumuman from './pages/public/Pengumuman'
 import Berita from './pages/public/Berita'
 import Agenda from './pages/public/Agenda'
-import Galeri from './pages/public/Galeri'
+import GaleriOverview from './pages/public/galeri/GaleriOverview'
+import GaleriKegiatan from './pages/public/galeri/GaleriKegiatan'
+import GaleriPrestasi from './pages/public/galeri/GaleriPrestasi'
 import Materi from './pages/public/Materi'
 import Aplikasi from './pages/public/Aplikasi'
 import Kontak from './pages/public/Kontak'
@@ -31,6 +32,7 @@ import KelolaBerita from './pages/admin/KelolaBerita'
 import KelolaAgenda from './pages/admin/KelolaAgenda'
 import KelolaGaleri from './pages/admin/KelolaGaleri'
 import KelolaAplikasi from './pages/admin/KelolaAplikasi'
+import KelolaPembelajaran from './pages/admin/KelolaPembelajaran'
 import KelolaUser from './pages/admin/KelolaUser'
 import KelolaMateriAdmin from './pages/admin/KelolaMateri'
 
@@ -51,7 +53,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
-      <Route path="/profil" element={<PublicLayout><Profil /></PublicLayout>} />
+      <Route path="/profil" element={<Navigate to="/profil/sejarah" replace />} />
       <Route path="/profil/sejarah" element={<PublicLayout><Sejarah /></PublicLayout>} />
       <Route path="/profil/sambutan" element={<PublicLayout><Sambutan /></PublicLayout>} />
       <Route path="/profil/visi-misi" element={<PublicLayout><VisiMisi /></PublicLayout>} />
@@ -61,7 +63,9 @@ export default function App() {
       <Route path="/pengumuman" element={<PublicLayout><Pengumuman /></PublicLayout>} />
       <Route path="/berita" element={<PublicLayout><Berita /></PublicLayout>} />
       <Route path="/agenda" element={<PublicLayout><Agenda /></PublicLayout>} />
-      <Route path="/galeri" element={<PublicLayout><Galeri /></PublicLayout>} />
+      <Route path="/galeri" element={<PublicLayout><GaleriOverview /></PublicLayout>} />
+      <Route path="/galeri/kegiatan" element={<PublicLayout><GaleriKegiatan /></PublicLayout>} />
+      <Route path="/galeri/prestasi" element={<PublicLayout><GaleriPrestasi /></PublicLayout>} />
       <Route path="/materi" element={<PublicLayout><Materi /></PublicLayout>} />
       <Route path="/aplikasi" element={<PublicLayout><Aplikasi /></PublicLayout>} />
       <Route path="/kontak" element={<PublicLayout><Kontak /></PublicLayout>} />
@@ -79,6 +83,7 @@ export default function App() {
       <Route path="/admin/galeri" element={<ProtectedRoute allowedRoles={['admin']}><KelolaGaleri /></ProtectedRoute>} />
       <Route path="/admin/materi" element={<ProtectedRoute allowedRoles={['admin']}><KelolaMateriAdmin /></ProtectedRoute>} />
       <Route path="/admin/aplikasi" element={<ProtectedRoute allowedRoles={['admin']}><KelolaAplikasi /></ProtectedRoute>} />
+      <Route path="/admin/pembelajaran" element={<ProtectedRoute allowedRoles={['admin']}><KelolaPembelajaran /></ProtectedRoute>} />
       <Route path="/admin/pengguna" element={<ProtectedRoute allowedRoles={['admin']}><KelolaUser /></ProtectedRoute>} />
 
       <Route path="/guru" element={<ProtectedRoute allowedRoles={['guru']}><KelolaMateriGuru /></ProtectedRoute>} />

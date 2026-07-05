@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
+import GaleriMarquee from '../../components/GaleriMarquee'
 
 const sectionInfo = {
-  profil: { to: '/profil', label: 'Profil Sekolah', desc: 'Sambutan, visi & misi, sejarah' },
+  profil: { to: '/profil/sejarah', label: 'Tentang Kami', desc: 'Sejarah, sambutan, visi & misi sekolah' },
   berita: { to: '/berita', label: 'Berita & Kegiatan', desc: 'Kabar terbaru seputar sekolah' },
-  agenda: { to: '/agenda', label: 'Agenda Kegiatan', desc: 'Jadwal kegiatan mendatang' },
   galeri: { to: '/galeri', label: 'Galeri Foto', desc: 'Dokumentasi kegiatan sekolah' },
   aplikasi: { to: '/aplikasi', label: 'Aplikasi Sekolah', desc: 'E-Asesmen, SI Diswa, dan lainnya' },
   kontak: { to: '/kontak', label: 'Kontak', desc: 'Alamat, telepon, dan lokasi sekolah' },
 }
-const defaultSections = ['profil', 'berita', 'agenda', 'galeri', 'aplikasi', 'kontak'].map((key) => ({ key, aktif: true }))
+const defaultSections = ['profil', 'berita', 'galeri', 'aplikasi', 'kontak'].map((key) => ({ key, aktif: true }))
 
 export default function Home() {
   const [pengumuman, setPengumuman] = useState([])
@@ -46,10 +46,10 @@ export default function Home() {
           </p>
           <div className="flex flex-wrap gap-3 mt-8">
             <Link
-              to="/profil"
+              to="/profil/sejarah"
               className="bg-amber text-chalkboard px-5 py-2.5 rounded font-medium hover:opacity-90"
             >
-              Profil Sekolah
+              Tentang Kami
             </Link>
             <Link
               to="/aplikasi"
@@ -108,6 +108,8 @@ export default function Home() {
           Lihat semua pengumuman →
         </Link>
       </section>
+
+      <GaleriMarquee />
     </div>
   )
 }

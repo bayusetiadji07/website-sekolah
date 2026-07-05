@@ -38,7 +38,7 @@ export default function Footer() {
         <div>
           <p className="font-display font-bold text-paper mb-2">Tautan</p>
           <div className="flex flex-col gap-1">
-            <Link to="/profil" className="hover:text-amber">Profil Sekolah</Link>
+            <Link to="/profil/sejarah" className="hover:text-amber">Tentang Kami</Link>
             <Link to="/aplikasi" className="hover:text-amber">Aplikasi Sekolah</Link>
           </div>
         </div>

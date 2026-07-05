@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../../lib/supabase'
-import TentangKamiTabs from '../../../components/TentangKamiTabs'
 
 export default function VisiMisi() {
   const [p, setP] = useState(null)
@@ -15,8 +14,7 @@ export default function VisiMisi() {
   return (
     <div className="max-w-4xl mx-auto px-5 py-12">
       <h1 className="font-display text-3xl font-bold mb-2">Tentang Kami</h1>
-      <div className="chalk-divider w-24 mb-6" />
-      <TentangKamiTabs />
+      <div className="chalk-divider w-24 mb-8" />
 
       <div className="grid md:grid-cols-2 gap-6">
         <section className="bg-white border border-ink/10 rounded-lg p-6">

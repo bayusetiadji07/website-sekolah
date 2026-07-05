@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { supabase } from '../../lib/supabase'
+import { supabase } from '../lib/supabase'
 
-export default function Galeri() {
+export default function GaleriGrid({ kategori, title, emptyText }) {
   const [items, setItems] = useState([])
   const [active, setActive] = useState(null)
 
@@ -10,16 +10,17 @@ export default function Galeri() {
       .from('galeri')
       .select('*')
       .eq('aktif', true)
+      .eq('kategori', kategori)
       .order('urutan', { ascending: true })
       .then(({ data }) => setItems(data || []))
-  }, [])
+  }, [kategori])
 
   return (
     <div className="max-w-6xl mx-auto px-5 py-12">
-      <h1 className="font-display text-3xl font-bold mb-2">Galeri Foto</h1>
+      <h1 className="font-display text-3xl font-bold mb-2">{title}</h1>
       <div className="chalk-divider w-24 mb-8" />
 
-      {items.length === 0 && <p className="text-ink/60">Belum ada foto.</p>}
+      {items.length === 0 && <p className="text-ink/60">{emptyText}</p>}
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {items.map((g) => (

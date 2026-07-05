@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../../lib/supabase'
-import TentangKamiTabs from '../../../components/TentangKamiTabs'
 
 export default function Sejarah() {
   const [p, setP] = useState(null)
@@ -13,8 +12,7 @@ export default function Sejarah() {
   return (
     <div className="max-w-4xl mx-auto px-5 py-12">
       <h1 className="font-display text-3xl font-bold mb-2">Tentang Kami</h1>
-      <div className="chalk-divider w-24 mb-6" />
-      <TentangKamiTabs />
+      <div className="chalk-divider w-24 mb-8" />
 
       <h2 className="font-display text-xl font-bold mb-3">Sejarah Sekolah</h2>
       {p?.foto_sekolah_url && (

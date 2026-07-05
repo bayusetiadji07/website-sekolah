@@ -9,6 +9,7 @@ export const adminLinks = [
   { to: '/admin/berita', label: 'Berita' },
   { to: '/admin/agenda', label: 'Agenda Kegiatan' },
   { to: '/admin/galeri', label: 'Galeri Foto' },
+  { to: '/admin/pembelajaran', label: 'Pembelajaran' },
   { to: '/admin/materi', label: 'Semua Materi' },
   { to: '/admin/aplikasi', label: 'Aplikasi Sekolah' },
   { to: '/admin/pengguna', label: 'Kelola Guru' },

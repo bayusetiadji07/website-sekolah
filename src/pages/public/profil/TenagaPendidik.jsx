@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../../lib/supabase'
-import TentangKamiTabs from '../../../components/TentangKamiTabs'
 
 export default function TenagaPendidik() {
   const [data, setData] = useState([])
@@ -36,8 +35,7 @@ export default function TenagaPendidik() {
   return (
     <div className="max-w-5xl mx-auto px-5 py-12">
       <h1 className="font-display text-3xl font-bold mb-2">Tentang Kami</h1>
-      <div className="chalk-divider w-24 mb-6" />
-      <TentangKamiTabs />
+      <div className="chalk-divider w-24 mb-8" />
 
       <h2 className="font-display text-xl font-bold mb-4">Tenaga Pendidik</h2>
       {pendidik.length === 0 ? (

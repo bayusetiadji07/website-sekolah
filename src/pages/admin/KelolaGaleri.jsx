@@ -3,7 +3,7 @@ import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
 import { adminLinks } from './links'
 
-const empty = { judul: '', foto_url: '', keterangan: '', aktif: true, urutan: 0 }
+const empty = { judul: '', foto_url: '', keterangan: '', kategori: 'kegiatan', aktif: true, urutan: 0 }
 
 export default function KelolaGaleri() {
   const [items, setItems] = useState([])
@@ -72,6 +72,14 @@ export default function KelolaGaleri() {
           onChange={(e) => setForm({ ...form, keterangan: e.target.value })}
           className="w-full border border-ink/20 rounded px-3 py-2 text-sm"
         />
+        <select
+          value={form.kategori}
+          onChange={(e) => setForm({ ...form, kategori: e.target.value })}
+          className="w-full border border-ink/20 rounded px-3 py-2 text-sm"
+        >
+          <option value="kegiatan">Galeri Kegiatan</option>
+          <option value="prestasi">Galeri Prestasi</option>
+        </select>
         <div>
           <input type="file" accept="image/*" onChange={handleUpload} className="text-sm" />
           {uploading && <p className="text-xs text-ink/50 mt-1">Mengunggah foto...</p>}
@@ -94,7 +102,10 @@ export default function KelolaGaleri() {
           <div key={item.id} className="bg-white border border-ink/10 rounded-lg overflow-hidden">
             <img src={item.foto_url} alt={item.judul} className="w-full h-32 object-cover" />
             <div className="p-3">
-              <h3 className="font-display font-bold text-sm">{item.judul}</h3>
+              <span className="text-xs font-medium px-2 py-0.5 rounded bg-chalkboard/10 text-chalkboard">
+                {item.kategori === 'prestasi' ? 'Prestasi' : 'Kegiatan'}
+              </span>
+              <h3 className="font-display font-bold text-sm mt-1">{item.judul}</h3>
               <div className="flex items-center justify-between mt-2">
                 <button
                   onClick={() => toggleAktif(item)}

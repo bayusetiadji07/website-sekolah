@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../../lib/supabase'
-import TentangKamiTabs from '../../../components/TentangKamiTabs'
 
 export default function Sambutan() {
   const [p, setP] = useState(null)
@@ -15,8 +14,7 @@ export default function Sambutan() {
   return (
     <div className="max-w-4xl mx-auto px-5 py-12">
       <h1 className="font-display text-3xl font-bold mb-2">Tentang Kami</h1>
-      <div className="chalk-divider w-24 mb-6" />
-      <TentangKamiTabs />
+      <div className="chalk-divider w-24 mb-8" />
 
       <h2 className="font-display text-xl font-bold mb-3">Sambutan Kepala Sekolah</h2>
       <div className="bg-white border border-ink/10 rounded-lg p-6 flex flex-col sm:flex-row gap-5">
