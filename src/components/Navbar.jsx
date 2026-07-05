@@ -53,13 +53,6 @@ export default function Navbar() {
             Beranda
           </Link>
 
-          <Link
-            to="/kontak"
-            className={`hover:text-amber transition-colors ${location.pathname === '/kontak' ? 'text-amber' : 'text-paper/85'}`}
-          >
-            Kontak
-          </Link>
-
           <NavDropdown label="Tentang Kami" active={isTentangKamiActive}>
             {tentangKamiTabs.map((t) => (
               <Link key={t.to} to={t.to} className="block px-4 py-2 text-sm hover:bg-amber/10 hover:text-rust">
@@ -148,6 +141,13 @@ export default function Navbar() {
               Lihat Semua Aplikasi →
             </Link>
           </NavDropdown>
+
+          <Link
+            to="/kontak"
+            className={`hover:text-amber transition-colors ${location.pathname === '/kontak' ? 'text-amber' : 'text-paper/85'}`}
+          >
+            Kontak
+          </Link>
         </nav>
 
         <button
@@ -162,7 +162,14 @@ export default function Navbar() {
       {open && (
         <nav className="lg:hidden flex flex-col gap-1 px-5 pb-4 text-sm">
           <Link to="/" onClick={() => setOpen(false)} className="py-2 text-paper/90 hover:text-amber">Beranda</Link>
-          <Link to="/kontak" onClick={() => setOpen(false)} className="py-2 text-paper/90 hover:text-amber">Kontak</Link>
+          <div className="border-t border-paper/10 my-1 pt-2">
+            <p className="text-paper/50 text-xs uppercase mb-1">Tentang Kami</p>
+            {tentangKamiTabs.map((t) => (
+              <Link key={t.to} to={t.to} onClick={() => setOpen(false)} className="block py-1.5 text-paper/90 hover:text-amber">
+                {t.label}
+              </Link>
+            ))}
+          </div>
           {links.map((l) => (
             <Link
               key={l.to}
@@ -173,14 +180,6 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
-          <div className="border-t border-paper/10 my-1 pt-2">
-            <p className="text-paper/50 text-xs uppercase mb-1">Tentang Kami</p>
-            {tentangKamiTabs.map((t) => (
-              <Link key={t.to} to={t.to} onClick={() => setOpen(false)} className="block py-1.5 text-paper/90 hover:text-amber">
-                {t.label}
-              </Link>
-            ))}
-          </div>
           <div className="border-t border-paper/10 my-1 pt-2">
             <p className="text-paper/50 text-xs uppercase mb-1">Galeri</p>
             {galeriTabs.map((t) => (
@@ -211,6 +210,7 @@ export default function Navbar() {
               Lihat Semua Aplikasi →
             </Link>
           </div>
+          <Link to="/kontak" onClick={() => setOpen(false)} className="py-2 text-paper/90 hover:text-amber border-t border-paper/10 mt-1 pt-3">Kontak</Link>
         </nav>
       )}
     </header>
