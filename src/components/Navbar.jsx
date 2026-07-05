@@ -12,7 +12,6 @@ const galeriTabs = [
 const links = [
   { to: '/berita', label: 'Berita' },
   { to: '/pengumuman', label: 'Pengumuman' },
-  { to: '/kontak', label: 'Kontak' },
 ]
 
 export default function Navbar() {
@@ -52,6 +51,13 @@ export default function Navbar() {
             className={`hover:text-amber transition-colors ${location.pathname === '/' ? 'text-amber' : 'text-paper/85'}`}
           >
             Beranda
+          </Link>
+
+          <Link
+            to="/kontak"
+            className={`hover:text-amber transition-colors ${location.pathname === '/kontak' ? 'text-amber' : 'text-paper/85'}`}
+          >
+            Kontak
           </Link>
 
           <NavDropdown label="Tentang Kami" active={isTentangKamiActive}>
@@ -156,6 +162,7 @@ export default function Navbar() {
       {open && (
         <nav className="lg:hidden flex flex-col gap-1 px-5 pb-4 text-sm">
           <Link to="/" onClick={() => setOpen(false)} className="py-2 text-paper/90 hover:text-amber">Beranda</Link>
+          <Link to="/kontak" onClick={() => setOpen(false)} className="py-2 text-paper/90 hover:text-amber">Kontak</Link>
           {links.map((l) => (
             <Link
               key={l.to}

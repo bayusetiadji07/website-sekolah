@@ -7,8 +7,8 @@ import { adminLinks } from './links'
 const quickActions = [
   { to: '/admin/pengumuman', label: 'Tambah Pengumuman' },
   { to: '/admin/berita', label: 'Tambah Berita' },
-  { to: '/admin/agenda', label: 'Tambah Agenda' },
   { to: '/admin/galeri', label: 'Tambah Foto Galeri' },
+  { to: '/admin/pembelajaran', label: 'Atur Pembelajaran' },
   { to: '/admin/aplikasi', label: 'Atur Aplikasi Sekolah' },
   { to: '/admin/profil', label: 'Atur Profil & Kontak' },
   { to: '/admin/tampilan', label: 'Atur Tampilan Website' },
@@ -16,24 +16,24 @@ const quickActions = [
 ]
 
 export default function AdminDashboard() {
-  const [counts, setCounts] = useState({ pengumuman: 0, berita: 0, agenda: 0, galeri: 0, materi: 0, guru: 0 })
+  const [counts, setCounts] = useState({ pengumuman: 0, berita: 0, galeri: 0, pembelajaran: 0, aplikasi: 0, guru: 0 })
 
   useEffect(() => {
     async function load() {
-      const [p, b, ag, gal, m, g] = await Promise.all([
+      const [p, b, gal, pem, ap, g] = await Promise.all([
         supabase.from('pengumuman').select('id', { count: 'exact', head: true }),
         supabase.from('berita_kegiatan').select('id', { count: 'exact', head: true }),
-        supabase.from('agenda').select('id', { count: 'exact', head: true }),
         supabase.from('galeri').select('id', { count: 'exact', head: true }),
-        supabase.from('materi').select('id', { count: 'exact', head: true }),
+        supabase.from('pembelajaran_links').select('id', { count: 'exact', head: true }),
+        supabase.from('app_links').select('id', { count: 'exact', head: true }),
         supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'guru'),
       ])
       setCounts({
         pengumuman: p.count || 0,
         berita: b.count || 0,
-        agenda: ag.count || 0,
         galeri: gal.count || 0,
-        materi: m.count || 0,
+        pembelajaran: pem.count || 0,
+        aplikasi: ap.count || 0,
         guru: g.count || 0,
       })
     }
@@ -47,9 +47,9 @@ export default function AdminDashboard() {
         {[
           { label: 'Pengumuman', value: counts.pengumuman },
           { label: 'Berita', value: counts.berita },
-          { label: 'Agenda', value: counts.agenda },
           { label: 'Galeri Foto', value: counts.galeri },
-          { label: 'Materi', value: counts.materi },
+          { label: 'Pembelajaran', value: counts.pembelajaran },
+          { label: 'Aplikasi Sekolah', value: counts.aplikasi },
           { label: 'Guru Aktif', value: counts.guru },
         ].map((c) => (
           <div key={c.label} className="bg-white border border-ink/10 rounded-lg p-5">
