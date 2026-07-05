@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import GaleriMarquee from '../../components/GaleriMarquee'
+import StatCounter from '../../components/StatCounter'
 
 const sectionInfo = {
   profil: { to: '/profil/sejarah', label: 'Tentang Kami', desc: 'Sejarah, sambutan, visi & misi sekolah' },
@@ -15,6 +16,8 @@ const defaultSections = ['profil', 'berita', 'galeri', 'aplikasi', 'kontak'].map
 export default function Home() {
   const [pengumuman, setPengumuman] = useState([])
   const [pengaturan, setPengaturan] = useState(null)
+  const [prestasi, setPrestasi] = useState([])
+  const [counts, setCounts] = useState({ guru: 0, mitra: 0, prestasi: 0, fasilitas: 0 })
 
   useEffect(() => {
     supabase
@@ -27,15 +30,40 @@ export default function Home() {
 
     supabase.from('pengaturan_sekolah').select('*').eq('id', 1).single()
       .then(({ data }) => setPengaturan(data))
+
+    supabase.from('galeri').select('*').eq('aktif', true).eq('kategori', 'prestasi')
+      .order('created_at', { ascending: false }).limit(4)
+      .then(({ data }) => setPrestasi(data || []))
+
+    Promise.all([
+      supabase.from('tenaga_pendidik').select('id', { count: 'exact', head: true }).eq('aktif', true),
+      supabase.from('kemitraan').select('id', { count: 'exact', head: true }).eq('aktif', true),
+      supabase.from('galeri').select('id', { count: 'exact', head: true }).eq('aktif', true).eq('kategori', 'prestasi'),
+      supabase.from('fasilitas').select('id', { count: 'exact', head: true }).eq('aktif', true),
+    ]).then(([guru, mitra, prestasiCount, fasilitas]) => {
+      setCounts({
+        guru: guru.count || 0,
+        mitra: mitra.count || 0,
+        prestasi: prestasiCount.count || 0,
+        fasilitas: fasilitas.count || 0,
+      })
+    })
   }, [])
 
   const sections = pengaturan?.beranda_sections?.length ? pengaturan.beranda_sections : defaultSections
   const quickLinks = sections.filter((s) => s.aktif && sectionInfo[s.key]).map((s) => ({ ...sectionInfo[s.key], key: s.key }))
+  const hasStats = counts.guru + counts.mitra + counts.prestasi + counts.fasilitas > 0
 
   return (
     <div>
-      <section className="bg-chalkboard text-paper">
-        <div className="max-w-6xl mx-auto px-5 py-20 md:py-28">
+      <section
+        className="relative bg-chalkboard text-paper bg-cover bg-center"
+        style={pengaturan?.foto_sekolah_url ? { backgroundImage: `url("${pengaturan.foto_sekolah_url}")` } : undefined}
+      >
+        {pengaturan?.foto_sekolah_url && (
+          <div className="absolute inset-0 bg-gradient-to-t from-chalkboard via-chalkboard/90 to-chalkboard/60" />
+        )}
+        <div className="relative max-w-6xl mx-auto px-5 py-20 md:py-28">
           <p className="text-amber font-medium mb-3 tracking-wide">Selamat Datang di</p>
           <h1 className="font-display text-4xl md:text-5xl font-bold max-w-xl leading-tight">
             SMP Negeri 3 Besuki
@@ -59,8 +87,43 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <div className="chalk-divider" />
+        <div className="relative chalk-divider" />
       </section>
+
+      {hasStats && (
+        <section className="bg-chalkboard text-paper">
+          <div className="max-w-6xl mx-auto px-5 py-10 grid grid-cols-2 md:grid-cols-4 gap-6">
+            <StatCounter value={counts.guru} label="Tenaga Pendidik" />
+            <StatCounter value={counts.fasilitas} label="Fasilitas" />
+            <StatCounter value={counts.prestasi} label="Prestasi" />
+            <StatCounter value={counts.mitra} label="Mitra Sekolah" />
+          </div>
+        </section>
+      )}
+
+      {pengaturan?.sambutan_kepala_sekolah && (
+        <section className="max-w-6xl mx-auto px-5 py-14">
+          <div className="glass shadow-sm rounded-lg p-6 md:p-8 flex flex-col sm:flex-row gap-6 items-center">
+            {pengaturan.foto_kepala_sekolah_url && (
+              <img
+                src={pengaturan.foto_kepala_sekolah_url}
+                alt={pengaturan.nama_kepala_sekolah}
+                className="w-28 h-28 rounded-full object-cover shrink-0"
+              />
+            )}
+            <div>
+              <h2 className="font-display text-xl font-bold mb-2">Sambutan Kepala Sekolah</h2>
+              <p className="text-ink/80 italic line-clamp-3">"{pengaturan.sambutan_kepala_sekolah}"</p>
+              {pengaturan.nama_kepala_sekolah && (
+                <p className="font-display font-bold mt-3">{pengaturan.nama_kepala_sekolah}</p>
+              )}
+              <Link to="/profil/sambutan" className="inline-block mt-2 text-rust font-medium hover:underline">
+                Baca sambutan lengkap →
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {quickLinks.length > 0 && (
         <section className="max-w-6xl mx-auto px-5 py-14">
@@ -74,6 +137,35 @@ export default function Home() {
               >
                 <h3 className="font-display font-bold text-lg mb-1">{q.label}</h3>
                 <p className="text-sm text-ink/70">{q.desc}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {prestasi.length > 0 && (
+        <section className="max-w-6xl mx-auto px-5 py-14">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="font-display text-2xl font-bold">Prestasi Sekolah</h2>
+            <Link to="/galeri/prestasi" className="text-sm text-rust font-medium hover:underline shrink-0">
+              Lihat semua →
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {prestasi.map((p) => (
+              <Link
+                key={p.id}
+                to="/galeri/prestasi"
+                className="relative block aspect-square overflow-hidden rounded-lg border border-ink/10 group"
+              >
+                <img
+                  src={p.foto_url}
+                  alt={p.judul}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
+                <span className="absolute top-2 left-2 bg-amber text-chalkboard rounded-full w-7 h-7 flex items-center justify-center text-sm">
+                  🏆
+                </span>
               </Link>
             ))}
           </div>
