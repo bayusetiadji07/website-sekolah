@@ -18,7 +18,7 @@ export default function Sejarah() {
       {p?.foto_sekolah_url && (
         <img src={p.foto_sekolah_url} alt="Foto sekolah" className="w-full h-64 object-cover rounded-lg mb-6" />
       )}
-      <div className="bg-white border border-ink/10 rounded-lg p-6">
+      <div className="bg-white border border-ink/10 rounded-lg shadow-sm p-6">
         <p className="text-ink/80 whitespace-pre-line">{p?.sejarah || 'Sejarah sekolah belum diisi.'}</p>
       </div>
     </div>

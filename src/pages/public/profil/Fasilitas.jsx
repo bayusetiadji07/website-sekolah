@@ -20,7 +20,7 @@ export default function Fasilitas() {
       ) : (
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
           {data.map((f) => (
-            <div key={f.id} className="bg-white border border-ink/10 rounded-lg overflow-hidden">
+            <div key={f.id} className="bg-white border border-ink/10 rounded-lg shadow-sm overflow-hidden">
               {f.foto_url && <img src={f.foto_url} alt={f.nama} className="w-full h-40 object-cover" />}
               <div className="p-4">
                 <p className="font-display font-bold mb-1">{f.nama}</p>

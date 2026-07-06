@@ -17,7 +17,7 @@ export default function Sambutan() {
       <div className="chalk-divider w-24 mb-8" />
 
       <h2 className="font-display text-xl font-bold mb-3">Sambutan Kepala Sekolah</h2>
-      <div className="bg-white border border-ink/10 rounded-lg p-6 flex flex-col sm:flex-row gap-5">
+      <div className="bg-white border border-ink/10 rounded-lg shadow-sm p-6 flex flex-col sm:flex-row gap-5">
         {p?.foto_kepala_sekolah_url && (
           <img src={p.foto_kepala_sekolah_url} alt={p?.nama_kepala_sekolah} className="w-24 h-24 rounded-full object-cover shrink-0" />
         )}

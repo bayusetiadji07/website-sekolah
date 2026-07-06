@@ -33,7 +33,7 @@ export default function Saran() {
       </p>
 
       {sent ? (
-        <div className="bg-white border border-ink/10 rounded-lg p-8 text-center">
+        <div className="bg-white border border-ink/10 rounded-lg shadow-sm p-8 text-center">
           <p className="font-display font-bold text-lg mb-2">Terima kasih! 🙏</p>
           <p className="text-ink/70 mb-4">Saran Anda sudah kami terima dan akan menjadi bahan evaluasi sekolah.</p>
           <button
@@ -44,7 +44,7 @@ export default function Saran() {
           </button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="bg-white border border-ink/10 rounded-lg p-6 space-y-3">
+        <form onSubmit={handleSubmit} className="bg-white border border-ink/10 rounded-lg shadow-sm p-6 space-y-3">
           <input
             placeholder="Nama (opsional)"
             value={form.nama}

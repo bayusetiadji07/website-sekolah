@@ -33,7 +33,7 @@ export default function Kontak() {
       <div className="chalk-divider w-24 mb-8" />
 
       <div className="grid md:grid-cols-2 gap-6">
-        <div className="bg-white border border-ink/10 rounded-lg p-6">
+        <div className="bg-white border border-ink/10 rounded-lg shadow-sm p-6">
           <h2 className="font-display text-xl font-bold mb-4">Informasi Kontak</h2>
           {items.length === 0 ? (
             <p className="text-ink/70">Informasi kontak belum diisi.</p>

@@ -16,7 +16,7 @@ export default function TenagaPendidik() {
     return (
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
         {items.map((t) => (
-          <div key={t.id} className="bg-white border border-ink/10 rounded-lg p-5 text-center">
+          <div key={t.id} className="bg-white border border-ink/10 rounded-lg shadow-sm p-5 text-center">
             {t.foto_url ? (
               <img src={t.foto_url} alt={t.nama} className="w-20 h-20 rounded-full object-cover mx-auto mb-3" />
             ) : (

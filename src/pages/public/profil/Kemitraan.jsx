@@ -21,7 +21,7 @@ export default function Kemitraan() {
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
           {data.map((k) => {
             const content = (
-              <div className="bg-white border border-ink/10 rounded-lg p-5 flex items-center gap-4 h-full hover:border-amber transition-colors">
+              <div className="bg-white border border-ink/10 rounded-lg shadow-sm p-5 flex items-center gap-4 h-full hover:border-amber transition-colors">
                 {k.logo_url ? (
                   <img src={k.logo_url} alt={k.nama} className="w-14 h-14 object-contain shrink-0" />
                 ) : (

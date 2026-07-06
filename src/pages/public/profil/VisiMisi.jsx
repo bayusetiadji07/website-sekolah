@@ -17,11 +17,11 @@ export default function VisiMisi() {
       <div className="chalk-divider w-24 mb-8" />
 
       <div className="grid md:grid-cols-2 gap-6">
-        <section className="bg-white border border-ink/10 rounded-lg p-6">
+        <section className="bg-white border border-ink/10 rounded-lg shadow-sm p-6">
           <h2 className="font-display text-xl font-bold mb-3">Visi</h2>
           <p className="text-ink/80 whitespace-pre-line">{p?.visi || 'Visi sekolah belum diisi.'}</p>
         </section>
-        <section className="bg-white border border-ink/10 rounded-lg p-6">
+        <section className="bg-white border border-ink/10 rounded-lg shadow-sm p-6">
           <h2 className="font-display text-xl font-bold mb-3">Misi</h2>
           {misiList.length > 0 ? (
             <ol className="list-decimal list-inside text-ink/80 space-y-1">

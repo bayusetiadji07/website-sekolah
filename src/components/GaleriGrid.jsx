@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { SkeletonBlock } from './Skeleton'
 
 export default function GaleriGrid({ kategori, title, emptyText }) {
   const [items, setItems] = useState([])
   const [active, setActive] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     supabase
@@ -12,7 +14,10 @@ export default function GaleriGrid({ kategori, title, emptyText }) {
       .eq('aktif', true)
       .eq('kategori', kategori)
       .order('urutan', { ascending: true })
-      .then(({ data }) => setItems(data || []))
+      .then(({ data }) => {
+        setItems(data || [])
+        setLoading(false)
+      })
   }, [kategori])
 
   return (
@@ -20,14 +25,17 @@ export default function GaleriGrid({ kategori, title, emptyText }) {
       <h1 className="font-display text-3xl font-bold mb-2">{title}</h1>
       <div className="chalk-divider w-24 mb-8" />
 
-      {items.length === 0 && <p className="text-ink/70">{emptyText}</p>}
+      {!loading && items.length === 0 && <p className="text-ink/70">{emptyText}</p>}
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {items.map((g) => (
+        {loading && Array.from({ length: 8 }).map((_, i) => (
+          <SkeletonBlock key={i} className="aspect-square rounded-lg" />
+        ))}
+        {!loading && items.map((g) => (
           <button
             key={g.id}
             onClick={() => setActive(g)}
-            className="block aspect-square overflow-hidden rounded-lg border border-ink/10 group"
+            className="block aspect-square overflow-hidden rounded-lg border border-ink/10 shadow-sm group"
           >
             <img
               src={g.foto_url}

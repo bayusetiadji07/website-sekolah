@@ -68,7 +68,8 @@ export default function Home() {
       </section>
     ),
     sambutan: pengaturan?.sambutan_kepala_sekolah && (
-      <section key="sambutan" className="max-w-6xl mx-auto px-5 py-14">
+      <section key="sambutan" className="bg-white">
+        <div className="max-w-6xl mx-auto px-5 py-14">
         <div className="glass shadow-sm rounded-lg p-6 md:p-8 flex flex-col sm:flex-row gap-6 items-center">
           {pengaturan.foto_kepala_sekolah_url && (
             <img
@@ -87,6 +88,7 @@ export default function Home() {
               Baca sambutan lengkap →
             </Link>
           </div>
+        </div>
         </div>
       </section>
     ),
@@ -108,7 +110,8 @@ export default function Home() {
       </section>
     ),
     prestasi: prestasi.length > 0 && (
-      <section key="prestasi" className="max-w-6xl mx-auto px-5 py-14">
+      <section key="prestasi" className="bg-white">
+        <div className="max-w-6xl mx-auto px-5 py-14">
         <div className="flex items-center justify-between mb-6">
           <h2 className="font-display text-2xl font-bold">Prestasi Sekolah</h2>
           <Link to="/galeri/prestasi" className="text-sm text-rust font-medium hover:underline shrink-0">
@@ -120,7 +123,7 @@ export default function Home() {
             <Link
               key={p.id}
               to="/galeri/prestasi"
-              className="relative block aspect-square overflow-hidden rounded-lg border border-ink/10 group"
+              className="relative block aspect-square overflow-hidden rounded-lg border border-ink/10 shadow-sm group"
             >
               <img
                 src={p.foto_url}
@@ -133,6 +136,7 @@ export default function Home() {
             </Link>
           ))}
         </div>
+        </div>
       </section>
     ),
     pengumuman: (
@@ -143,7 +147,7 @@ export default function Home() {
         ) : (
           <div className="grid md:grid-cols-3 gap-5">
             {pengumuman.map((p) => (
-              <article key={p.id} className="bg-white border border-ink/10 rounded-lg overflow-hidden">
+              <article key={p.id} className="bg-white border border-ink/10 rounded-lg shadow-sm overflow-hidden">
                 {p.foto_url && (
                   <img src={p.foto_url} alt={p.judul} className="w-full h-36 object-cover" />
                 )}

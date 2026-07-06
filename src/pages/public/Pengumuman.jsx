@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import { SkeletonCard } from '../../components/Skeleton'
 
 export default function Pengumuman() {
   const [data, setData] = useState([])
@@ -22,14 +23,20 @@ export default function Pengumuman() {
       <h1 className="font-display text-3xl font-bold mb-2">Pengumuman</h1>
       <div className="chalk-divider w-24 mb-8" />
 
-      {loading && <p className="text-ink/70">Memuat...</p>}
+      {loading && (
+        <div className="space-y-5">
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
+      )}
       {!loading && data.length === 0 && (
         <p className="text-ink/70">Belum ada pengumuman.</p>
       )}
 
       <div className="space-y-5">
         {data.map((p) => (
-          <article key={p.id} className="bg-white border border-ink/10 rounded-lg overflow-hidden">
+          <article key={p.id} className="bg-white border border-ink/10 rounded-lg shadow-sm overflow-hidden">
             {p.foto_url && (
               <img src={p.foto_url} alt={p.judul} className="w-full h-48 object-cover" />
             )}

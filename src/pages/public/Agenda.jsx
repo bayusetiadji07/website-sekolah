@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import { SkeletonRows } from '../../components/Skeleton'
 
 function formatTanggal(d) {
   return new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -27,7 +28,7 @@ export default function Agenda() {
 
   function Card({ a }) {
     return (
-      <article className="bg-white border border-ink/10 rounded-lg p-5 flex gap-4">
+      <article className="bg-white border border-ink/10 rounded-lg shadow-sm p-5 flex gap-4">
         <div className="shrink-0 w-16 text-center">
           <div className="bg-chalkboard text-paper rounded-lg py-2">
             <p className="text-xs uppercase">{new Date(a.tanggal_mulai).toLocaleDateString('id-ID', { month: 'short' })}</p>
@@ -55,7 +56,7 @@ export default function Agenda() {
       <h1 className="font-display text-3xl font-bold mb-2">Agenda Kegiatan</h1>
       <div className="chalk-divider w-24 mb-8" />
 
-      {loading && <p className="text-ink/70">Memuat...</p>}
+      {loading && <SkeletonRows count={3} />}
       {!loading && items.length === 0 && <p className="text-ink/70">Belum ada agenda kegiatan.</p>}
 
       {mendatang.length > 0 && (

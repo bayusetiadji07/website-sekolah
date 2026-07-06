@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import { SkeletonRows } from '../../components/Skeleton'
 
 export default function Materi() {
   const [data, setData] = useState([])
@@ -56,7 +57,7 @@ export default function Materi() {
         </select>
       </div>
 
-      {loading && <p className="text-ink/70">Memuat...</p>}
+      {loading && <SkeletonRows count={4} />}
       {!loading && filtered.length === 0 && (
         <p className="text-ink/70">Belum ada materi yang cocok.</p>
       )}
@@ -65,7 +66,7 @@ export default function Materi() {
         {filtered.map((m) => (
           <div
             key={m.id}
-            className="bg-white border border-ink/10 rounded-lg p-4 flex items-center justify-between gap-4"
+            className="bg-white border border-ink/10 rounded-lg shadow-sm p-4 flex items-center justify-between gap-4"
           >
             <div>
               <p className="text-xs text-rust font-medium">{m.mapel} · {m.kelas}</p>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import { SkeletonList } from '../../components/Skeleton'
 
 export default function Berita() {
   const [data, setData] = useState([])
@@ -22,14 +23,14 @@ export default function Berita() {
       <h1 className="font-display text-3xl font-bold mb-2">Berita & Kegiatan</h1>
       <div className="chalk-divider w-24 mb-8" />
 
-      {loading && <p className="text-ink/70">Memuat...</p>}
+      {loading && <SkeletonList count={4} cols="md:grid-cols-2" />}
       {!loading && data.length === 0 && (
         <p className="text-ink/70">Belum ada berita.</p>
       )}
 
       <div className="grid md:grid-cols-2 gap-6">
         {data.map((b) => (
-          <article key={b.id} className="bg-white border border-ink/10 rounded-lg overflow-hidden">
+          <article key={b.id} className="bg-white border border-ink/10 rounded-lg shadow-sm overflow-hidden">
             {b.foto_url && (
               <img src={b.foto_url} alt={b.judul} className="w-full h-44 object-cover" />
             )}

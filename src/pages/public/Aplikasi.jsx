@@ -32,7 +32,7 @@ export default function Aplikasi() {
             href={a.url}
             target="_blank"
             rel="noreferrer"
-            className="bg-white border border-ink/10 rounded-lg p-6 hover:border-amber transition-colors flex items-center gap-4"
+            className="bg-white border border-ink/10 rounded-lg shadow-sm p-6 hover:border-amber transition-colors flex items-center gap-4"
           >
             {a.ikon_url ? (
               <img src={a.ikon_url} alt={a.nama} className="w-12 h-12 object-contain" />

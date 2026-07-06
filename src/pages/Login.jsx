@@ -39,7 +39,7 @@ export default function Login() {
     <div className="min-h-[70vh] flex items-center justify-center px-5">
       <form
         onSubmit={handleSubmit}
-        className="bg-white border border-ink/10 rounded-lg p-8 w-full max-w-sm"
+        className="bg-white border border-ink/10 rounded-lg shadow-sm p-8 w-full max-w-sm"
       >
         <h1 className="font-display text-2xl font-bold mb-1">Masuk</h1>
         <p className="text-sm text-ink/70 mb-6">Untuk admin dan guru sekolah</p>

@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ProtectedRoute from './components/ProtectedRoute'
+import FaviconUpdater from './components/FaviconUpdater'
 import { recordVisitOnce } from './lib/visitorCounter'
 
 import Home from './pages/public/Home'
@@ -59,6 +60,8 @@ export default function App() {
   }, [])
 
   return (
+    <>
+    <FaviconUpdater />
     <Routes>
       <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
       <Route path="/profil" element={<Navigate to="/profil/sejarah" replace />} />
@@ -98,5 +101,6 @@ export default function App() {
 
       <Route path="/guru" element={<ProtectedRoute allowedRoles={['guru']}><KelolaMateriGuru /></ProtectedRoute>} />
     </Routes>
+    </>
   )
 }
