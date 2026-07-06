@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase'
 
 export default function Footer() {
   const [pengaturan, setPengaturan] = useState(null)
+  const [totalKunjungan, setTotalKunjungan] = useState(null)
 
   useEffect(() => {
     supabase
@@ -12,6 +13,13 @@ export default function Footer() {
       .eq('id', 1)
       .single()
       .then(({ data }) => setPengaturan(data))
+
+    supabase
+      .from('site_stats')
+      .select('total_kunjungan')
+      .eq('id', 1)
+      .single()
+      .then(({ data }) => setTotalKunjungan(data?.total_kunjungan ?? null))
   }, [])
 
   return (
@@ -40,11 +48,17 @@ export default function Footer() {
           <div className="flex flex-col gap-1">
             <Link to="/profil/sejarah" className="hover:text-amber">Tentang Kami</Link>
             <Link to="/aplikasi" className="hover:text-amber">Aplikasi Sekolah</Link>
+            <Link to="/saran" className="hover:text-amber">Kotak Saran</Link>
           </div>
         </div>
       </div>
-      <div className="border-t border-paper/10 py-4 text-center text-xs">
-        © {new Date().getFullYear()} SMP Negeri 3 Besuki. Semua hak cipta dilindungi.
+      <div className="border-t border-paper/10 py-4 text-center text-xs flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-3">
+        <span>© {new Date().getFullYear()} SMP Negeri 3 Besuki. Semua hak cipta dilindungi.</span>
+        {totalKunjungan !== null && (
+          <span className="text-paper/50">
+            · Total Pengunjung: {totalKunjungan.toLocaleString('id-ID')}
+          </span>
+        )}
       </div>
     </footer>
   )

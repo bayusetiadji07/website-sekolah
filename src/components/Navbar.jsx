@@ -154,6 +154,13 @@ export default function Navbar() {
           >
             Kontak
           </Link>
+
+          <Link
+            to="/saran"
+            className={`hover:text-amber transition-colors ${location.pathname === '/saran' ? 'text-amber' : 'text-paper/85'}`}
+          >
+            Saran
+          </Link>
         </nav>
 
         <button
@@ -218,6 +225,7 @@ export default function Navbar() {
           </div>
           <Link to="/pengumuman" onClick={() => setOpen(false)} className="py-2 text-paper/90 hover:text-amber border-t border-paper/10 mt-1 pt-3">Pengumuman</Link>
           <Link to="/kontak" onClick={() => setOpen(false)} className="py-2 text-paper/90 hover:text-amber">Kontak</Link>
+          <Link to="/saran" onClick={() => setOpen(false)} className="py-2 text-paper/90 hover:text-amber">Saran</Link>
         </nav>
       )}
     </header>

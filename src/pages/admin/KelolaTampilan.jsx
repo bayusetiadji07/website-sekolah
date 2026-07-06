@@ -118,6 +118,7 @@ export default function KelolaTampilan() {
           Atur urutan dan tampil/sembunyikan kartu tautan di dalam bagian "Jelajahi Website".
         </p>
         <ReorderableToggleList
+          compact
           items={sections}
           onToggle={(key) => setSections((prev) => prev.map((s) => (s.key === key ? { ...s, aktif: !s.aktif } : s)))}
           onMove={(i, dir) => setSections((prev) => move(prev, i, dir))}

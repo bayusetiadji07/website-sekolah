@@ -1,7 +1,9 @@
+import { useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ProtectedRoute from './components/ProtectedRoute'
+import { recordVisitOnce } from './lib/visitorCounter'
 
 import Home from './pages/public/Home'
 import Sejarah from './pages/public/profil/Sejarah'
@@ -19,6 +21,7 @@ import GaleriPrestasi from './pages/public/galeri/GaleriPrestasi'
 import Materi from './pages/public/Materi'
 import Aplikasi from './pages/public/Aplikasi'
 import Kontak from './pages/public/Kontak'
+import Saran from './pages/public/Saran'
 import Login from './pages/Login'
 
 import AdminDashboard from './pages/admin/Dashboard'
@@ -33,6 +36,7 @@ import KelolaAgenda from './pages/admin/KelolaAgenda'
 import KelolaGaleri from './pages/admin/KelolaGaleri'
 import KelolaAplikasi from './pages/admin/KelolaAplikasi'
 import KelolaPembelajaran from './pages/admin/KelolaPembelajaran'
+import KelolaSaran from './pages/admin/KelolaSaran'
 import KelolaUser from './pages/admin/KelolaUser'
 import KelolaMateriAdmin from './pages/admin/KelolaMateri'
 
@@ -50,6 +54,10 @@ function PublicLayout({ children }) {
 }
 
 export default function App() {
+  useEffect(() => {
+    recordVisitOnce()
+  }, [])
+
   return (
     <Routes>
       <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
@@ -69,6 +77,7 @@ export default function App() {
       <Route path="/materi" element={<PublicLayout><Materi /></PublicLayout>} />
       <Route path="/aplikasi" element={<PublicLayout><Aplikasi /></PublicLayout>} />
       <Route path="/kontak" element={<PublicLayout><Kontak /></PublicLayout>} />
+      <Route path="/saran" element={<PublicLayout><Saran /></PublicLayout>} />
       <Route path="/masuk" element={<PublicLayout><Login /></PublicLayout>} />
 
       <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
@@ -84,6 +93,7 @@ export default function App() {
       <Route path="/admin/materi" element={<ProtectedRoute allowedRoles={['admin']}><KelolaMateriAdmin /></ProtectedRoute>} />
       <Route path="/admin/aplikasi" element={<ProtectedRoute allowedRoles={['admin']}><KelolaAplikasi /></ProtectedRoute>} />
       <Route path="/admin/pembelajaran" element={<ProtectedRoute allowedRoles={['admin']}><KelolaPembelajaran /></ProtectedRoute>} />
+      <Route path="/admin/saran" element={<ProtectedRoute allowedRoles={['admin']}><KelolaSaran /></ProtectedRoute>} />
       <Route path="/admin/pengguna" element={<ProtectedRoute allowedRoles={['admin']}><KelolaUser /></ProtectedRoute>} />
 
       <Route path="/guru" element={<ProtectedRoute allowedRoles={['guru']}><KelolaMateriGuru /></ProtectedRoute>} />
