@@ -13,13 +13,23 @@ export default function HeroCarousel({ images }) {
   }, [slides.length])
 
   return (
-    <section className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/8] md:max-h-[28rem] bg-chalkboard overflow-hidden">
+    <section className="relative h-56 sm:h-72 md:h-[28rem] bg-chalkboard overflow-hidden">
       {slides.map((url, i) => (
         <div
           key={url + i}
-          className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out"
-          style={{ backgroundImage: `url("${url}")`, opacity: i === index ? 1 : 0 }}
-        />
+          className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: i === index ? 1 : 0 }}
+        >
+          <div
+            className="absolute inset-0 bg-cover bg-center scale-110 blur-2xl opacity-60"
+            style={{ backgroundImage: `url("${url}")` }}
+          />
+          <div className="absolute inset-0 bg-chalkboard/25" />
+          <div
+            className="absolute inset-0 bg-contain bg-center bg-no-repeat"
+            style={{ backgroundImage: `url("${url}")` }}
+          />
+        </div>
       ))}
 
       {slides.length > 1 && (
