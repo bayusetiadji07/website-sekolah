@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import GaleriMarquee from '../../components/GaleriMarquee'
 import StatCounter from '../../components/StatCounter'
+import HeroCarousel from '../../components/HeroCarousel'
 
 const sectionInfo = {
   profil: { to: '/profil/sejarah', label: 'Tentang Kami', desc: 'Sejarah, sambutan, visi & misi sekolah' },
@@ -180,39 +181,7 @@ export default function Home() {
 
   return (
     <div>
-      <section
-        className="relative bg-chalkboard text-paper bg-cover bg-center"
-        style={pengaturan?.hero_image_url ? { backgroundImage: `url("${pengaturan.hero_image_url}")` } : undefined}
-      >
-        {pengaturan?.hero_image_url && (
-          <div className="absolute inset-0 bg-gradient-to-t from-chalkboard via-chalkboard/90 to-chalkboard/60" />
-        )}
-        <div className="relative max-w-6xl mx-auto px-5 py-20 md:py-28">
-          <p className="text-amber font-medium mb-3 tracking-wide">Selamat Datang di</p>
-          <h1 className="font-display text-4xl md:text-5xl font-bold max-w-xl leading-tight">
-            SMP Negeri 3 Besuki
-          </h1>
-          <p className="mt-4 max-w-lg text-paper/80">
-            {pengaturan?.tagline ||
-              'Informasi sekolah, pengumuman, kegiatan, galeri, dan akses ke seluruh aplikasi sekolah dalam satu tempat.'}
-          </p>
-          <div className="flex flex-wrap gap-3 mt-8">
-            <Link
-              to="/profil/sejarah"
-              className="bg-amber text-chalkboard px-5 py-2.5 rounded font-medium hover:opacity-90"
-            >
-              Tentang Kami
-            </Link>
-            <Link
-              to="/aplikasi"
-              className="border border-paper/40 px-5 py-2.5 rounded hover:border-amber hover:text-amber"
-            >
-              Aplikasi Sekolah
-            </Link>
-          </div>
-        </div>
-        <div className="relative chalk-divider" />
-      </section>
+      <HeroCarousel images={pengaturan?.hero_images?.length ? pengaturan.hero_images : (pengaturan?.hero_image_url ? [pengaturan.hero_image_url] : [])} />
 
       {blocks.filter((b) => b.aktif).map((b) => blockNodes[b.key] || null)}
     </div>

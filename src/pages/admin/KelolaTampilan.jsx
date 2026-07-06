@@ -32,31 +32,51 @@ function move(list, index, dir) {
 export default function KelolaTampilan() {
   const [blocks, setBlocks] = useState(defaultBlocks)
   const [sections, setSections] = useState(defaultSections)
-  const [heroImageUrl, setHeroImageUrl] = useState('')
+  const [heroImages, setHeroImages] = useState([])
   const [uploading, setUploading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
-    supabase.from('pengaturan_sekolah').select('beranda_sections, beranda_blocks, hero_image_url').eq('id', 1).single()
+    supabase.from('pengaturan_sekolah').select('beranda_sections, beranda_blocks, hero_images, hero_image_url').eq('id', 1).single()
       .then(({ data }) => {
         if (data?.beranda_sections?.length) setSections(data.beranda_sections)
         if (data?.beranda_blocks?.length) setBlocks(data.beranda_blocks)
-        setHeroImageUrl(data?.hero_image_url || '')
+        if (data?.hero_images?.length) setHeroImages(data.hero_images)
+        else if (data?.hero_image_url) setHeroImages([data.hero_image_url])
       })
   }, [])
 
   async function handleUploadHero(e) {
-    const file = e.target.files[0]
-    if (!file) return
+    const files = Array.from(e.target.files || [])
+    if (!files.length) return
     setUploading(true)
-    const path = `hero/${Date.now()}-${file.name}`
-    const { error } = await supabase.storage.from('media').upload(path, file)
-    if (!error) {
-      const { data } = supabase.storage.from('media').getPublicUrl(path)
-      setHeroImageUrl(data.publicUrl)
+    const uploaded = []
+    for (const file of files) {
+      const path = `hero/${Date.now()}-${file.name}`
+      const { error } = await supabase.storage.from('media').upload(path, file)
+      if (!error) {
+        const { data } = supabase.storage.from('media').getPublicUrl(path)
+        uploaded.push(data.publicUrl)
+      }
     }
+    setHeroImages((prev) => [...prev, ...uploaded])
     setUploading(false)
+    e.target.value = ''
+  }
+
+  function removeHeroImage(index) {
+    setHeroImages((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  function moveHeroImage(index, dir) {
+    setHeroImages((prev) => {
+      const next = [...prev]
+      const target = index + dir
+      if (target < 0 || target >= next.length) return prev
+      ;[next[index], next[target]] = [next[target], next[index]]
+      return next
+    })
   }
 
   async function handleSave() {
@@ -64,7 +84,7 @@ export default function KelolaTampilan() {
     await supabase.from('pengaturan_sekolah').update({
       beranda_sections: sections,
       beranda_blocks: blocks,
-      hero_image_url: heroImageUrl,
+      hero_images: heroImages,
     }).eq('id', 1)
     setSaving(false)
     setSaved(true)
@@ -79,22 +99,51 @@ export default function KelolaTampilan() {
       </p>
 
       <section className="bg-white border border-ink/10 rounded-lg p-5 mb-8 max-w-xl">
-        <h2 className="font-display font-bold mb-1">Gambar Latar Hero</h2>
+        <h2 className="font-display font-bold mb-1">Gambar Hero (Slideshow)</h2>
         <p className="text-xs text-ink/70 mb-3">
-          Gambar besar di bagian paling atas Beranda. Kalau kosong, latar polos warna navy yang dipakai.
+          Hero di paling atas Beranda kini tampil penuh gambar tanpa tulisan, bergantian otomatis tiap 5 detik.
+          Unggah beberapa gambar sekaligus (bisa dipilih banyak file), atur urutan tayang dengan tombol ▲▼.
+          Kalau kosong, latar polos warna navy yang dipakai.
         </p>
-        <input type="file" accept="image/*" onChange={handleUploadHero} className="text-sm" />
+        <p className="text-xs text-ink/50 mb-3">
+          Ukuran gambar yang disarankan: lebar minimal 1600px, rasio lebar-tinggi sekitar 16:6 (mis. 1920×720px),
+          format JPG/WebP, ukuran file di bawah 400–500KB per gambar agar cepat dimuat di HP.
+        </p>
+        <input type="file" accept="image/*" multiple onChange={handleUploadHero} className="text-sm" />
         {uploading && <p className="text-xs text-ink/70 mt-1">Mengunggah...</p>}
-        {heroImageUrl && (
-          <div className="mt-3">
-            <img src={heroImageUrl} alt="preview hero" className="w-full h-32 object-cover rounded-lg" />
-            <button
-              type="button"
-              onClick={() => setHeroImageUrl('')}
-              className="text-xs text-rust underline mt-1"
-            >
-              Hapus gambar
-            </button>
+        {heroImages.length > 0 && (
+          <div className="mt-3 space-y-2">
+            {heroImages.map((url, i) => (
+              <div key={url + i} className="flex items-center gap-3 border border-ink/10 rounded-lg p-2">
+                <img src={url} alt={`hero ${i + 1}`} className="w-24 h-14 object-cover rounded shrink-0" />
+                <span className="text-xs text-ink/50 flex-1">Gambar {i + 1}</span>
+                <div className="flex items-center gap-1 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => moveHeroImage(i, -1)}
+                    disabled={i === 0}
+                    className="text-xs px-1.5 py-1 border border-ink/20 rounded disabled:opacity-30"
+                  >
+                    ▲
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => moveHeroImage(i, 1)}
+                    disabled={i === heroImages.length - 1}
+                    className="text-xs px-1.5 py-1 border border-ink/20 rounded disabled:opacity-30"
+                  >
+                    ▼
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => removeHeroImage(i)}
+                    className="text-xs text-rust underline ml-2"
+                  >
+                    Hapus
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </section>
