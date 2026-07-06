@@ -2,6 +2,16 @@ import { useEffect, useState } from 'react'
 import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
 import { adminLinks } from './links'
+import ReorderableToggleList from '../../components/ReorderableToggleList'
+
+const defaultBlocks = [
+  { key: 'statistik', label: 'Statistik Sekolah', aktif: true },
+  { key: 'sambutan', label: 'Sambutan Kepala Sekolah', aktif: true },
+  { key: 'jelajahi', label: 'Jelajahi Website', aktif: true },
+  { key: 'prestasi', label: 'Prestasi Sekolah', aktif: true },
+  { key: 'pengumuman', label: 'Pengumuman Terbaru', aktif: true },
+  { key: 'marquee', label: 'Galeri Berjalan', aktif: true },
+]
 
 const defaultSections = [
   { key: 'profil', label: 'Tentang Kami', aktif: true },
@@ -11,35 +21,51 @@ const defaultSections = [
   { key: 'kontak', label: 'Kontak', aktif: true },
 ]
 
+function move(list, index, dir) {
+  const next = [...list]
+  const target = index + dir
+  if (target < 0 || target >= next.length) return list
+  ;[next[index], next[target]] = [next[target], next[index]]
+  return next
+}
+
 export default function KelolaTampilan() {
+  const [blocks, setBlocks] = useState(defaultBlocks)
   const [sections, setSections] = useState(defaultSections)
+  const [heroImageUrl, setHeroImageUrl] = useState('')
+  const [uploading, setUploading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
-    supabase.from('pengaturan_sekolah').select('beranda_sections').eq('id', 1).single()
+    supabase.from('pengaturan_sekolah').select('beranda_sections, beranda_blocks, hero_image_url').eq('id', 1).single()
       .then(({ data }) => {
         if (data?.beranda_sections?.length) setSections(data.beranda_sections)
+        if (data?.beranda_blocks?.length) setBlocks(data.beranda_blocks)
+        setHeroImageUrl(data?.hero_image_url || '')
       })
   }, [])
 
-  function toggleAktif(key) {
-    setSections((prev) => prev.map((s) => (s.key === key ? { ...s, aktif: !s.aktif } : s)))
-  }
-
-  function move(index, dir) {
-    setSections((prev) => {
-      const next = [...prev]
-      const target = index + dir
-      if (target < 0 || target >= next.length) return prev
-      ;[next[index], next[target]] = [next[target], next[index]]
-      return next
-    })
+  async function handleUploadHero(e) {
+    const file = e.target.files[0]
+    if (!file) return
+    setUploading(true)
+    const path = `hero/${Date.now()}-${file.name}`
+    const { error } = await supabase.storage.from('media').upload(path, file)
+    if (!error) {
+      const { data } = supabase.storage.from('media').getPublicUrl(path)
+      setHeroImageUrl(data.publicUrl)
+    }
+    setUploading(false)
   }
 
   async function handleSave() {
     setSaving(true)
-    await supabase.from('pengaturan_sekolah').update({ beranda_sections: sections }).eq('id', 1)
+    await supabase.from('pengaturan_sekolah').update({
+      beranda_sections: sections,
+      beranda_blocks: blocks,
+      hero_image_url: heroImageUrl,
+    }).eq('id', 1)
     setSaving(false)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
@@ -49,47 +75,56 @@ export default function KelolaTampilan() {
     <DashboardLayout links={adminLinks} title="Admin">
       <h1 className="font-display text-2xl font-bold mb-2">Pengaturan Tampilan</h1>
       <p className="text-sm text-ink/70 mb-6">
-        Atur urutan dan tampilkan/sembunyikan bagian "Jelajahi Website" di halaman Beranda.
+        Atur tampilan halaman Beranda: gambar hero, susunan bagian, dan isi "Jelajahi Website".
       </p>
 
-      <div className="bg-white border border-ink/10 rounded-lg divide-y divide-ink/10 max-w-xl">
-        {sections.map((s, i) => (
-          <div key={s.key} className="flex items-center justify-between gap-4 p-4">
-            <div className="flex items-center gap-3">
-              <div className="flex flex-col">
-                <button
-                  type="button"
-                  onClick={() => move(i, -1)}
-                  disabled={i === 0}
-                  className="text-ink/70 hover:text-chalkboard disabled:opacity-20 leading-none text-xs"
-                  aria-label="Naikkan urutan"
-                >
-                  ▲
-                </button>
-                <button
-                  type="button"
-                  onClick={() => move(i, 1)}
-                  disabled={i === sections.length - 1}
-                  className="text-ink/70 hover:text-chalkboard disabled:opacity-20 leading-none text-xs"
-                  aria-label="Turunkan urutan"
-                >
-                  ▼
-                </button>
-              </div>
-              <span className="font-medium text-sm">{s.label}</span>
-            </div>
+      <section className="bg-white border border-ink/10 rounded-lg p-5 mb-8 max-w-xl">
+        <h2 className="font-display font-bold mb-1">Gambar Latar Hero</h2>
+        <p className="text-xs text-ink/70 mb-3">
+          Gambar besar di bagian paling atas Beranda. Kalau kosong, latar polos warna navy yang dipakai.
+        </p>
+        <input type="file" accept="image/*" onChange={handleUploadHero} className="text-sm" />
+        {uploading && <p className="text-xs text-ink/70 mt-1">Mengunggah...</p>}
+        {heroImageUrl && (
+          <div className="mt-3">
+            <img src={heroImageUrl} alt="preview hero" className="w-full h-32 object-cover rounded-lg" />
             <button
               type="button"
-              onClick={() => toggleAktif(s.key)}
-              className={`text-xs font-medium px-3 py-1 rounded shrink-0 ${s.aktif ? 'bg-amber/20 text-rust' : 'bg-ink/10 text-ink/70'}`}
+              onClick={() => setHeroImageUrl('')}
+              className="text-xs text-rust underline mt-1"
             >
-              {s.aktif ? 'Tampil' : 'Disembunyikan'}
+              Hapus gambar
             </button>
           </div>
-        ))}
-      </div>
+        )}
+      </section>
 
-      <div className="flex items-center gap-3 mt-6">
+      <section className="mb-8">
+        <h2 className="font-display font-bold mb-1">Susunan Halaman Beranda</h2>
+        <p className="text-xs text-ink/70 mb-3">
+          Atur urutan dan tampil/sembunyikan bagian-bagian di halaman Beranda (di bawah hero). Bagian yang datanya
+          masih kosong (mis. belum ada sambutan atau foto prestasi) otomatis tidak tampil meski diaktifkan di sini.
+        </p>
+        <ReorderableToggleList
+          items={blocks}
+          onToggle={(key) => setBlocks((prev) => prev.map((b) => (b.key === key ? { ...b, aktif: !b.aktif } : b)))}
+          onMove={(i, dir) => setBlocks((prev) => move(prev, i, dir))}
+        />
+      </section>
+
+      <section className="mb-8">
+        <h2 className="font-display font-bold mb-1">Item dalam "Jelajahi Website"</h2>
+        <p className="text-xs text-ink/70 mb-3">
+          Atur urutan dan tampil/sembunyikan kartu tautan di dalam bagian "Jelajahi Website".
+        </p>
+        <ReorderableToggleList
+          items={sections}
+          onToggle={(key) => setSections((prev) => prev.map((s) => (s.key === key ? { ...s, aktif: !s.aktif } : s)))}
+          onMove={(i, dir) => setSections((prev) => move(prev, i, dir))}
+        />
+      </section>
+
+      <div className="flex items-center gap-3">
         <button
           onClick={handleSave}
           disabled={saving}

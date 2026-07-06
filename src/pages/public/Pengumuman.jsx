@@ -41,6 +41,30 @@ export default function Pengumuman() {
               </p>
               <h2 className="font-display font-bold text-xl mb-2">{p.judul}</h2>
               <p className="text-ink/80 whitespace-pre-line">{p.isi}</p>
+              {(p.file_url || p.link_url) && (
+                <div className="flex flex-wrap gap-3 mt-4">
+                  {p.file_url && (
+                    <a
+                      href={p.file_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm bg-chalkboard text-paper px-4 py-2 rounded hover:opacity-90"
+                    >
+                      📎 Unduh File
+                    </a>
+                  )}
+                  {p.link_url && (
+                    <a
+                      href={p.link_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm border border-chalkboard px-4 py-2 rounded hover:bg-chalkboard hover:text-paper"
+                    >
+                      🔗 Selengkapnya
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </article>
         ))}
