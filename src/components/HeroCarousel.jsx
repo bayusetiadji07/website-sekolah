@@ -13,7 +13,7 @@ export default function HeroCarousel({ images }) {
   }, [slides.length])
 
   return (
-    <section className="relative h-72 md:h-[26rem] bg-chalkboard overflow-hidden">
+    <section className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/8] md:max-h-[28rem] bg-chalkboard overflow-hidden">
       {slides.map((url, i) => (
         <div
           key={url + i}

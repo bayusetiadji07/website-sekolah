@@ -29,6 +29,29 @@ function move(list, index, dir) {
   return next
 }
 
+function resizeImage(file, maxWidth = 1920, quality = 0.85) {
+  return new Promise((resolve) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const img = new Image()
+      img.onload = () => {
+        const scale = Math.min(1, maxWidth / img.width)
+        const w = Math.round(img.width * scale)
+        const h = Math.round(img.height * scale)
+        const canvas = document.createElement('canvas')
+        canvas.width = w
+        canvas.height = h
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h)
+        canvas.toBlob((blob) => resolve(blob || file), 'image/jpeg', quality)
+      }
+      img.onerror = () => resolve(file)
+      img.src = e.target.result
+    }
+    reader.onerror = () => resolve(file)
+    reader.readAsDataURL(file)
+  })
+}
+
 export default function KelolaTampilan() {
   const [blocks, setBlocks] = useState(defaultBlocks)
   const [sections, setSections] = useState(defaultSections)
@@ -53,8 +76,9 @@ export default function KelolaTampilan() {
     setUploading(true)
     const uploaded = []
     for (const file of files) {
-      const path = `hero/${Date.now()}-${file.name}`
-      const { error } = await supabase.storage.from('media').upload(path, file)
+      const resized = await resizeImage(file)
+      const path = `hero/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`
+      const { error } = await supabase.storage.from('media').upload(path, resized, { contentType: 'image/jpeg' })
       if (!error) {
         const { data } = supabase.storage.from('media').getPublicUrl(path)
         uploaded.push(data.publicUrl)
@@ -106,8 +130,9 @@ export default function KelolaTampilan() {
           Kalau kosong, latar polos warna navy yang dipakai.
         </p>
         <p className="text-xs text-ink/50 mb-3">
-          Ukuran gambar yang disarankan: lebar minimal 1600px, rasio lebar-tinggi sekitar 16:6 (mis. 1920×720px),
-          format JPG/WebP, ukuran file di bawah 400–500KB per gambar agar cepat dimuat di HP.
+          Gambar otomatis diubah ukurannya dan dikompres saat diunggah, jadi tidak perlu diedit dulu. Untuk hasil
+          terbaik gunakan foto landscape (mendatar) dengan subjek utama di tengah, karena tampilannya menyesuaikan
+          bentuk layar (lebih tinggi di HP, lebih lebar di layar besar) sehingga bagian tepi bisa terpotong sedikit.
         </p>
         <input type="file" accept="image/*" multiple onChange={handleUploadHero} className="text-sm" />
         {uploading && <p className="text-xs text-ink/70 mt-1">Mengunggah...</p>}
