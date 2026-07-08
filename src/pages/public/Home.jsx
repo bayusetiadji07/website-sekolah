@@ -16,10 +16,11 @@ const sectionInfo = {
 }
 
 const defaultSections = ['profil', 'berita', 'galeri', 'aplikasi', 'kontak'].map((key) => ({ key, aktif: true }))
-const defaultBlocks = ['statistik', 'sambutan', 'jelajahi', 'prestasi', 'pengumuman', 'marquee'].map((key) => ({ key, aktif: true }))
+const defaultBlocks = ['statistik', 'sambutan', 'jelajahi', 'prestasi', 'berita', 'pengumuman', 'marquee'].map((key) => ({ key, aktif: true }))
 
 export default function Home() {
   const [pengumuman, setPengumuman] = useState([])
+  const [berita, setBerita] = useState([])
   const [pengaturan, setPengaturan] = useState(null)
   const [prestasi, setPrestasi] = useState([])
   const [counts, setCounts] = useState({ guru: 0, mitra: 0, prestasi: 0, fasilitas: 0 })
@@ -32,6 +33,14 @@ export default function Home() {
       .order('created_at', { ascending: false })
       .limit(3)
       .then(({ data }) => setPengumuman(data || []))
+
+    supabase
+      .from('berita_kegiatan')
+      .select('*')
+      .eq('status', 'published')
+      .order('created_at', { ascending: false })
+      .limit(3)
+      .then(({ data }) => setBerita(data || []))
 
     supabase.from('pengaturan_sekolah').select('*').eq('id', 1).single()
       .then(({ data }) => setPengaturan(data))
@@ -172,6 +181,38 @@ export default function Home() {
         </div>
       </section>
     ),
+    berita: berita.length > 0 && (
+      <section key="berita" className="bg-paper py-14">
+        <div className="max-w-6xl mx-auto px-5">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                <span className="text-lg">📰</span>
+              </div>
+              <h2 className="section-title !mb-0">Berita <span>& Kegiatan</span></h2>
+            </div>
+            <Link to="/berita" className="read-more">
+              Lihat semua
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {berita.map((b) => (
+              <ArticleCard
+                key={b.id}
+                image={b.foto_url}
+                category="Berita"
+                date={formatDate(b.created_at)}
+                title={b.judul}
+                excerpt={b.isi}
+                to={`/berita/${b.id}`}
+                badgeColor="primary"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    ),
     pengumuman: (
       <section key="pengumuman" className="max-w-6xl mx-auto px-5 py-14">
         <div className="flex items-center justify-between mb-8">
@@ -221,3 +262,4 @@ export default function Home() {
     </div>
   )
 }
+-e 
