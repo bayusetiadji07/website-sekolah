@@ -20,25 +20,25 @@ export default function TenagaPendidik() {
 
   function ProfileCard({ item }) {
     return (
-      <div className="card p-5 text-center group hover:border-secondary/30">
+      <div className="card p-6 text-center group hover:border-secondary/30">
         <div className="relative inline-block mb-4">
           {item.foto_url ? (
             <img
               src={item.foto_url}
               alt={item.nama}
-              className="w-24 h-24 rounded-full object-cover mx-auto shadow-md group-hover:shadow-lg transition-shadow"
+              className="w-28 h-28 rounded-full object-cover mx-auto shadow-lg group-hover:shadow-xl transition-shadow"
             />
           ) : (
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center mx-auto">
-              <span className="font-display font-bold text-2xl text-primary">{item.nama?.[0]}</span>
+            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center mx-auto">
+              <span className="font-display font-bold text-3xl text-primary">{item.nama?.[0]}</span>
             </div>
           )}
           {/* Status indicator */}
-          <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-accent flex items-center justify-center border-2 border-white">
-            <User className="w-3 h-3 text-white" />
+          <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-accent flex items-center justify-center border-2 border-white">
+            <User className="w-4 h-4 text-white" />
           </div>
         </div>
-        <h3 className="font-display font-bold text-base mb-1">{item.nama}</h3>
+        <h3 className="font-display font-bold text-lg mb-1">{item.nama}</h3>
         <p className="text-sm text-ink-light">{item.jabatan}</p>
         {item.mapel && (
           <p className="text-xs text-secondary mt-1">{item.mapel}</p>
@@ -102,13 +102,13 @@ export default function TenagaPendidik() {
               <Users className="w-5 h-5 text-secondary" />
               <h2 className="section-title !mb-0">Tenaga Pendidik</h2>
             </div>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mb-12">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
               {loading ? (
                 Array.from({ length: 8 }).map((_, i) => (
-                  <div key={i} className="card p-5 text-center">
-                    <div className="w-24 h-24 rounded-full skeleton mx-auto mb-4" />
-                    <div className="h-4 skeleton w-32 mx-auto mb-2" />
-                    <div className="h-3 skeleton w-24 mx-auto" />
+                  <div key={i} className="card p-6 text-center">
+                    <div className="w-28 h-28 rounded-full skeleton mx-auto mb-4" />
+                    <div className="h-5 skeleton w-40 mx-auto mb-2" />
+                    <div className="h-4 skeleton w-32 mx-auto" />
                   </div>
                 ))
               ) : (
@@ -125,7 +125,7 @@ export default function TenagaPendidik() {
               <User className="w-5 h-5 text-primary" />
               <h2 className="section-title !mb-0">Tenaga Kependidikan</h2>
             </div>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {kependidikan.map((t) => <ProfileCard key={t.id} item={t} />)}
             </div>
           </>
