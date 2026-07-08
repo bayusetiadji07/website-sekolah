@@ -146,30 +146,51 @@ export default function Home() {
       </section>
     ),
     sambutan: pengaturan?.sambutan_kepala_sekolah && (
-      <section key="sambutan" className="bg-paper">
-        <div className="max-w-6xl mx-auto px-5 py-14">
-          <div className="glass-card rounded-2xl p-6 md:p-8 flex flex-col sm:flex-row gap-6 items-center">
-            {pengaturan.foto_kepala_sekolah_url && (
-              <img
-                src={pengaturan.foto_kepala_sekolah_url}
-                alt={pengaturan.nama_kepala_sekolah}
-                className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl object-cover shadow-lg shrink-0"
-              />
-            )}
-            <div className="text-center sm:text-left">
-              <div className="inline-flex items-center gap-2 badge badge-secondary mb-3">
-                Sambutan Kepala Sekolah
-              </div>
-              <p className="text-ink/80 italic leading-relaxed mb-4 line-clamp-4 text-base">
-                "{pengaturan.sambutan_kepala_sekolah}"
-              </p>
-              {pengaturan.nama_kepala_sekolah && (
-                <p className="font-display font-bold text-lg">{pengaturan.nama_kepala_sekolah}</p>
+      <section key="sambutan" className="bg-paper py-12">
+        <div className="max-w-6xl mx-auto px-5">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            {/* Foto Kepala Sekolah - Lebih Besar */}
+            <div className="order-2 md:order-1 flex justify-center">
+              {pengaturan.foto_kepala_sekolah_url ? (
+                <div className="relative">
+                  <img
+                    src={pengaturan.foto_kepala_sekolah_url}
+                    alt={pengaturan.nama_kepala_sekolah}
+                    className="w-64 h-64 md:w-80 md:h-80 rounded-2xl object-cover shadow-2xl ring-4 ring-secondary/20"
+                  />
+                  <div className="absolute -bottom-3 -right-3 bg-secondary text-white px-4 py-2 rounded-xl shadow-lg">
+                    <p className="font-display font-bold text-sm">Kepala Sekolah</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="w-64 h-64 md:w-80 md:h-80 rounded-2xl bg-gradient-to-br from-primary to-secondary shadow-2xl flex items-center justify-center">
+                  <span className="font-display font-bold text-6xl text-white">KS</span>
+                </div>
               )}
-              <Link to="/profil/sambutan" className="read-more mt-2 inline-flex">
-                Baca sambut lengkap
-                <ChevronRight className="w-4 h-4" />
-              </Link>
+            </div>
+            {/* Teks Sambutan */}
+            <div className="order-1 md:order-2">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center">
+                  <span className="text-xl">👨‍🏫</span>
+                </div>
+                <h2 className="section-title !mb-0">Sambutan</h2>
+              </div>
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-ink/5">
+                <p className="text-ink/80 italic leading-relaxed text-base md:text-lg mb-4">
+                  "{pengaturan.sambutan_kepala_sekolah}"
+                </p>
+                {pengaturan.nama_kepala_sekolah && (
+                  <div className="border-t border-ink/10 pt-4">
+                    <p className="font-display font-bold text-lg text-primary">{pengaturan.nama_kepala_sekolah}</p>
+                    <p className="text-sm text-ink-light">Kepala Sekolah SMP Negeri 3 Besuki</p>
+                  </div>
+                )}
+                <Link to="/profil/sambutan" className="read-more mt-4 inline-flex">
+                  Baca sambut lengkap
+                  <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
