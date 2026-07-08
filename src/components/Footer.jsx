@@ -152,9 +152,12 @@ export default function Footer() {
                   </a>
                 </li>
               )}
-              <li className="flex items-center gap-2.5 text-sm">
-                <Clock className="w-4 h-4 text-white/40 shrink-0" />
-              </li>
+              {pengaturan?.jam_operasional && (
+                <li className="flex items-center gap-2.5 text-sm">
+                  <Clock className="w-4 h-4 text-white/40 shrink-0" />
+                  <span>{pengaturan.jam_operasional}</span>
+                </li>
+              )}
             </ul>
           </div>
         </div>
