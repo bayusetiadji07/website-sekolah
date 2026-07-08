@@ -22,6 +22,14 @@ const defaultSections = [
   { key: 'kontak', label: 'Kontak', aktif: true },
 ]
 
+// Gabungkan blok tersimpan di database dengan blok default terbaru,
+// supaya blok baru (mis. "berita") tetap muncul walau pengaturan lama sudah pernah disimpan.
+function mergeBlocks(saved, defaults) {
+  const savedKeys = new Set(saved.map((b) => b.key))
+  const missing = defaults.filter((b) => !savedKeys.has(b.key))
+  return [...saved, ...missing]
+}
+
 function move(list, index, dir) {
   const next = [...list]
   const target = index + dir
@@ -65,7 +73,7 @@ export default function KelolaTampilan() {
     supabase.from('pengaturan_sekolah').select('beranda_sections, beranda_blocks, hero_images, hero_image_url').eq('id', 1).single()
       .then(({ data }) => {
         if (data?.beranda_sections?.length) setSections(data.beranda_sections)
-        if (data?.beranda_blocks?.length) setBlocks(data.beranda_blocks)
+        if (data?.beranda_blocks?.length) setBlocks(mergeBlocks(data.beranda_blocks, defaultBlocks))
         if (data?.hero_images?.length) setHeroImages(data.hero_images)
         else if (data?.hero_image_url) setHeroImages([data.hero_image_url])
       })
