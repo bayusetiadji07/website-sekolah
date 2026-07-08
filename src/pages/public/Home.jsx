@@ -5,7 +5,7 @@ import GaleriMarquee from '../../components/GaleriMarquee'
 import StatCounter from '../../components/StatCounter'
 import HeroCarousel from '../../components/HeroCarousel'
 import ArticleCard from '../../components/ArticleCard'
-import { ChevronRight, ArrowRight } from 'lucide-react'
+import { ChevronRight, ArrowRight, Users } from 'lucide-react'
 
 const sectionInfo = {
   profil: { to: '/profil/sejarah', label: 'Tentang Kami', desc: 'Sejarah, sambut, visi & misi sekolah', icon: 'BookOpen' },
@@ -16,7 +16,7 @@ const sectionInfo = {
 }
 
 const defaultSections = ['profil', 'berita', 'galeri', 'aplikasi', 'kontak'].map((key) => ({ key, aktif: true }))
-const defaultBlocks = ['statistik', 'sambutan', 'jelajahi', 'prestasi', 'berita', 'pengumuman', 'marquee'].map((key) => ({ key, aktif: true }))
+const defaultBlocks = ['statistik', 'sambutan', 'tenaga_pendidik', 'jelajahi', 'prestasi', 'berita', 'pengumuman', 'marquee'].map((key) => ({ key, aktif: true }))
 
 // Gabungkan blok tersimpan di database dengan blok default terbaru,
 // supaya blok baru (mis. "berita") tetap muncul walau pengaturan lama sudah pernah disimpan.
@@ -31,6 +31,7 @@ export default function Home() {
   const [berita, setBerita] = useState([])
   const [pengaturan, setPengaturan] = useState(null)
   const [prestasi, setPrestasi] = useState([])
+  const [tenagaPendidik, setTenagaPendidik] = useState([])
   const [counts, setCounts] = useState({ guru: 0, kependidikan: 0, mitra: 0, prestasi: 0, fasilitas: 0 })
 
   useEffect(() => {
@@ -56,6 +57,9 @@ export default function Home() {
     supabase.from('galeri').select('*').eq('aktif', true).eq('kategori', 'prestasi')
       .order('created_at', { ascending: false }).limit(4)
       .then(({ data }) => setPrestasi(data || []))
+
+    supabase.from('tenaga_pendidik').select('*').eq('aktif', true).order('urutan')
+      .then(({ data }) => setTenagaPendidik(data || []))
 
     Promise.all([
       supabase.from('tenaga_pendidik').select('id', { count: 'exact', head: true }).eq('aktif', true).eq('kategori', 'pendidik'),
@@ -96,6 +100,48 @@ export default function Home() {
           <StatCounter value={counts.fasilitas} label="Fasilitas" />
           <StatCounter value={counts.prestasi} label="Prestasi" />
           <StatCounter value={counts.mitra} label="Mitra Sekolah" />
+        </div>
+      </section>
+    ),
+    tenaga_pendidik: tenagaPendidik.length > 0 && (
+      <section key="tenaga_pendidik" className="bg-paper py-12">
+        <div className="max-w-6xl mx-auto px-5">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Users className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h2 className="section-title !mb-0">Tenaga Pendidik</h2>
+                <p className="text-sm text-ink-light">& Kependidikan</p>
+              </div>
+            </div>
+            <Link to="/profil/tenaga-pendidik" className="read-more">
+              Lihat semua
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {tenagaPendidik.slice(0, 6).map((item) => (
+              <div key={item.id} className="card p-4 text-center group hover:border-secondary/30">
+                <div className="mb-3">
+                  {item.foto_url ? (
+                    <img
+                      src={item.foto_url}
+                      alt={item.nama}
+                      className="w-16 h-16 rounded-full object-cover mx-auto shadow-sm group-hover:shadow-md transition-shadow"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center mx-auto">
+                      <span className="font-display font-bold text-xl text-primary">{item.nama?.[0]}</span>
+                    </div>
+                  )}
+                </div>
+                <h3 className="font-display font-bold text-sm mb-0.5 line-clamp-1">{item.nama}</h3>
+                <p className="text-xs text-ink-light line-clamp-1">{item.jabatan}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     ),

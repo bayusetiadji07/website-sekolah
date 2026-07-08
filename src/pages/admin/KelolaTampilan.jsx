@@ -7,6 +7,7 @@ import ReorderableToggleList from '../../components/ReorderableToggleList'
 const defaultBlocks = [
   { key: 'statistik', label: 'Statistik Sekolah', aktif: true },
   { key: 'sambutan', label: 'Sambutan Kepala Sekolah', aktif: true },
+  { key: 'tenaga_pendidik', label: 'Tenaga Pendidik & Kependidikan', aktif: true },
   { key: 'jelajahi', label: 'Jelajahi Website', aktif: true },
   { key: 'prestasi', label: 'Prestasi Sekolah', aktif: true },
   { key: 'berita', label: 'Berita & Kegiatan Terbaru', aktif: true },
