@@ -157,12 +157,72 @@ create table pengaturan_sekolah (
 );
 insert into pengaturan_sekolah (id) values (1);
 
+-- 6a. TENAGA PENDIDIK & KEPENDIDIKAN
+create table tenaga_pendidik (
+  id uuid primary key default gen_random_uuid(),
+  nama text not null,
+  jabatan text not null,
+  kategori text default 'pendidik' check (kategori in ('pendidik', 'kependidikan')),
+  foto_url text,
+  aktif boolean default true,
+  urutan int default 0,
+  created_at timestamptz default now()
+);
+
+alter table tenaga_pendidik enable row level security;
+create policy "publik baca tenaga pendidik aktif" on tenaga_pendidik
+  for select using (aktif = true);
+create policy "admin full akses tenaga pendidik" on tenaga_pendidik
+  for all using (
+    exists (select 1 from profiles where id = auth.uid() and role = 'admin')
+  );
+
+-- 6b. KEMITRAAN SEKOLAH
+create table kemitraan (
+  id uuid primary key default gen_random_uuid(),
+  nama text not null,
+  deskripsi text,
+  logo_url text,
+  url text,
+  aktif boolean default true,
+  urutan int default 0,
+  created_at timestamptz default now()
+);
+
+alter table kemitraan enable row level security;
+create policy "publik baca kemitraan aktif" on kemitraan
+  for select using (aktif = true);
+create policy "admin full akses kemitraan" on kemitraan
+  for all using (
+    exists (select 1 from profiles where id = auth.uid() and role = 'admin')
+  );
+
+-- 6c. FASILITAS SEKOLAH
+create table fasilitas (
+  id uuid primary key default gen_random_uuid(),
+  nama text not null,
+  deskripsi text,
+  foto_url text,
+  aktif boolean default true,
+  urutan int default 0,
+  created_at timestamptz default now()
+);
+
+alter table fasilitas enable row level security;
+create policy "publik baca fasilitas aktif" on fasilitas
+  for select using (aktif = true);
+create policy "admin full akses fasilitas" on fasilitas
+  for all using (
+    exists (select 1 from profiles where id = auth.uid() and role = 'admin')
+  );
+
 -- 7. GALERI FOTO
 create table galeri (
   id uuid primary key default gen_random_uuid(),
   judul text not null,
   foto_url text not null,
   keterangan text,
+  kategori text default 'kegiatan' check (kategori in ('kegiatan', 'prestasi', 'kemitraan')),
   aktif boolean default true,
   urutan int default 0,
   created_at timestamptz default now()
