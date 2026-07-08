@@ -153,6 +153,7 @@ create table pengaturan_sekolah (
   instagram_url text default '',
   facebook_url text default '',
   youtube_url text default '',
+  tiktok_url text default '',
   updated_at timestamptz default now()
 );
 insert into pengaturan_sekolah (id) values (1);
