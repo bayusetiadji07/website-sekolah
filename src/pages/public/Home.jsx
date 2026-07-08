@@ -88,7 +88,7 @@ export default function Home() {
   const blockNodes = {
     statistik: hasStats && (
       <section key="statistik" className="bg-dark text-white">
-        <div className="max-w-6xl mx-auto px-5 py-10 grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="max-w-6xl mx-auto px-5 py-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCounter value={counts.guru} label="Tenaga Pendidik" />
           <StatCounter value={counts.fasilitas} label="Fasilitas" />
           <StatCounter value={counts.prestasi} label="Prestasi" />

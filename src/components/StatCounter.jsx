@@ -51,14 +51,14 @@ export default function StatCounter({ value, label, duration = 1500 }) {
 
   return (
     <div ref={ref} className="text-center group">
-      <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-secondary/10 flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
-        <Icon className="w-7 h-7 text-secondary" />
+      <div className="w-10 h-10 mx-auto mb-2 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+        <Icon className="w-5 h-5 text-white" />
       </div>
-      <p className="font-display text-3xl sm:text-4xl font-extrabold text-dark mb-1">
+      <p className="font-display text-2xl sm:text-3xl font-bold text-white mb-1">
         {display}
         <span className="text-secondary">+</span>
       </p>
-      <p className="text-sm text-ink-light font-medium">{label}</p>
+      <p className="text-xs text-white/70 font-medium">{label}</p>
     </div>
   )
 } 
