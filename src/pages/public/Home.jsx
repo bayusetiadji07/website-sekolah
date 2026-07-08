@@ -121,24 +121,24 @@ export default function Home() {
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {tenagaPendidik.slice(0, 6).map((item) => (
-              <div key={item.id} className="card p-4 text-center group hover:border-secondary/30">
-                <div className="mb-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
+            {tenagaPendidik.slice(0, 4).map((item) => (
+              <div key={item.id} className="card p-5 text-center group hover:border-secondary/30">
+                <div className="mb-4">
                   {item.foto_url ? (
                     <img
                       src={item.foto_url}
                       alt={item.nama}
-                      className="w-16 h-16 rounded-full object-cover mx-auto shadow-sm group-hover:shadow-md transition-shadow"
+                      className="w-24 h-24 rounded-full object-cover mx-auto shadow-md group-hover:shadow-lg transition-shadow"
                     />
                   ) : (
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center mx-auto">
-                      <span className="font-display font-bold text-xl text-primary">{item.nama?.[0]}</span>
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center mx-auto">
+                      <span className="font-display font-bold text-3xl text-primary">{item.nama?.[0]}</span>
                     </div>
                   )}
                 </div>
-                <h3 className="font-display font-bold text-sm mb-0.5 line-clamp-1">{item.nama}</h3>
-                <p className="text-xs text-ink-light line-clamp-1">{item.jabatan}</p>
+                <h3 className="font-display font-bold text-base mb-1">{item.nama}</h3>
+                <p className="text-sm text-ink-light">{item.jabatan}</p>
               </div>
             ))}
           </div>
