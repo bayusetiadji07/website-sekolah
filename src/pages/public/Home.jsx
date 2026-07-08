@@ -123,17 +123,17 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
             {tenagaPendidik.slice(0, 4).map((item) => (
-              <div key={item.id} className="card p-5 text-center group hover:border-secondary/30">
+              <div key={item.id} className="card p-5 text-center group hover:border-secondary/30 transition-all duration-300">
                 <div className="mb-4">
                   {item.foto_url ? (
                     <img
                       src={item.foto_url}
                       alt={item.nama}
-                      className="w-24 h-24 rounded-full object-cover mx-auto shadow-md group-hover:shadow-lg transition-shadow"
+                      className="w-24 h-24 rounded-full object-cover mx-auto shadow-lg group-hover:shadow-xl group-hover:shadow-secondary/30 transition-all duration-300 ring-4 ring-transparent group-hover:ring-secondary/20"
                     />
                   ) : (
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center mx-auto">
-                      <span className="font-display font-bold text-3xl text-primary">{item.nama?.[0]}</span>
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary shadow-lg group-hover:shadow-xl group-hover:shadow-secondary/40 flex items-center justify-center mx-auto transition-all duration-300">
+                      <span className="font-display font-bold text-3xl text-white">{item.nama?.[0]}</span>
                     </div>
                   )}
                 </div>

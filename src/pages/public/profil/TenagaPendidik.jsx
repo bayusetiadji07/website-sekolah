@@ -20,21 +20,21 @@ export default function TenagaPendidik() {
 
   function ProfileCard({ item }) {
     return (
-      <div className="card p-6 text-center group hover:border-secondary/30">
+      <div className="card p-6 text-center group hover:border-secondary/30 transition-all duration-300">
         <div className="relative inline-block mb-4">
           {item.foto_url ? (
             <img
               src={item.foto_url}
               alt={item.nama}
-              className="w-28 h-28 rounded-full object-cover mx-auto shadow-lg group-hover:shadow-xl transition-shadow"
+              className="w-28 h-28 rounded-full object-cover mx-auto shadow-lg group-hover:shadow-xl group-hover:shadow-secondary/30 transition-all duration-300 ring-4 ring-transparent group-hover:ring-secondary/20"
             />
           ) : (
-            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center mx-auto">
-              <span className="font-display font-bold text-3xl text-primary">{item.nama?.[0]}</span>
+            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-primary to-secondary shadow-lg group-hover:shadow-xl group-hover:shadow-secondary/40 flex items-center justify-center mx-auto transition-all duration-300">
+              <span className="font-display font-bold text-3xl text-white">{item.nama?.[0]}</span>
             </div>
           )}
           {/* Status indicator */}
-          <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-accent flex items-center justify-center border-2 border-white">
+          <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-accent flex items-center justify-center border-2 border-white shadow-md">
             <User className="w-4 h-4 text-white" />
           </div>
         </div>
