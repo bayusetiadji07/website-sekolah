@@ -9,6 +9,7 @@ const defaultBlocks = [
   { key: 'sambutan', label: 'Sambutan Kepala Sekolah', aktif: true },
   { key: 'jelajahi', label: 'Jelajahi Website', aktif: true },
   { key: 'prestasi', label: 'Prestasi Sekolah', aktif: true },
+  { key: 'berita', label: 'Berita & Kegiatan Terbaru', aktif: true },
   { key: 'pengumuman', label: 'Pengumuman Terbaru', aktif: true },
   { key: 'marquee', label: 'Galeri Berjalan', aktif: true },
 ]
@@ -211,4 +212,4 @@ export default function KelolaTampilan() {
       </div>
     </DashboardLayout>
   )
-}
+} 
