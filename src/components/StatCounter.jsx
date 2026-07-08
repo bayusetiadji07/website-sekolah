@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { Users, BookOpen, Trophy, Handshake } from 'lucide-react'
+import { Users, BookOpen, Trophy, Handshake, UserCog } from 'lucide-react'
 
 const iconMap = {
-  'Tenaga Pendidik': Users,
   'Guru': Users,
+  'Tenaga Pendidik': Users,
+  'Tenaga Kependidikan': UserCog,
   'Fasilitas': BookOpen,
   'Prestasi': Trophy,
   'Mitra Sekolah': Handshake,

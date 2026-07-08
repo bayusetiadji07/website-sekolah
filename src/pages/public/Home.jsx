@@ -31,7 +31,7 @@ export default function Home() {
   const [berita, setBerita] = useState([])
   const [pengaturan, setPengaturan] = useState(null)
   const [prestasi, setPrestasi] = useState([])
-  const [counts, setCounts] = useState({ guru: 0, mitra: 0, prestasi: 0, fasilitas: 0 })
+  const [counts, setCounts] = useState({ guru: 0, kependidikan: 0, mitra: 0, prestasi: 0, fasilitas: 0 })
 
   useEffect(() => {
     supabase
@@ -58,13 +58,15 @@ export default function Home() {
       .then(({ data }) => setPrestasi(data || []))
 
     Promise.all([
-      supabase.from('tenaga_pendidik').select('id', { count: 'exact', head: true }).eq('aktif', true),
+      supabase.from('tenaga_pendidik').select('id', { count: 'exact', head: true }).eq('aktif', true).eq('kategori', 'pendidik'),
+      supabase.from('tenaga_pendidik').select('id', { count: 'exact', head: true }).eq('aktif', true).eq('kategori', 'kependidikan'),
       supabase.from('kemitraan').select('id', { count: 'exact', head: true }).eq('aktif', true),
       supabase.from('galeri').select('id', { count: 'exact', head: true }).eq('aktif', true).eq('kategori', 'prestasi'),
       supabase.from('fasilitas').select('id', { count: 'exact', head: true }).eq('aktif', true),
-    ]).then(([guru, mitra, prestasiCount, fasilitas]) => {
+    ]).then(([guru, kependidikan, mitra, prestasiCount, fasilitas]) => {
       setCounts({
         guru: guru.count || 0,
+        kependidikan: kependidikan.count || 0,
         mitra: mitra.count || 0,
         prestasi: prestasiCount.count || 0,
         fasilitas: fasilitas.count || 0,
@@ -74,7 +76,7 @@ export default function Home() {
 
   const sections = pengaturan?.beranda_sections?.length ? pengaturan.beranda_sections : defaultSections
   const quickLinks = sections.filter((s) => s.aktif && sectionInfo[s.key]).map((s) => ({ ...sectionInfo[s.key], key: s.key }))
-  const hasStats = counts.guru + counts.mitra + counts.prestasi + counts.fasilitas > 0
+  const hasStats = counts.guru + counts.kependidikan + counts.mitra + counts.prestasi + counts.fasilitas > 0
   const blocks = pengaturan?.beranda_blocks?.length ? mergeBlocks(pengaturan.beranda_blocks, defaultBlocks) : defaultBlocks
 
   const formatDate = (date) => {
@@ -88,8 +90,9 @@ export default function Home() {
   const blockNodes = {
     statistik: hasStats && (
       <section key="statistik" className="bg-dark text-white">
-        <div className="max-w-6xl mx-auto px-5 py-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-          <StatCounter value={counts.guru} label="Tenaga Pendidik" />
+        <div className="max-w-6xl mx-auto px-5 py-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          <StatCounter value={counts.guru} label="Guru" />
+          <StatCounter value={counts.kependidikan} label="Tenaga Kependidikan" />
           <StatCounter value={counts.fasilitas} label="Fasilitas" />
           <StatCounter value={counts.prestasi} label="Prestasi" />
           <StatCounter value={counts.mitra} label="Mitra Sekolah" />
