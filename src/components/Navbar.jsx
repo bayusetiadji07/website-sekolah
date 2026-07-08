@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import NavDropdown from './NavDropdown'
 import { tentangKamiTabs } from './TentangKamiTabs'
-import { Menu, X, ChevronDown, BookOpen, Image, Megaphone, Phone, MessageSquare } from 'lucide-react'
+import { Menu, X, ChevronDown, ChevronRight, BookOpen, Image, Megaphone, Phone, MessageSquare } from 'lucide-react'
 
 const galeriTabs = [
   { to: '/galeri/kegiatan', label: 'Galeri Kegiatan' },
