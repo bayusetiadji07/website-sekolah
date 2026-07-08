@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { ChevronLeft, ChevronRight, BookOpen, Calendar, Users } from 'lucide-react'
+import { ChevronLeft, ChevronRight, BookOpen } from 'lucide-react'
 
 export default function HeroCarousel({ images }) {
   const [index, setIndex] = useState(0)
@@ -60,55 +59,8 @@ export default function HeroCarousel({ images }) {
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url("${url}")` }}
           />
-          {/* Overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/85 via-primary/50 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
         </div>
       ))}
-
-      {/* Content */}
-      <div className="relative h-full max-w-6xl mx-auto px-5 sm:px-10 flex items-center">
-        <div className="max-w-xl text-white">
-          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm px-4 py-2 rounded-full mb-4 text-sm">
-            <BookOpen className="w-4 h-4" />
-            <span>SMP Negeri 3 Besuki</span>
-          </div>
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-4 drop-shadow-sm">
-            Mendidik dengan Hati,
-            <br />
-            <span className="text-secondary-light">Berprestasi dengan Karakter</span>
-          </h1>
-          <p className="text-white/85 text-base sm:text-lg mb-6 max-w-lg leading-relaxed">
-            Membangun generasi penerus bangsa yang cerdas, berkarakter, dan berakhlak mulia melalui pendidikan berkualitas.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Link to="/profil/sejarah" className="btn btn-secondary">
-              Jelajahi Sekolah
-            </Link>
-            <Link to="/kontak" className="btn bg-white/15 backdrop-blur-sm text-white border border-white/30 hover:bg-white/25">
-              Hubungi Kami
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Quick stats */}
-      <div className="absolute bottom-0 left-0 right-0 bg-black/20 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto px-5 sm:px-10 py-3 flex items-center gap-6 sm:gap-10 text-white text-sm">
-          <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-secondary-light" />
-            <span>Tenaga Pendidik Profesional</span>
-          </div>
-          <div className="hidden sm:flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-secondary-light" />
-            <span>Berbagai Kegiatan Setiap Bulan</span>
-          </div>
-          <div className="hidden md:flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-secondary-light" />
-            <span>Fasilitas Belajar Modern</span>
-          </div>
-        </div>
-      </div>
 
       {/* Navigation Arrows */}
       {slides.length > 1 && (
