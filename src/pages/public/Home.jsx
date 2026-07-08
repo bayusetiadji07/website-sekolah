@@ -18,6 +18,14 @@ const sectionInfo = {
 const defaultSections = ['profil', 'berita', 'galeri', 'aplikasi', 'kontak'].map((key) => ({ key, aktif: true }))
 const defaultBlocks = ['statistik', 'sambutan', 'jelajahi', 'prestasi', 'berita', 'pengumuman', 'marquee'].map((key) => ({ key, aktif: true }))
 
+// Gabungkan blok tersimpan di database dengan blok default terbaru,
+// supaya blok baru (mis. "berita") tetap muncul walau pengaturan lama sudah pernah disimpan.
+function mergeBlocks(saved, defaults) {
+  const savedKeys = new Set(saved.map((b) => b.key))
+  const missing = defaults.filter((b) => !savedKeys.has(b.key))
+  return [...saved, ...missing]
+}
+
 export default function Home() {
   const [pengumuman, setPengumuman] = useState([])
   const [berita, setBerita] = useState([])
@@ -67,7 +75,7 @@ export default function Home() {
   const sections = pengaturan?.beranda_sections?.length ? pengaturan.beranda_sections : defaultSections
   const quickLinks = sections.filter((s) => s.aktif && sectionInfo[s.key]).map((s) => ({ ...sectionInfo[s.key], key: s.key }))
   const hasStats = counts.guru + counts.mitra + counts.prestasi + counts.fasilitas > 0
-  const blocks = pengaturan?.beranda_blocks?.length ? pengaturan.beranda_blocks : defaultBlocks
+  const blocks = pengaturan?.beranda_blocks?.length ? mergeBlocks(pengaturan.beranda_blocks, defaultBlocks) : defaultBlocks
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString('id-ID', {
