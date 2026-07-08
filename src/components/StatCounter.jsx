@@ -12,32 +12,40 @@ const iconMap = {
 
 export default function StatCounter({ value, label, duration = 1500 }) {
   const [display, setDisplay] = useState(0)
+  const [visible, setVisible] = useState(false)
   const ref = useRef(null)
-  const started = useRef(false)
 
+  // Deteksi elemen masuk ke layar — cukup sekali saja.
   useEffect(() => {
     const el = ref.current
     if (!el) return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !started.current) {
-          started.current = true
-          const start = performance.now()
-          function tick(now) {
-            const progress = Math.min((now - start) / duration, 1)
-            const eased = 1 - Math.pow(1 - progress, 3)
-            setDisplay(Math.round(eased * value))
-            if (progress < 1) requestAnimationFrame(tick)
-          }
-          requestAnimationFrame(tick)
+        if (entry.isIntersecting) {
+          setVisible(true)
+          observer.disconnect()
         }
       },
       { threshold: 0.4 }
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [value, duration])
+  }, [])
+
+  // Jalankan animasi setiap kali `value` berubah (mis. saat data selesai dimuat),
+  // selama elemen sudah pernah terlihat di layar.
+  useEffect(() => {
+    if (!visible) return
+    const start = performance.now()
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setDisplay(Math.round(eased * value))
+      if (progress < 1) requestAnimationFrame(tick)
+    }
+    requestAnimationFrame(tick)
+  }, [value, visible, duration])
 
   const Icon = iconMap[label] || BookOpen
 
@@ -53,4 +61,4 @@ export default function StatCounter({ value, label, duration = 1500 }) {
       <p className="text-sm text-ink-light font-medium">{label}</p>
     </div>
   )
-}
+} 
