@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
+import { MessageSquare, Send, CheckCircle, Heart, User, Mail, ArrowRight } from 'lucide-react'
 
 const empty = { nama: '', kontak: '', isi: '' }
 
@@ -24,56 +26,138 @@ export default function Saran() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-5 py-12">
-      <h1 className="font-display text-3xl font-bold mb-2">Kotak Saran</h1>
-      <div className="chalk-divider w-24 mb-8" />
-      <p className="text-ink/70 mb-8">
-        Punya masukan, kritik, atau saran untuk kemajuan sekolah? Sampaikan lewat form di bawah ini.
-        Nama dan kontak bersifat opsional.
-      </p>
-
-      {sent ? (
-        <div className="bg-white border border-ink/10 rounded-lg shadow-sm p-8 text-center">
-          <p className="font-display font-bold text-lg mb-2">Terima kasih! 🙏</p>
-          <p className="text-ink/70 mb-4">Saran Anda sudah kami terima dan akan menjadi bahan evaluasi sekolah.</p>
-          <button
-            onClick={() => setSent(false)}
-            className="text-rust font-medium hover:underline text-sm"
-          >
-            Kirim saran lain
-          </button>
+    <div>
+      {/* Page Header */}
+      <div className="page-header rounded-b-2xl">
+        <div className="max-w-6xl mx-auto px-5 page-header-content">
+          <div className="breadcrumb">
+            <Link to="/" className="hover:text-white">Beranda</Link>
+            <span>/</span>
+            <span className="text-white/60">Saran</span>
+          </div>
+          <h1>Kotak Saran</h1>
+          <p>Salurkan pendapat Anda untuk kemajuan sekolah</p>
         </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="bg-white border border-ink/10 rounded-lg shadow-sm p-6 space-y-3">
-          <input
-            placeholder="Nama (opsional)"
-            value={form.nama}
-            onChange={(e) => setForm({ ...form, nama: e.target.value })}
-            className="w-full border border-ink/20 rounded px-3 py-2 text-sm"
-          />
-          <input
-            placeholder="Kontak: email/WhatsApp (opsional)"
-            value={form.kontak}
-            onChange={(e) => setForm({ ...form, kontak: e.target.value })}
-            className="w-full border border-ink/20 rounded px-3 py-2 text-sm"
-          />
-          <textarea
-            placeholder="Tulis saran atau masukan Anda di sini..."
-            required
-            rows={5}
-            value={form.isi}
-            onChange={(e) => setForm({ ...form, isi: e.target.value })}
-            className="w-full border border-ink/20 rounded px-3 py-2 text-sm"
-          />
-          {error && <p className="text-sm text-rust">{error}</p>}
-          <button
-            disabled={sending}
-            className="bg-chalkboard text-paper px-5 py-2.5 rounded text-sm font-medium disabled:opacity-60"
-          >
-            {sending ? 'Mengirim...' : 'Kirim Saran'}
-          </button>
-        </form>
-      )}
+      </div>
+
+      <div className="max-w-2xl mx-auto px-5 py-12">
+        {/* Success State */}
+        {sent ? (
+          <div className="card p-8 text-center">
+            <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-8 h-8 text-accent" />
+            </div>
+            <h2 className="font-display font-bold text-2xl mb-2">Terima Kasih!</h2>
+            <p className="text-ink-light mb-6 max-w-sm mx-auto">
+              Saran Anda sudah kami terima dan akan menjadi bahan evaluasi untuk kemajuan sekolah.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <button
+                onClick={() => setSent(false)}
+                className="btn btn-outline"
+              >
+                Kirim Saran Lain
+              </button>
+              <Link to="/" className="btn btn-ghost">
+                Kembali ke Beranda
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* Info */}
+            <div className="glass-card rounded-2xl p-6 mb-8">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center shrink-0">
+                  <MessageSquare className="w-5 h-5 text-secondary" />
+                </div>
+                <div>
+                  <h2 className="font-display font-bold text-base mb-1">Kami Mendengarkan</h2>
+                  <p className="text-sm text-ink-light">
+                    Punya masukan, kritik, atau saran untuk kemajuan sekolah? Sampaikan melalui form di bawah ini.
+                    Nama dan kontak bersifat opsional.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="card p-6 sm:p-8 space-y-5">
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-medium text-ink mb-1.5">
+                    <span className="flex items-center gap-1.5">
+                      <User className="w-4 h-4 text-ink-light" />
+                      Nama (opsional)
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Masukkan nama Anda"
+                    value={form.nama}
+                    onChange={(e) => setForm({ ...form, nama: e.target.value })}
+                    className="w-full border border-ink/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-ink mb-1.5">
+                    <span className="flex items-center gap-1.5">
+                      <Mail className="w-4 h-4 text-ink-light" />
+                      Kontak (opsional)
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Email atau WhatsApp"
+                    value={form.kontak}
+                    onChange={(e) => setForm({ ...form, kontak: e.target.value })}
+                    className="w-full border border-ink/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-ink mb-1.5">
+                  Saran atau Masukan <span className="text-secondary">*</span>
+                </label>
+                <textarea
+                  placeholder="Tulis saran atau masukan Anda di sini..."
+                  required
+                  rows={5}
+                  value={form.isi}
+                  onChange={(e) => setForm({ ...form, isi: e.target.value })}
+                  className="w-full border border-ink/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
+                />
+              </div>
+              {error && (
+                <p className="text-sm text-red-500 bg-red-50 px-4 py-2.5 rounded-xl">{error}</p>
+              )}
+              <button
+                type="submit"
+                disabled={sending}
+                className="btn btn-secondary w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {sending ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Mengirim...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" />
+                    Kirim Saran
+                  </>
+                )}
+              </button>
+            </form>
+          </>
+        )}
+
+        {/* Footer Note */}
+        <p className="text-center text-xs text-ink-light mt-6 flex items-center justify-center gap-1">
+          Dibuat dengan <Heart className="w-3 h-3 text-secondary fill-secondary" /> untuk kemajuan SMP Negeri 3 Besuki
+        </p>
+      </div>
     </div>
   )
 }

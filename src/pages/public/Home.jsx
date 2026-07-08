@@ -4,14 +4,17 @@ import { supabase } from '../../lib/supabase'
 import GaleriMarquee from '../../components/GaleriMarquee'
 import StatCounter from '../../components/StatCounter'
 import HeroCarousel from '../../components/HeroCarousel'
+import ArticleCard from '../../components/ArticleCard'
+import { ChevronRight, ArrowRight } from 'lucide-react'
 
 const sectionInfo = {
-  profil: { to: '/profil/sejarah', label: 'Tentang Kami', desc: 'Sejarah, sambutan, visi & misi sekolah' },
-  berita: { to: '/berita', label: 'Berita & Kegiatan', desc: 'Kabar terbaru seputar sekolah' },
-  galeri: { to: '/galeri', label: 'Galeri Foto', desc: 'Dokumentasi kegiatan sekolah' },
-  aplikasi: { to: '/aplikasi', label: 'Aplikasi Sekolah', desc: 'E-Asesmen, SI Diswa, dan lainnya' },
-  kontak: { to: '/kontak', label: 'Kontak', desc: 'Alamat, telepon, dan lokasi sekolah' },
+  profil: { to: '/profil/sejarah', label: 'Tentang Kami', desc: 'Sejarah, sambut, visi & misi sekolah', icon: 'BookOpen' },
+  berita: { to: '/berita', label: 'Berita & Kegiatan', desc: 'Kabar terbaru seputar sekolah', icon: 'Newspaper' },
+  galeri: { to: '/galeri', label: 'Galeri Foto', desc: 'Dokumentasi kegiatan sekolah', icon: 'Image' },
+  aplikasi: { to: '/aplikasi', label: 'Aplikasi Sekolah', desc: 'E-Asesmen, SI Diswa, dan lainnya', icon: 'App' },
+  kontak: { to: '/kontak', label: 'Kontak', desc: 'Alamat, telepon, dan lokasi sekolah', icon: 'MapPin' },
 }
+
 const defaultSections = ['profil', 'berita', 'galeri', 'aplikasi', 'kontak'].map((key) => ({ key, aktif: true }))
 const defaultBlocks = ['statistik', 'sambutan', 'jelajahi', 'prestasi', 'pengumuman', 'marquee'].map((key) => ({ key, aktif: true }))
 
@@ -57,9 +60,17 @@ export default function Home() {
   const hasStats = counts.guru + counts.mitra + counts.prestasi + counts.fasilitas > 0
   const blocks = pengaturan?.beranda_blocks?.length ? pengaturan.beranda_blocks : defaultBlocks
 
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+  }
+
   const blockNodes = {
     statistik: hasStats && (
-      <section key="statistik" className="bg-chalkboard text-paper">
+      <section key="statistik" className="bg-dark text-white">
         <div className="max-w-6xl mx-auto px-5 py-10 grid grid-cols-2 md:grid-cols-4 gap-6">
           <StatCounter value={counts.guru} label="Tenaga Pendidik" />
           <StatCounter value={counts.fasilitas} label="Fasilitas" />
@@ -69,111 +80,134 @@ export default function Home() {
       </section>
     ),
     sambutan: pengaturan?.sambutan_kepala_sekolah && (
-      <section key="sambutan" className="bg-white">
+      <section key="sambutan" className="bg-paper">
         <div className="max-w-6xl mx-auto px-5 py-14">
-        <div className="glass shadow-sm rounded-lg p-6 md:p-8 flex flex-col sm:flex-row gap-6 items-center">
-          {pengaturan.foto_kepala_sekolah_url && (
-            <img
-              src={pengaturan.foto_kepala_sekolah_url}
-              alt={pengaturan.nama_kepala_sekolah}
-              className="w-28 h-28 rounded-full object-cover shrink-0"
-            />
-          )}
-          <div>
-            <h2 className="font-display text-xl font-bold mb-2">Sambutan Kepala Sekolah</h2>
-            <p className="text-ink/80 italic line-clamp-3">"{pengaturan.sambutan_kepala_sekolah}"</p>
-            {pengaturan.nama_kepala_sekolah && (
-              <p className="font-display font-bold mt-3">{pengaturan.nama_kepala_sekolah}</p>
+          <div className="glass-card rounded-2xl p-6 md:p-8 flex flex-col sm:flex-row gap-6 items-center">
+            {pengaturan.foto_kepala_sekolah_url && (
+              <img
+                src={pengaturan.foto_kepala_sekolah_url}
+                alt={pengaturan.nama_kepala_sekolah}
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl object-cover shadow-lg shrink-0"
+              />
             )}
-            <Link to="/profil/sambutan" className="inline-block mt-2 text-rust font-medium hover:underline">
-              Baca sambutan lengkap →
-            </Link>
+            <div className="text-center sm:text-left">
+              <div className="inline-flex items-center gap-2 badge badge-secondary mb-3">
+                Sambutan Kepala Sekolah
+              </div>
+              <p className="text-ink/80 italic leading-relaxed mb-4 line-clamp-4 text-base">
+                "{pengaturan.sambutan_kepala_sekolah}"
+              </p>
+              {pengaturan.nama_kepala_sekolah && (
+                <p className="font-display font-bold text-lg">{pengaturan.nama_kepala_sekolah}</p>
+              )}
+              <Link to="/profil/sambutan" className="read-more mt-2 inline-flex">
+                Baca sambut lengkap
+                <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
-        </div>
         </div>
       </section>
     ),
     jelajahi: quickLinks.length > 0 && (
       <section key="jelajahi" className="max-w-6xl mx-auto px-5 py-14">
-        <h2 className="font-display text-2xl font-bold mb-6">Jelajahi Website</h2>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="section-title !mb-0">
+            Jelajahi <span>Website</span>
+          </h2>
+        </div>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {quickLinks.map((q) => (
             <Link
               key={q.to}
               to={q.to}
-              className="glass shadow-sm rounded-lg p-5 hover:border-amber hover:shadow-md transition-all"
+              className="card p-5 text-center group"
             >
-              <h3 className="font-display font-bold text-lg mb-1">{q.label}</h3>
-              <p className="text-sm text-ink/70">{q.desc}</p>
+              <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-secondary/10 flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
+                <ChevronRight className="w-6 h-6 text-secondary" />
+              </div>
+              <h3 className="font-display font-bold text-base mb-1">{q.label}</h3>
+              <p className="text-xs text-ink-light">{q.desc}</p>
             </Link>
           ))}
         </div>
       </section>
     ),
     prestasi: prestasi.length > 0 && (
-      <section key="prestasi" className="bg-white">
-        <div className="max-w-6xl mx-auto px-5 py-14">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="font-display text-2xl font-bold">Prestasi Sekolah</h2>
-          <Link to="/galeri/prestasi" className="text-sm text-rust font-medium hover:underline shrink-0">
-            Lihat semua →
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {prestasi.map((p) => (
-            <Link
-              key={p.id}
-              to="/galeri/prestasi"
-              className="relative block aspect-square overflow-hidden rounded-lg border border-ink/10 shadow-sm group"
-            >
-              <img
-                src={p.foto_url}
-                alt={p.judul}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-              />
-              <span className="absolute top-2 left-2 bg-amber text-chalkboard rounded-full w-7 h-7 flex items-center justify-center text-sm">
-                🏆
-              </span>
+      <section key="prestasi" className="bg-white py-14">
+        <div className="max-w-6xl mx-auto px-5">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                <span className="text-lg">🏆</span>
+              </div>
+              <h2 className="section-title !mb-0">Prestasi <span>Sekolah</span></h2>
+            </div>
+            <Link to="/galeri/prestasi" className="read-more">
+              Lihat semua
+              <ArrowRight className="w-4 h-4" />
             </Link>
-          ))}
-        </div>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {prestasi.map((p) => (
+              <Link
+                key={p.id}
+                to="/galeri/prestasi"
+                className="relative block aspect-square overflow-hidden rounded-xl border border-ink/5 shadow-sm group"
+              >
+                <img
+                  src={p.foto_url}
+                  alt={p.judul}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                  <span className="text-white text-sm font-medium">{p.judul}</span>
+                </div>
+                <div className="absolute top-2 left-2 bg-secondary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold shadow">
+                  🏆
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
     ),
     pengumuman: (
       <section key="pengumuman" className="max-w-6xl mx-auto px-5 py-14">
-        <h2 className="font-display text-2xl font-bold mb-6">Pengumuman Terbaru</h2>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center">
+              <span className="text-lg">📢</span>
+            </div>
+            <h2 className="section-title !mb-0">Pengumuman <span>Terbaru</span></h2>
+          </div>
+          <Link to="/pengumuman" className="read-more">
+            Lihat semua
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
         {pengumuman.length === 0 ? (
-          <p className="text-ink/70">Belum ada pengumuman yang dipublikasikan.</p>
+          <div className="empty-state">
+            <h3>Belum Ada Pengumuman</h3>
+            <p>Pengumuman terbaru akan ditampilkan di sini.</p>
+          </div>
         ) : (
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-3 gap-6">
             {pengumuman.map((p) => (
-              <article key={p.id} className="bg-white border border-ink/10 rounded-lg shadow-sm overflow-hidden">
-                {p.foto_url && (
-                  <img src={p.foto_url} alt={p.judul} className="w-full h-36 object-cover" />
-                )}
-                <div className="p-5">
-                  <p className="text-xs text-rust font-medium mb-2">
-                    {new Date(p.created_at).toLocaleDateString('id-ID', {
-                      day: 'numeric', month: 'long', year: 'numeric',
-                    })}
-                  </p>
-                  <h3 className="font-display font-bold text-lg mb-2">{p.judul}</h3>
-                  <p className="text-sm text-ink/70 line-clamp-3">{p.isi}</p>
-                  {(p.file_url || p.link_url) && (
-                    <div className="flex gap-3 mt-3 text-xs">
-                      {p.file_url && <a href={p.file_url} target="_blank" rel="noreferrer" className="text-rust font-medium hover:underline">📎 Unduh File</a>}
-                      {p.link_url && <a href={p.link_url} target="_blank" rel="noreferrer" className="text-rust font-medium hover:underline">🔗 Selengkapnya</a>}
-                    </div>
-                  )}
-                </div>
-              </article>
+              <ArticleCard
+                key={p.id}
+                image={p.foto_url}
+                category="Pengumuman"
+                date={formatDate(p.created_at)}
+                title={p.judul}
+                excerpt={p.isi}
+                fileUrl={p.file_url}
+                linkUrl={p.link_url}
+                badgeColor="secondary"
+              />
             ))}
           </div>
         )}
-        <Link to="/pengumuman" className="inline-block mt-6 text-rust font-medium hover:underline">
-          Lihat semua pengumuman →
-        </Link>
       </section>
     ),
     marquee: <GaleriMarquee key="marquee" />,

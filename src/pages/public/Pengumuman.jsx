@@ -1,80 +1,120 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
-import { SkeletonCard } from '../../components/Skeleton'
+import { SkeletonList } from '../../components/Skeleton'
+import ArticleCard from '../../components/ArticleCard'
+import { Megaphone, Clock, Pin } from 'lucide-react'
 
 export default function Pengumuman() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [total, setTotal] = useState(0)
 
   useEffect(() => {
     supabase
       .from('pengumuman')
-      .select('*')
+      .select('*', { count: 'exact' })
       .eq('status', 'published')
       .order('created_at', { ascending: false })
-      .then(({ data }) => {
+      .then(({ data, count }) => {
         setData(data || [])
+        setTotal(count || 0)
         setLoading(false)
       })
   }, [])
 
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+  }
+
   return (
-    <div className="max-w-4xl mx-auto px-5 py-12">
-      <h1 className="font-display text-3xl font-bold mb-2">Pengumuman</h1>
-      <div className="chalk-divider w-24 mb-8" />
-
-      {loading && (
-        <div className="space-y-5">
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
+    <div>
+      {/* Page Header */}
+      <div className="page-header rounded-b-2xl">
+        <div className="max-w-6xl mx-auto px-5 page-header-content">
+          <div className="breadcrumb">
+            <Link to="/" className="hover:text-white">Beranda</Link>
+            <span>/</span>
+            <span className="text-white/60">Pengumuman</span>
+          </div>
+          <h1>Pengumuman</h1>
+          <p>{total} pengumuman</p>
         </div>
-      )}
-      {!loading && data.length === 0 && (
-        <p className="text-ink/70">Belum ada pengumuman.</p>
-      )}
+      </div>
 
-      <div className="space-y-5">
-        {data.map((p) => (
-          <article key={p.id} className="bg-white border border-ink/10 rounded-lg shadow-sm overflow-hidden">
-            {p.foto_url && (
-              <img src={p.foto_url} alt={p.judul} className="w-full h-48 object-cover" />
-            )}
-            <div className="p-6">
-              <p className="text-xs text-rust font-medium mb-2">
-                {new Date(p.created_at).toLocaleDateString('id-ID', {
-                  day: 'numeric', month: 'long', year: 'numeric',
-                })}
-              </p>
-              <h2 className="font-display font-bold text-xl mb-2">{p.judul}</h2>
-              <p className="text-ink/80 whitespace-pre-line">{p.isi}</p>
-              {(p.file_url || p.link_url) && (
-                <div className="flex flex-wrap gap-3 mt-4">
-                  {p.file_url && (
-                    <a
-                      href={p.file_url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 text-sm bg-chalkboard text-paper px-4 py-2 rounded hover:opacity-90"
-                    >
-                      📎 Unduh File
-                    </a>
-                  )}
-                  {p.link_url && (
-                    <a
-                      href={p.link_url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 text-sm border border-chalkboard px-4 py-2 rounded hover:bg-chalkboard hover:text-paper"
-                    >
-                      🔗 Selengkapnya
-                    </a>
-                  )}
-                </div>
-              )}
+      <div className="max-w-4xl mx-auto px-5 py-12">
+        {/* Pinned/Priority Announcements */}
+        {!loading && data.length > 0 && (
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <Pin className="w-5 h-5 text-secondary" />
+              <h2 className="font-display font-bold text-lg">Pengumuman Penting</h2>
             </div>
-          </article>
-        ))}
+            <div className="space-y-4">
+              {data.slice(0, 2).map((p) => (
+                <ArticleCard
+                  key={p.id}
+                  image={p.foto_url}
+                  category="Penting"
+                  date={formatDate(p.created_at)}
+                  title={p.judul}
+                  excerpt={p.isi}
+                  fileUrl={p.file_url}
+                  linkUrl={p.link_url}
+                  badgeColor="secondary"
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* All Announcements */}
+        {!loading && data.length > 2 && (
+          <>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="section-title !mb-0">
+                Semua <span>Pengumuman</span>
+              </h2>
+              <span className="text-sm text-ink-light flex items-center gap-1.5">
+                <Clock className="w-4 h-4" />
+                {total} total
+              </span>
+            </div>
+            <div className="space-y-4">
+              {data.slice(2).map((p) => (
+                <ArticleCard
+                  key={p.id}
+                  image={p.foto_url}
+                  category="Pengumuman"
+                  date={formatDate(p.created_at)}
+                  title={p.judul}
+                  excerpt={p.isi}
+                  fileUrl={p.file_url}
+                  linkUrl={p.link_url}
+                  badgeColor="primary"
+                />
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Empty State */}
+        {!loading && data.length === 0 && (
+          <div className="empty-state">
+            <div className="empty-state-icon">
+              <Megaphone className="w-8 h-8" />
+            </div>
+            <h3>Belum Ada Pengumuman</h3>
+            <p>Pengumuman terbaru akan ditampilkan di sini.</p>
+          </div>
+        )}
+
+        {/* Loading Skeleton */}
+        {loading && <SkeletonList count={3} />}
       </div>
     </div>
   )

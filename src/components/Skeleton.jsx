@@ -1,11 +1,11 @@
 export function SkeletonBlock({ className = '' }) {
-  return <div className={`animate-pulse bg-ink/10 rounded ${className}`} />
+  return <div className={`skeleton ${className}`} />
 }
 
 export function SkeletonCard() {
   return (
-    <div className="bg-white border border-ink/10 rounded-lg shadow-sm overflow-hidden">
-      <SkeletonBlock className="w-full h-36 rounded-none" />
+    <div className="card overflow-hidden">
+      <SkeletonBlock className="w-full aspect-video" />
       <div className="p-5 space-y-2">
         <SkeletonBlock className="h-3 w-24" />
         <SkeletonBlock className="h-5 w-3/4" />
@@ -16,9 +16,9 @@ export function SkeletonCard() {
   )
 }
 
-export function SkeletonList({ count = 3, cols = 'md:grid-cols-3' }) {
+export function SkeletonList({ count = 3, cols = 'sm:grid-cols-2 lg:grid-cols-3' }) {
   return (
-    <div className={`grid ${cols} gap-5`}>
+    <div className={`grid ${cols} gap-6`}>
       {Array.from({ length: count }).map((_, i) => <SkeletonCard key={i} />)}
     </div>
   )
@@ -26,12 +26,13 @@ export function SkeletonList({ count = 3, cols = 'md:grid-cols-3' }) {
 
 export function SkeletonRow() {
   return (
-    <div className="bg-white border border-ink/10 rounded-lg shadow-sm p-4 flex items-center gap-4">
-      <SkeletonBlock className="h-14 w-14 shrink-0 rounded-lg" />
+    <div className="card p-4 flex items-center gap-4">
+      <SkeletonBlock className="h-14 w-14 shrink-0 rounded-xl" />
       <div className="flex-1 space-y-2">
         <SkeletonBlock className="h-3 w-32" />
         <SkeletonBlock className="h-4 w-2/3" />
       </div>
+      <SkeletonBlock className="h-9 w-20 rounded-xl" />
     </div>
   )
 }

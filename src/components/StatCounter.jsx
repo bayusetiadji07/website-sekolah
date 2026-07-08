@@ -1,6 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
+import { Users, BookOpen, Trophy, Handshake } from 'lucide-react'
 
-export default function StatCounter({ value, label, duration = 1200 }) {
+const iconMap = {
+  'Tenaga Pendidik': Users,
+  'Guru': Users,
+  'Fasilitas': BookOpen,
+  'Prestasi': Trophy,
+  'Mitra Sekolah': Handshake,
+  'Mitra': Handshake,
+}
+
+export default function StatCounter({ value, label, duration = 1500 }) {
   const [display, setDisplay] = useState(0)
   const ref = useRef(null)
   const started = useRef(false)
@@ -29,10 +39,18 @@ export default function StatCounter({ value, label, duration = 1200 }) {
     return () => observer.disconnect()
   }, [value, duration])
 
+  const Icon = iconMap[label] || BookOpen
+
   return (
-    <div ref={ref} className="text-center">
-      <p className="font-display text-4xl font-bold text-amber">{display}+</p>
-      <p className="text-sm text-paper/80 mt-1">{label}</p>
+    <div ref={ref} className="text-center group">
+      <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-secondary/10 flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
+        <Icon className="w-7 h-7 text-secondary" />
+      </div>
+      <p className="font-display text-3xl sm:text-4xl font-extrabold text-dark mb-1">
+        {display}
+        <span className="text-secondary">+</span>
+      </p>
+      <p className="text-sm text-ink-light font-medium">{label}</p>
     </div>
   )
 }
