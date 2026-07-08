@@ -261,5 +261,4 @@ export default function Home() {
       {blocks.filter((b) => b.aktif).map((b) => blockNodes[b.key] || null)}
     </div>
   )
-}
--e 
+} 
