@@ -76,8 +76,8 @@ export default function Home() {
 
   const sections = pengaturan?.beranda_sections?.length ? pengaturan.beranda_sections : defaultSections
   const quickLinks = sections.filter((s) => s.aktif && sectionInfo[s.key]).map((s) => ({ ...sectionInfo[s.key], key: s.key }))
-  const hasStats = counts.guru + counts.kependidikan + counts.mitra + counts.prestasi + counts.fasilitas > 0
   const blocks = pengaturan?.beranda_blocks?.length ? mergeBlocks(pengaturan.beranda_blocks, defaultBlocks) : defaultBlocks
+  const statsAktif = blocks.find((b) => b.key === 'statistik')?.aktif ?? true
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString('id-ID', {
@@ -88,7 +88,7 @@ export default function Home() {
   }
 
   const blockNodes = {
-    statistik: hasStats && (
+    statistik: statsAktif && (
       <section key="statistik" className="bg-dark text-white">
         <div className="max-w-6xl mx-auto px-5 py-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           <StatCounter value={counts.guru} label="Guru" />
