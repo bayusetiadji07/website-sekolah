@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState, useRef } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { SkeletonList } from '../../components/Skeleton'
 import { Megaphone, Clock, Pin, Calendar, Download, ExternalLink, FileText } from 'lucide-react'
@@ -8,6 +8,8 @@ export default function Pengumuman() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [total, setTotal] = useState(0)
+  const location = useLocation()
+  const itemRefs = useRef({})
 
   useEffect(() => {
     supabase
@@ -21,6 +23,26 @@ export default function Pengumuman() {
         setLoading(false)
       })
   }, [])
+
+  // Scroll ke pengumuman yang dipilih dari beranda
+  useEffect(() => {
+    if (!loading && data.length > 0) {
+      const hash = location.hash
+      if (hash && hash.startsWith('#ann-')) {
+        const id = hash.replace('#ann-', '')
+        setTimeout(() => {
+          const element = document.getElementById(`ann-${id}`)
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            element.classList.add('ring-2', 'ring-secondary', 'ring-offset-2')
+            setTimeout(() => {
+              element.classList.remove('ring-2', 'ring-secondary', 'ring-offset-2')
+            }, 3000)
+          }
+        }, 100)
+      }
+    }
+  }, [loading, data, location.hash])
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString('id-ID', {
@@ -55,15 +77,21 @@ export default function Pengumuman() {
             </div>
             <div className="space-y-5">
               {data.slice(0, 2).map((p) => (
-                <div key={p.id} className="bg-white rounded-2xl border border-ink/10 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300">
+                <div
+                  key={p.id}
+                  id={`ann-${p.id}`}
+                  ref={(el) => (itemRefs.current[p.id] = el)}
+                  className="bg-white rounded-2xl border border-ink/10 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300"
+                >
                   <div className="flex flex-col md:flex-row">
-                    {/* Image Section */}
+                    {/* Image Section - Full height image */}
                     {p.foto_url && (
                       <div className="md:w-72 lg:w-80 shrink-0 bg-gray-100">
                         <img
                           src={p.foto_url}
                           alt={p.judul}
-                          className="w-full h-48 md:h-full object-cover"
+                          className="w-full h-56 md:h-full object-contain bg-gray-100"
+                          style={{ minHeight: '200px' }}
                         />
                       </div>
                     )}
@@ -79,7 +107,7 @@ export default function Pengumuman() {
                       <h3 className="font-display font-bold text-xl text-ink mb-3 leading-tight">
                         {p.judul}
                       </h3>
-                      <p className="text-ink-light leading-relaxed mb-4">
+                      <p className="text-ink-light leading-relaxed mb-4 whitespace-pre-wrap">
                         {p.isi}
                       </p>
                       {/* Actions */}
@@ -135,15 +163,21 @@ export default function Pengumuman() {
             </div>
             <div className="space-y-4">
               {data.slice(2).map((p) => (
-                <div key={p.id} className="bg-white rounded-xl border border-ink/10 shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
+                <div
+                  key={p.id}
+                  id={`ann-${p.id}`}
+                  ref={(el) => (itemRefs.current[p.id] = el)}
+                  className="bg-white rounded-xl border border-ink/10 shadow-sm overflow-hidden hover:shadow-md transition-all duration-300"
+                >
                   <div className="flex flex-col sm:flex-row">
-                    {/* Image - smaller for list items */}
+                    {/* Image - Full image visible */}
                     {p.foto_url && (
-                      <div className="sm:w-40 shrink-0 bg-gray-100">
+                      <div className="sm:w-48 shrink-0 bg-gray-100 flex items-center justify-center">
                         <img
                           src={p.foto_url}
                           alt={p.judul}
-                          className="w-full h-32 sm:h-full object-cover"
+                          className="w-full h-40 sm:h-full object-contain bg-gray-100"
+                          style={{ minHeight: '160px' }}
                         />
                       </div>
                     )}
@@ -159,7 +193,7 @@ export default function Pengumuman() {
                       <h3 className="font-display font-bold text-base sm:text-lg text-ink mb-2 leading-tight">
                         {p.judul}
                       </h3>
-                      <p className="text-sm text-ink-light leading-relaxed line-clamp-2 mb-3">
+                      <p className="text-sm text-ink-light leading-relaxed line-clamp-3 mb-3 whitespace-pre-wrap">
                         {p.isi}
                       </p>
                       {/* Actions */}

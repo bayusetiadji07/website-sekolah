@@ -5,7 +5,7 @@ import GaleriMarquee from '../../components/GaleriMarquee'
 import StatCounter from '../../components/StatCounter'
 import HeroCarousel from '../../components/HeroCarousel'
 import ArticleCard from '../../components/ArticleCard'
-import { ChevronRight, ArrowRight, Users } from 'lucide-react'
+import { ChevronRight, ArrowRight, Users, Calendar } from 'lucide-react'
 
 const sectionInfo = {
   profil: { to: '/profil/sejarah', label: 'Tentang Kami', desc: 'Sejarah, sambut, visi & misi sekolah', icon: 'BookOpen' },
@@ -313,17 +313,41 @@ export default function Home() {
         ) : (
           <div className="grid md:grid-cols-3 gap-6">
             {pengumuman.map((p) => (
-              <ArticleCard
+              <Link
                 key={p.id}
-                image={p.foto_url}
-                category="Pengumuman"
-                date={formatDate(p.created_at)}
-                title={p.judul}
-                excerpt={p.isi}
-                fileUrl={p.file_url}
-                linkUrl={p.link_url}
-                badgeColor="secondary"
-              />
+                to={`/pengumuman#ann-${p.id}`}
+                className="bg-white rounded-xl border border-ink/10 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group"
+              >
+                {/* Image - Full visible */}
+                {p.foto_url && (
+                  <div className="w-full bg-gray-100 flex items-center justify-center overflow-hidden">
+                    <img
+                      src={p.foto_url}
+                      alt={p.judul}
+                      className="w-full h-40 object-contain group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                )}
+                <div className="p-5">
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <span className="badge badge-secondary">Pengumuman</span>
+                    <span className="flex items-center gap-1 text-xs text-ink-light">
+                      <Calendar className="w-3.5 h-3.5" />
+                      {formatDate(p.created_at)}
+                    </span>
+                  </div>
+                  <h3 className="font-display font-bold text-base text-ink mb-2 leading-tight line-clamp-2 group-hover:text-secondary transition-colors">
+                    {p.judul}
+                  </h3>
+                  <p className="text-sm text-ink-light leading-relaxed line-clamp-3 mb-3">
+                    {p.isi}
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-xs font-medium text-secondary group-hover:gap-2 transition-all">
+                    Lihat detail
+                    <ArrowRight className="w-3 h-3" />
+                  </span>
+                </div>
+              </Link>
             ))}
           </div>
         )}
