@@ -26,44 +26,6 @@ function mergeBlocks(saved, defaults) {
   return [...saved, ...missing]
 }
 
-// Variabel global untuk diakses oleh AutoRotateCard
-let tenagaPendidikGlobal = []
-
-// Komponen kartu foto dengan rotasi otomatis
-function AutoRotateCard({ item, index }) {
-  const [photoIndex, setPhotoIndex] = useState(0)
-
-  useEffect(() => {
-    // Rotasi setiap 3 detik dengan offset berbeda untuk setiap kartu
-    const interval = setInterval(() => {
-      setPhotoIndex((prev) => (prev + 1) % tenagaPendidikGlobal.length)
-    }, 3000 + index * 500) // Offset 500ms per kartu
-    return () => clearInterval(interval)
-  }, [index])
-
-  const currentItem = tenagaPendidikGlobal[photoIndex % tenagaPendidikGlobal.length] || item
-
-  return (
-    <div className="card p-5 text-center group transition-all duration-300">
-      <div className="mb-4">
-        {currentItem.foto_url ? (
-          <img
-            src={currentItem.foto_url}
-            alt={currentItem.nama}
-            className="w-24 h-24 rounded-full object-cover mx-auto shadow-xl group-hover:shadow-2xl group-hover:shadow-secondary/30 transition-all duration-300 ring-4 ring-transparent group-hover:ring-secondary/20"
-          />
-        ) : (
-          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary shadow-xl flex items-center justify-center mx-auto transition-all duration-300">
-            <span className="font-display font-bold text-3xl text-white">{currentItem.nama?.[0]}</span>
-          </div>
-        )}
-      </div>
-      <h3 className="font-display font-bold text-base mb-1">{currentItem.nama}</h3>
-      <p className="text-sm text-ink-light">{currentItem.jabatan}</p>
-    </div>
-  )
-}
-
 export default function Home() {
   const [pengumuman, setPengumuman] = useState([])
   const [berita, setBerita] = useState([])
@@ -71,9 +33,6 @@ export default function Home() {
   const [prestasi, setPrestasi] = useState([])
   const [tenagaPendidik, setTenagaPendidik] = useState([])
   const [counts, setCounts] = useState({ guru: 0, kependidikan: 0, mitra: 0, prestasi: 0, fasilitas: 0 })
-
-  // Update global variable untuk AutoRotateCard
-  tenagaPendidikGlobal = tenagaPendidik
 
   useEffect(() => {
     supabase
@@ -145,7 +104,7 @@ export default function Home() {
       </section>
     ),
     tenaga_pendidik: tenagaPendidik.length > 0 && (
-      <section key="tenaga_pendidik" className="bg-paper py-12">
+      <section key="tenaga_pendidik" className="bg-white py-12">
         <div className="max-w-6xl mx-auto px-5">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
@@ -163,12 +122,25 @@ export default function Home() {
             </Link>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
-            {[0, 1, 2, 3].map((index) => {
-              const item = tenagaPendidik[index % tenagaPendidik.length]
-              return (
-                <AutoRotateCard key={index} item={item} index={index} />
-              )
-            })}
+            {tenagaPendidik.slice(0, 4).map((item) => (
+              <div key={item.id} className="card p-5 text-center group hover:border-secondary/30 transition-all duration-300">
+                <div className="mb-4">
+                  {item.foto_url ? (
+                    <img
+                      src={item.foto_url}
+                      alt={item.nama}
+                      className="w-24 h-24 rounded-full object-cover mx-auto shadow-xl group-hover:shadow-2xl group-hover:shadow-secondary/30 transition-all duration-300 ring-4 ring-transparent group-hover:ring-secondary/20"
+                    />
+                  ) : (
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary shadow-xl flex items-center justify-center mx-auto transition-all duration-300">
+                      <span className="font-display font-bold text-3xl text-white">{item.nama?.[0]}</span>
+                    </div>
+                  )}
+                </div>
+                <h3 className="font-display font-bold text-base mb-1">{item.nama}</h3>
+                <p className="text-sm text-ink-light">{item.jabatan}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
