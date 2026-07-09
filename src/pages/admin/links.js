@@ -7,6 +7,7 @@ export const adminLinks = [
   { to: '/admin/berita', label: 'Berita' },
   { to: '/admin/pengumuman', label: 'Pengumuman' },
   { to: '/admin/galeri', label: 'Galeri Foto' },
+  { to: '/admin/video', label: 'Galeri Video' },
   { to: '/admin/pembelajaran', label: 'Pembelajaran' },
   { to: '/admin/aplikasi', label: 'Aplikasi Sekolah' },
   { to: '/admin/saran', label: 'Kotak Saran' },

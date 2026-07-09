@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import NavDropdown from './NavDropdown'
 import { tentangKamiTabs } from './TentangKamiTabs'
-import { Menu, X, ChevronDown, ChevronRight, BookOpen, Image, Megaphone, Phone, MessageSquare } from 'lucide-react'
+import { Menu, X, ChevronDown, ChevronRight, BookOpen, Image, Megaphone, Phone, MessageSquare, Play } from 'lucide-react'
 
 const galeriTabs = [
   { to: '/galeri/kegiatan', label: 'Galeri Kegiatan' },
   { to: '/galeri/prestasi', label: 'Galeri Prestasi' },
+  { to: '/galeri/video', label: 'Galeri Video', icon: Play },
 ]
 
 export default function Navbar() {
@@ -85,7 +86,7 @@ export default function Navbar() {
             <NavDropdown label="Galeri" active={isGaleriActive}>
               {galeriTabs.map((t) => (
                 <Link key={t.to} to={t.to} className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-primary/10 transition-colors">
-                  <Image className="w-4 h-4 text-secondary" />
+                  {t.icon ? <t.icon className="w-4 h-4 text-red-500" /> : <Image className="w-4 h-4 text-secondary" />}
                   {t.label}
                 </Link>
               ))}
@@ -196,7 +197,7 @@ export default function Navbar() {
                   Galeri
                 </p>
                 {galeriTabs.map((t) => (
-                  <MobileNavLink key={t.to} to={t.to} indent>
+                  <MobileNavLink key={t.to} to={t.to} indent icon={t.icon}>
                     {t.label}
                   </MobileNavLink>
                 ))}
@@ -267,7 +268,7 @@ function MobileNavLink({ to, icon, indent, children }) {
           : 'text-ink hover:bg-primary/5 hover:text-primary'
       }`}
     >
-      {icon && <span className="text-secondary">{icon}</span>}
+      {icon ? <span className={indent ? 'text-secondary pl-4' : 'text-secondary'}>{icon}</span> : null}
       {children}
     </Link>
   )

@@ -19,6 +19,7 @@ import Agenda from './pages/public/Agenda'
 import GaleriOverview from './pages/public/galeri/GaleriOverview'
 import GaleriKegiatan from './pages/public/galeri/GaleriKegiatan'
 import GaleriPrestasi from './pages/public/galeri/GaleriPrestasi'
+import GaleriVideo from './pages/public/galeri/GaleriVideo'
 import Materi from './pages/public/Materi'
 import Aplikasi from './pages/public/Aplikasi'
 import Kontak from './pages/public/Kontak'
@@ -35,6 +36,7 @@ import KelolaPengumuman from './pages/admin/KelolaPengumuman'
 import KelolaBerita from './pages/admin/KelolaBerita'
 import KelolaAgenda from './pages/admin/KelolaAgenda'
 import KelolaGaleri from './pages/admin/KelolaGaleri'
+import KelolaVideo from './pages/admin/KelolaVideo'
 import KelolaAplikasi from './pages/admin/KelolaAplikasi'
 import KelolaPembelajaran from './pages/admin/KelolaPembelajaran'
 import KelolaSaran from './pages/admin/KelolaSaran'
@@ -77,6 +79,7 @@ export default function App() {
       <Route path="/galeri" element={<PublicLayout><GaleriOverview /></PublicLayout>} />
       <Route path="/galeri/kegiatan" element={<PublicLayout><GaleriKegiatan /></PublicLayout>} />
       <Route path="/galeri/prestasi" element={<PublicLayout><GaleriPrestasi /></PublicLayout>} />
+      <Route path="/galeri/video" element={<PublicLayout><GaleriVideo /></PublicLayout>} />
       <Route path="/materi" element={<PublicLayout><Materi /></PublicLayout>} />
       <Route path="/aplikasi" element={<PublicLayout><Aplikasi /></PublicLayout>} />
       <Route path="/kontak" element={<PublicLayout><Kontak /></PublicLayout>} />
@@ -93,6 +96,7 @@ export default function App() {
       <Route path="/admin/berita" element={<ProtectedRoute allowedRoles={['admin']}><KelolaBerita /></ProtectedRoute>} />
       <Route path="/admin/agenda" element={<ProtectedRoute allowedRoles={['admin']}><KelolaAgenda /></ProtectedRoute>} />
       <Route path="/admin/galeri" element={<ProtectedRoute allowedRoles={['admin']}><KelolaGaleri /></ProtectedRoute>} />
+      <Route path="/admin/video" element={<ProtectedRoute allowedRoles={['admin']}><KelolaVideo /></ProtectedRoute>} />
       <Route path="/admin/materi" element={<ProtectedRoute allowedRoles={['admin']}><KelolaMateriAdmin /></ProtectedRoute>} />
       <Route path="/admin/aplikasi" element={<ProtectedRoute allowedRoles={['admin']}><KelolaAplikasi /></ProtectedRoute>} />
       <Route path="/admin/pembelajaran" element={<ProtectedRoute allowedRoles={['admin']}><KelolaPembelajaran /></ProtectedRoute>} />

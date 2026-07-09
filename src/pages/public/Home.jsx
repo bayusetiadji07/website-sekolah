@@ -5,7 +5,8 @@ import GaleriMarquee from '../../components/GaleriMarquee'
 import StatCounter from '../../components/StatCounter'
 import HeroCarousel from '../../components/HeroCarousel'
 import ArticleCard from '../../components/ArticleCard'
-import { ChevronRight, ArrowRight, Users, Calendar } from 'lucide-react'
+import VideoGallery from '../../components/VideoGallery'
+import { ChevronRight, ArrowRight, Users, Calendar, Play } from 'lucide-react'
 
 const sectionInfo = {
   profil: { to: '/profil/sejarah', label: 'Tentang Kami', desc: 'Sejarah, sambut, visi & misi sekolah', icon: 'BookOpen' },
@@ -16,7 +17,7 @@ const sectionInfo = {
 }
 
 const defaultSections = ['profil', 'berita', 'galeri', 'aplikasi', 'kontak'].map((key) => ({ key, aktif: true }))
-const defaultBlocks = ['statistik', 'sambutan', 'tenaga_pendidik', 'jelajahi', 'prestasi', 'berita', 'pengumuman', 'marquee'].map((key) => ({ key, aktif: true }))
+const defaultBlocks = ['statistik', 'sambutan', 'tenaga_pendidik', 'jelajahi', 'prestasi', 'berita', 'video', 'pengumuman', 'marquee'].map((key) => ({ key, aktif: true }))
 
 // Gabungkan blok tersimpan di database dengan blok default terbaru,
 // supaya blok baru (mis. "berita") tetap muncul walau pengaturan lama sudah pernah disimpan.
@@ -32,6 +33,7 @@ export default function Home() {
   const [pengaturan, setPengaturan] = useState(null)
   const [prestasi, setPrestasi] = useState([])
   const [tenagaPendidik, setTenagaPendidik] = useState([])
+  const [videos, setVideos] = useState([])
   const [counts, setCounts] = useState({ guru: 0, kependidikan: 0, mitra: 0, prestasi: 0, fasilitas: 0 })
 
   useEffect(() => {
@@ -60,6 +62,12 @@ export default function Home() {
 
     supabase.from('tenaga_pendidik').select('*').eq('aktif', true).order('urutan')
       .then(({ data }) => setTenagaPendidik(data || []))
+
+    supabase.from('galeri_video').select('*').eq('aktif', true)
+      .order('urutan', { ascending: true })
+      .order('created_at', { ascending: false })
+      .limit(6)
+      .then(({ data }) => setVideos(data || []))
 
     Promise.all([
       supabase.from('tenaga_pendidik').select('id', { count: 'exact', head: true }).eq('aktif', true).eq('kategori', 'pendidik'),
@@ -357,6 +365,36 @@ export default function Home() {
             ))}
           </div>
         )}
+      </section>
+    ),
+    video: videos.length > 0 && (
+      <section key="video" className="bg-dark py-8 sm:py-14">
+        <div className="max-w-6xl mx-auto px-4 sm:px-5">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-6 sm:mb-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
+                <Play className="w-5 h-5 text-red-500 fill-red-500" />
+              </div>
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-display font-bold text-white">
+                Galeri <span className="text-red-400">Video</span>
+              </h2>
+            </div>
+            <Link
+              to="/galeri/video"
+              className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-medium transition-colors"
+            >
+              Lihat semua
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <VideoGallery videos={videos} />
+          {videos.length === 0 && (
+            <div className="text-center py-12 text-white/50">
+              <Play className="w-12 h-12 mx-auto mb-3 opacity-30" />
+              <p>Belum ada video.</p>
+            </div>
+          )}
+        </div>
       </section>
     ),
     marquee: <GaleriMarquee key="marquee" />,
