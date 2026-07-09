@@ -10,7 +10,7 @@ import { ArrowRight, Calendar, User, Download, ExternalLink } from 'lucide-react
  * - title: judul
  * - excerpt: cuplikan isi
  * - author: penulis (opsional)
- * - to: link tujuan
+ * - to: link tujuan (jika ada halaman detail)
  * - fileUrl: link unduh file (opsional)
  * - linkUrl: link eksternal (opsional)
  * - badgeColor: 'primary' | 'secondary' | 'accent' (default: 'primary')
@@ -28,12 +28,15 @@ export default function ArticleCard({
   badgeColor = 'primary',
   className = '',
 }) {
+  // Tentukan link untuk "Baca Selengkapnya"
+  const readMoreLink = to || linkUrl || null
+
   const content = (
     <>
-      {/* Image */}
+      {/* Image - menggunakan aspect-auto agar gambar tidak terpotong */}
       {image && (
-        <div className="card-image-wrapper aspect-video">
-          <img src={image} alt={title} className="card-image" />
+        <div className="card-image-wrapper aspect-auto w-full">
+          <img src={image} alt={title} className="card-image w-full h-auto max-h-64 object-cover" />
         </div>
       )}
 
@@ -72,10 +75,26 @@ export default function ArticleCard({
 
         {/* Actions */}
         <div className="flex flex-wrap items-center gap-3 mt-auto">
-          <span className="read-more">
-            Baca Selengkapnya
-            <ArrowRight className="w-4 h-4" />
-          </span>
+          {readMoreLink ? (
+            linkUrl ? (
+              // Jika ada linkUrl (link eksternal), buka di tab baru
+              <a
+                href={linkUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="read-more"
+              >
+                Baca Selengkapnya
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            ) : to ? (
+              // Jika ada to (link internal), gunakan Link
+              <Link to={to} className="read-more">
+                Baca Selengkapnya
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            ) : null
+          ) : null}
 
           {fileUrl && (
             <a
@@ -90,7 +109,7 @@ export default function ArticleCard({
             </a>
           )}
 
-          {linkUrl && (
+          {linkUrl && !readMoreLink && (
             <a
               href={linkUrl}
               target="_blank"
@@ -107,19 +126,18 @@ export default function ArticleCard({
     </>
   )
 
-  if (to) {
-    return (
-      <Link to={to} className={`card group ${className}`}>
-        {content}
-      </Link>
-    )
-  }
-
-  return (
+  // Tentukan link untuk card wrapper dan "Baca Selengkapnya"
+  const cardWrapper = readMoreLink ? (
+    <a href={linkUrl || to} target={linkUrl ? "_blank" : undefined} rel={linkUrl ? "noreferrer" : undefined} className={`card group ${className}`}>
+      {content}
+    </a>
+  ) : (
     <article className={`card ${className}`}>
       {content}
     </article>
   )
+
+  return cardWrapper
 }
 
 /**
