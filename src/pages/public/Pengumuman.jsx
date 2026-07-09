@@ -67,15 +67,15 @@ export default function Pengumuman() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-5 py-12">
-        {/* Pinned/Priority Announcements - Featured Layout */}
+      <div className="max-w-4xl mx-auto px-5 py-12">
+        {/* Pinned/Priority Announcements - Full Width Image on Top */}
         {!loading && data.length > 0 && (
           <div className="mb-10">
             <div className="flex items-center gap-2 mb-6">
               <Pin className="w-5 h-5 text-secondary" />
               <h2 className="font-display font-bold text-xl">Pengumuman Penting</h2>
             </div>
-            <div className="space-y-5">
+            <div className="space-y-6">
               {data.slice(0, 2).map((p) => (
                 <div
                   key={p.id}
@@ -83,64 +83,61 @@ export default function Pengumuman() {
                   ref={(el) => (itemRefs.current[p.id] = el)}
                   className="bg-white rounded-2xl border border-ink/10 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300"
                 >
-                  <div className="flex flex-col md:flex-row">
-                    {/* Image Section - Full height image */}
-                    {p.foto_url && (
-                      <div className="md:w-72 lg:w-80 shrink-0 bg-gray-100">
-                        <img
-                          src={p.foto_url}
-                          alt={p.judul}
-                          className="w-full h-56 md:h-full object-contain bg-gray-100"
-                          style={{ minHeight: '200px' }}
-                        />
-                      </div>
-                    )}
-                    {/* Content Section */}
-                    <div className="flex-1 p-6">
-                      <div className="flex flex-wrap items-center gap-2 mb-3">
-                        <span className="badge badge-secondary">Penting</span>
-                        <span className="flex items-center gap-1 text-xs text-ink-light">
-                          <Calendar className="w-3.5 h-3.5" />
-                          {formatDate(p.created_at)}
+                  {/* Image - Full Width on Top */}
+                  {p.foto_url && (
+                    <div className="w-full bg-gray-100">
+                      <img
+                        src={p.foto_url}
+                        alt={p.judul}
+                        className="w-full h-auto object-contain max-h-[500px]"
+                      />
+                    </div>
+                  )}
+                  {/* Content Below Image */}
+                  <div className="p-6">
+                    <div className="flex flex-wrap items-center gap-3 mb-4">
+                      <span className="badge badge-secondary">Penting</span>
+                      <span className="flex items-center gap-1.5 text-sm text-ink-light">
+                        <Calendar className="w-4 h-4" />
+                        {formatDate(p.created_at)}
+                      </span>
+                    </div>
+                    <h3 className="font-display font-bold text-2xl text-ink mb-4 leading-tight">
+                      {p.judul}
+                    </h3>
+                    <p className="text-ink-light leading-relaxed text-base mb-6 whitespace-pre-wrap">
+                      {p.isi}
+                    </p>
+                    {/* Actions */}
+                    <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-ink/10">
+                      {p.link_url && (
+                        <a
+                          href={p.link_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 bg-secondary text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-secondary-dark transition-colors"
+                        >
+                          Baca Selengkapnya
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      )}
+                      {p.file_url && (
+                        <a
+                          href={p.file_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors"
+                        >
+                          <Download className="w-4 h-4" />
+                          Unduh Lampiran
+                        </a>
+                      )}
+                      {!p.link_url && !p.file_url && (
+                        <span className="inline-flex items-center gap-2 text-ink-light text-sm">
+                          <FileText className="w-4 h-4" />
+                          Tidak ada tautan atau lampiran
                         </span>
-                      </div>
-                      <h3 className="font-display font-bold text-xl text-ink mb-3 leading-tight">
-                        {p.judul}
-                      </h3>
-                      <p className="text-ink-light leading-relaxed mb-4 whitespace-pre-wrap">
-                        {p.isi}
-                      </p>
-                      {/* Actions */}
-                      <div className="flex flex-wrap items-center gap-3">
-                        {p.link_url && (
-                          <a
-                            href={p.link_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-2 bg-secondary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-secondary-dark transition-colors"
-                          >
-                            Baca Selengkapnya
-                            <ExternalLink className="w-4 h-4" />
-                          </a>
-                        )}
-                        {p.file_url && (
-                          <a
-                            href={p.file_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors"
-                          >
-                            <Download className="w-4 h-4" />
-                            Unduh Lampiran
-                          </a>
-                        )}
-                        {!p.link_url && !p.file_url && (
-                          <span className="inline-flex items-center gap-2 text-ink-light text-sm">
-                            <FileText className="w-4 h-4" />
-                            Tidak ada tautan atau lampiran
-                          </span>
-                        )}
-                      </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -149,7 +146,7 @@ export default function Pengumuman() {
           </div>
         )}
 
-        {/* All Announcements - List Layout */}
+        {/* All Announcements - Full Width Image on Top */}
         {!loading && data.length > 2 && (
           <>
             <div className="flex items-center justify-between mb-6">
@@ -161,7 +158,7 @@ export default function Pengumuman() {
                 {total} total
               </span>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-5">
               {data.slice(2).map((p) => (
                 <div
                   key={p.id}
@@ -169,57 +166,54 @@ export default function Pengumuman() {
                   ref={(el) => (itemRefs.current[p.id] = el)}
                   className="bg-white rounded-xl border border-ink/10 shadow-sm overflow-hidden hover:shadow-md transition-all duration-300"
                 >
-                  <div className="flex flex-col sm:flex-row">
-                    {/* Image - Full image visible */}
-                    {p.foto_url && (
-                      <div className="sm:w-48 shrink-0 bg-gray-100 flex items-center justify-center">
-                        <img
-                          src={p.foto_url}
-                          alt={p.judul}
-                          className="w-full h-40 sm:h-full object-contain bg-gray-100"
-                          style={{ minHeight: '160px' }}
-                        />
-                      </div>
-                    )}
-                    {/* Content */}
-                    <div className="flex-1 p-4 sm:p-5">
-                      <div className="flex flex-wrap items-center gap-2 mb-2">
-                        <span className="badge badge-primary">Pengumuman</span>
-                        <span className="flex items-center gap-1 text-xs text-ink-light">
-                          <Calendar className="w-3.5 h-3.5" />
-                          {formatDate(p.created_at)}
-                        </span>
-                      </div>
-                      <h3 className="font-display font-bold text-base sm:text-lg text-ink mb-2 leading-tight">
-                        {p.judul}
-                      </h3>
-                      <p className="text-sm text-ink-light leading-relaxed line-clamp-3 mb-3 whitespace-pre-wrap">
-                        {p.isi}
-                      </p>
-                      {/* Actions */}
-                      <div className="flex flex-wrap items-center gap-2">
-                        {p.link_url && (
-                          <a
-                            href={p.link_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary-dark transition-colors"
-                          >
-                            Baca Selengkapnya <ExternalLink className="w-3 h-3" />
-                          </a>
-                        )}
-                        {p.file_url && (
-                          <a
-                            href={p.file_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:text-primary-dark transition-colors"
-                          >
-                            <Download className="w-3 h-3" />
-                            Lampiran
-                          </a>
-                        )}
-                      </div>
+                  {/* Image - Full Width on Top */}
+                  {p.foto_url && (
+                    <div className="w-full bg-gray-100">
+                      <img
+                        src={p.foto_url}
+                        alt={p.judul}
+                        className="w-full h-auto object-contain max-h-[400px]"
+                      />
+                    </div>
+                  )}
+                  {/* Content Below Image */}
+                  <div className="p-5">
+                    <div className="flex flex-wrap items-center gap-3 mb-3">
+                      <span className="badge badge-primary">Pengumuman</span>
+                      <span className="flex items-center gap-1.5 text-sm text-ink-light">
+                        <Calendar className="w-4 h-4" />
+                        {formatDate(p.created_at)}
+                      </span>
+                    </div>
+                    <h3 className="font-display font-bold text-lg text-ink mb-3 leading-tight">
+                      {p.judul}
+                    </h3>
+                    <p className="text-ink-light leading-relaxed mb-4 whitespace-pre-wrap">
+                      {p.isi}
+                    </p>
+                    {/* Actions */}
+                    <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-ink/5">
+                      {p.link_url && (
+                        <a
+                          href={p.link_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 text-sm font-medium text-secondary hover:text-secondary-dark transition-colors"
+                        >
+                          Baca Selengkapnya <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                      {p.file_url && (
+                        <a
+                          href={p.file_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          Lampiran
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>

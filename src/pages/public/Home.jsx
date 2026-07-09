@@ -318,13 +318,13 @@ export default function Home() {
                 to={`/pengumuman#ann-${p.id}`}
                 className="bg-white rounded-xl border border-ink/10 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group"
               >
-                {/* Image - Full visible */}
+                {/* Image - Full Width on Top */}
                 {p.foto_url && (
-                  <div className="w-full bg-gray-100 flex items-center justify-center overflow-hidden">
+                  <div className="w-full bg-gray-100 overflow-hidden">
                     <img
                       src={p.foto_url}
                       alt={p.judul}
-                      className="w-full h-40 object-contain group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-48 object-contain group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                 )}
