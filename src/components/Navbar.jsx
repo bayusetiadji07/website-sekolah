@@ -142,7 +142,7 @@ export default function Navbar() {
           />
 
           {/* Menu Panel */}
-          <div className="absolute top-0 left-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl overflow-y-auto">
+          <div className="absolute top-0 left-0 bottom-0 w-[85vw] max-w-[320px] bg-white shadow-2xl overflow-y-auto">
             {/* Header */}
             <div className="glass-dark text-white px-5 py-4 flex items-center justify-between sticky top-0">
               <div className="flex items-center gap-2.5 font-display font-bold">

@@ -37,8 +37,8 @@ export default function Footer() {
   return (
     <footer className="bg-dark text-white/70">
       {/* Main Footer */}
-      <div className="max-w-6xl mx-auto px-5 py-12">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-5 py-8 sm:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10">
           {/* Column 1: About */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2.5 mb-4">
@@ -50,11 +50,11 @@ export default function Footer() {
                 </div>
               )}
               <div>
-                <p className="font-display font-bold text-white text-base leading-tight">SMP Negeri 3 Besuki</p>
+                <p className="font-display font-bold text-white text-base sm:text-lg leading-tight">SMP Negeri 3 Besuki</p>
                 <p className="text-xs text-white/50">Pendidikan Berkualitas</p>
               </div>
             </div>
-            <p className="text-sm leading-relaxed mb-4">
+            <p className="text-sm leading-relaxed mb-4 hidden sm:block">
               {pengaturan?.tagline || 'Mendidik dengan hati, berprestasi dengan karakter.'}
             </p>
 
@@ -96,19 +96,19 @@ export default function Footer() {
 
           {/* Column 2: Quick Links */}
           <div>
-            <h3 className="font-display font-bold text-white mb-4 text-sm uppercase tracking-wider flex items-center gap-2">
+            <h3 className="font-display font-bold text-white mb-3 sm:mb-4 text-sm uppercase tracking-wider flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-secondary" />
               Tautan Cepat
             </h3>
-            <ul className="space-y-2">
-              {quickLinks.slice(0, 6).map((link) => (
+            <ul className="space-y-1.5 sm:space-y-2">
+              {quickLinks.slice(0, 4).map((link) => (
                 <li key={link.to}>
                   <Link
                     to={link.to}
                     className="flex items-center gap-2 text-sm hover:text-secondary transition-colors"
                   >
-                    <link.icon className="w-3.5 h-3.5 text-white/40" />
-                    {link.label}
+                    <link.icon className="w-3.5 h-3.5 text-white/40 shrink-0" />
+                    <span className="truncate">{link.label}</span>
                   </Link>
                 </li>
               ))}
@@ -117,19 +117,19 @@ export default function Footer() {
 
           {/* Column 3: More Links */}
           <div>
-            <h3 className="font-display font-bold text-white mb-4 text-sm uppercase tracking-wider flex items-center gap-2">
+            <h3 className="font-display font-bold text-white mb-3 sm:mb-4 text-sm uppercase tracking-wider flex items-center gap-2">
               <ExternalLink className="w-4 h-4 text-secondary" />
               Lainnya
             </h3>
-            <ul className="space-y-2">
-              {quickLinks.slice(6).map((link) => (
+            <ul className="space-y-1.5 sm:space-y-2">
+              {quickLinks.slice(4).map((link) => (
                 <li key={link.to}>
                   <Link
                     to={link.to}
                     className="flex items-center gap-2 text-sm hover:text-secondary transition-colors"
                   >
-                    <link.icon className="w-3.5 h-3.5 text-white/40" />
-                    {link.label}
+                    <link.icon className="w-3.5 h-3.5 text-white/40 shrink-0" />
+                    <span className="truncate">{link.label}</span>
                   </Link>
                 </li>
               ))}
@@ -138,21 +138,21 @@ export default function Footer() {
 
           {/* Column 4: Contact */}
           <div>
-            <h3 className="font-display font-bold text-white mb-4 text-sm uppercase tracking-wider flex items-center gap-2">
+            <h3 className="font-display font-bold text-white mb-3 sm:mb-4 text-sm uppercase tracking-wider flex items-center gap-2">
               <MapPin className="w-4 h-4 text-secondary" />
               Hubungi Kami
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2 sm:space-y-3">
               {pengaturan?.alamat && (
                 <li className="flex items-start gap-2.5 text-sm">
                   <MapPin className="w-4 h-4 text-white/40 mt-0.5 shrink-0" />
-                  <span>{pengaturan.alamat}</span>
+                  <span className="leading-relaxed">{pengaturan.alamat}</span>
                 </li>
               )}
               {pengaturan?.telepon && (
                 <li className="flex items-center gap-2.5 text-sm">
                   <Phone className="w-4 h-4 text-white/40 shrink-0" />
-                  <a href={`tel:${pengaturan.telepon}`} className="hover:text-secondary transition-colors">
+                  <a href={`tel:${pengaturan.telepon}`} className="hover:text-secondary transition-colors truncate">
                     {pengaturan.telepon}
                   </a>
                 </li>
@@ -160,7 +160,7 @@ export default function Footer() {
               {pengaturan?.email && (
                 <li className="flex items-center gap-2.5 text-sm">
                   <Mail className="w-4 h-4 text-white/40 shrink-0" />
-                  <a href={`mailto:${pengaturan.email}`} className="hover:text-secondary transition-colors">
+                  <a href={`mailto:${pengaturan.email}`} className="hover:text-secondary transition-colors truncate text-xs sm:text-sm">
                     {pengaturan.email}
                   </a>
                 </li>
@@ -168,7 +168,7 @@ export default function Footer() {
               {pengaturan?.jam_operasional && (
                 <li className="flex items-center gap-2.5 text-sm">
                   <Clock className="w-4 h-4 text-white/40 shrink-0" />
-                  <span>{pengaturan.jam_operasional}</span>
+                  <span className="text-xs sm:text-sm">{pengaturan.jam_operasional}</span>
                 </li>
               )}
             </ul>
@@ -178,17 +178,17 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-white/10">
-        <div className="max-w-6xl mx-auto px-5 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-sm text-white/60">
-            <span>© {new Date().getFullYear()} SMP Negeri 3 Besuki. Hak cipta dilindungi.</span>
+        <div className="max-w-6xl mx-auto px-4 sm:px-5 py-3 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
+          <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-4 text-xs sm:text-sm text-white/60 text-center sm:text-left">
+            <span>© {new Date().getFullYear()} SMP Negeri 3 Besuki</span>
             {totalKunjungan !== null && (
-              <span className="text-xs bg-white/10 px-2.5 py-1 rounded-full">
+              <span className="text-[10px] sm:text-xs bg-white/10 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full">
                 👁 {totalKunjungan.toLocaleString('id-ID')} Pengunjung
               </span>
             )}
           </div>
-          <p className="text-xs text-white/40 flex items-center gap-1">
-            Dibuat dengan <Heart className="w-3.5 h-3.5 text-secondary inline fill-secondary" /> untuk pendidikan Indonesia
+          <p className="text-[10px] sm:text-xs text-white/40 flex items-center gap-1">
+            Dibuat dengan <Heart className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-secondary inline fill-secondary" /> untuk pendidikan Indonesia
           </p>
         </div>
       </div>

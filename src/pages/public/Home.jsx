@@ -94,51 +94,51 @@ export default function Home() {
   const blockNodes = {
     statistik: statsAktif && (
       <section key="statistik" className="bg-dark text-white">
-        <div className="max-w-6xl mx-auto px-5 py-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        <div className="max-w-6xl mx-auto px-4 sm:px-5 py-4 sm:py-5 grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3">
           <StatCounter value={counts.guru} label="Guru" />
-          <StatCounter value={counts.kependidikan} label="Tenaga Kependidikan" />
+          <StatCounter value={counts.kependidikan} label="Tenaga Pendidik" />
           <StatCounter value={counts.fasilitas} label="Fasilitas" />
           <StatCounter value={counts.prestasi} label="Prestasi" />
-          <StatCounter value={counts.mitra} label="Mitra Sekolah" />
+          <StatCounter value={counts.mitra} label="Mitra" />
         </div>
       </section>
     ),
     tenaga_pendidik: tenagaPendidik.length > 0 && (
-      <section key="tenaga_pendidik" className="bg-white py-12">
-        <div className="max-w-6xl mx-auto px-5">
-          <div className="flex items-center justify-between mb-8">
+      <section key="tenaga_pendidik" className="bg-white py-8 sm:py-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-5">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-6 sm:mb-8">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                <Users className="w-5 h-5 text-primary" />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Users className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
               </div>
               <div>
-                <h2 className="section-title !mb-0">Tenaga Pendidik</h2>
-                <p className="text-sm text-ink-light">& Kependidikan</p>
+                <h2 className="text-lg sm:text-xl font-display font-bold text-ink">Tenaga Pendidik</h2>
+                <p className="text-xs sm:text-sm text-ink-light">& Kependidikan</p>
               </div>
             </div>
-            <Link to="/profil/tenaga-pendidik" className="read-more">
+            <Link to="/profil/tenaga-pendidik" className="read-more text-sm">
               Lihat semua
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-5">
             {tenagaPendidik.slice(0, 4).map((item) => (
-              <div key={item.id} className="card p-5 text-center group hover:border-secondary/30 transition-all duration-300">
-                <div className="mb-4">
+              <div key={item.id} className="card p-3 sm:p-5 text-center group hover:border-secondary/30 transition-all duration-300">
+                <div className="mb-3 sm:mb-4">
                   {item.foto_url ? (
                     <img
                       src={item.foto_url}
                       alt={item.nama}
-                      className="w-24 h-24 rounded-full object-cover mx-auto shadow-xl group-hover:shadow-2xl group-hover:shadow-secondary/30 transition-all duration-300 ring-4 ring-transparent group-hover:ring-secondary/20"
+                      className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full object-cover mx-auto shadow-xl group-hover:shadow-2xl group-hover:shadow-secondary/30 transition-all duration-300 ring-2 sm:ring-4 ring-transparent group-hover:ring-secondary/20"
                     />
                   ) : (
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary shadow-xl flex items-center justify-center mx-auto transition-all duration-300">
-                      <span className="font-display font-bold text-3xl text-white">{item.nama?.[0]}</span>
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-primary to-secondary shadow-xl flex items-center justify-center mx-auto transition-all duration-300">
+                      <span className="font-display font-bold text-2xl sm:text-3xl text-white">{item.nama?.[0]}</span>
                     </div>
                   )}
                 </div>
-                <h3 className="font-display font-bold text-base mb-1">{item.nama}</h3>
-                <p className="text-sm text-ink-light">{item.jabatan}</p>
+                <h3 className="font-display font-bold text-xs sm:text-base mb-0.5 sm:mb-1">{item.nama}</h3>
+                <p className="text-[10px] sm:text-sm text-ink-light line-clamp-1">{item.jabatan}</p>
               </div>
             ))}
           </div>
@@ -146,47 +146,47 @@ export default function Home() {
       </section>
     ),
     sambutan: pengaturan?.sambutan_kepala_sekolah && (
-      <section key="sambutan" className="bg-paper py-12">
-        <div className="max-w-6xl mx-auto px-5">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            {/* Foto Kepala Sekolah - Lebih Besar */}
+      <section key="sambutan" className="bg-paper py-8 sm:py-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-center">
+            {/* Foto Kepala Sekolah */}
             <div className="order-2 md:order-1 flex justify-center">
               {pengaturan.foto_kepala_sekolah_url ? (
                 <div className="relative">
                   <img
                     src={pengaturan.foto_kepala_sekolah_url}
                     alt={pengaturan.nama_kepala_sekolah}
-                    className="w-64 h-64 md:w-80 md:h-80 rounded-2xl object-cover shadow-2xl ring-4 ring-secondary/20"
+                    className="w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-2xl object-cover shadow-2xl ring-4 ring-secondary/20"
                   />
-                  <div className="absolute -bottom-3 -right-3 bg-secondary text-white px-4 py-2 rounded-xl shadow-lg">
-                    <p className="font-display font-bold text-sm">Kepala Sekolah</p>
+                  <div className="absolute -bottom-2 sm:-bottom-3 -right-2 sm:-right-3 bg-secondary text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl shadow-lg">
+                    <p className="font-display font-bold text-xs sm:text-sm">Kepala Sekolah</p>
                   </div>
                 </div>
               ) : (
-                <div className="w-64 h-64 md:w-80 md:h-80 rounded-2xl bg-gradient-to-br from-primary to-secondary shadow-2xl flex items-center justify-center">
-                  <span className="font-display font-bold text-6xl text-white">KS</span>
+                <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-2xl bg-gradient-to-br from-primary to-secondary shadow-2xl flex items-center justify-center">
+                  <span className="font-display font-bold text-5xl sm:text-6xl text-white">KS</span>
                 </div>
               )}
             </div>
             {/* Teks Sambutan */}
             <div className="order-1 md:order-2">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center">
-                  <span className="text-xl">👨‍🏫</span>
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-secondary/10 flex items-center justify-center">
+                  <span className="text-lg sm:text-xl">👨‍🏫</span>
                 </div>
-                <h2 className="section-title !mb-0">Sambutan</h2>
+                <h2 className="text-lg sm:text-xl font-display font-bold text-ink">Sambutan</h2>
               </div>
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-ink/5">
-                <p className="text-ink/80 italic leading-relaxed text-base md:text-lg mb-4">
+              <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-ink/5">
+                <p className="text-ink/80 italic leading-relaxed text-sm sm:text-base md:text-lg mb-4 line-clamp-4 sm:line-clamp-none">
                   "{pengaturan.sambutan_kepala_sekolah}"
                 </p>
                 {pengaturan.nama_kepala_sekolah && (
-                  <div className="border-t border-ink/10 pt-4">
-                    <p className="font-display font-bold text-lg text-primary">{pengaturan.nama_kepala_sekolah}</p>
-                    <p className="text-sm text-ink-light">Kepala Sekolah SMP Negeri 3 Besuki</p>
+                  <div className="border-t border-ink/10 pt-3 sm:pt-4">
+                    <p className="font-display font-bold text-base sm:text-lg text-primary">{pengaturan.nama_kepala_sekolah}</p>
+                    <p className="text-xs sm:text-sm text-ink-light">Kepala Sekolah SMP Negeri 3 Besuki</p>
                   </div>
                 )}
-                <Link to="/profil/sambutan" className="read-more mt-4 inline-flex">
+                <Link to="/profil/sambutan" className="read-more mt-3 sm:mt-4 inline-flex text-sm">
                   Baca sambut lengkap
                   <ChevronRight className="w-4 h-4" />
                 </Link>
@@ -197,60 +197,62 @@ export default function Home() {
       </section>
     ),
     jelajahi: quickLinks.length > 0 && (
-      <section key="jelajahi" className="max-w-6xl mx-auto px-5 py-14">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="section-title !mb-0">
-            Jelajahi <span>Website</span>
+      <section key="jelajahi" className="max-w-6xl mx-auto px-4 sm:px-5 py-8 sm:py-14">
+        <div className="flex items-center justify-between mb-5 sm:mb-8">
+          <h2 className="text-lg sm:text-xl lg:text-2xl font-display font-bold text-dark">
+            Jelajahi <span className="text-secondary">Website</span>
           </h2>
         </div>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {quickLinks.map((q) => (
             <Link
               key={q.to}
               to={q.to}
-              className="card p-5 text-center group"
+              className="card p-3 sm:p-5 text-center group"
             >
-              <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-secondary/10 flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
-                <ChevronRight className="w-6 h-6 text-secondary" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3 rounded-xl bg-secondary/10 flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
+                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-secondary" />
               </div>
-              <h3 className="font-display font-bold text-base mb-1">{q.label}</h3>
-              <p className="text-xs text-ink-light">{q.desc}</p>
+              <h3 className="font-display font-bold text-xs sm:text-base mb-1">{q.label}</h3>
+              <p className="text-[10px] sm:text-xs text-ink-light line-clamp-2">{q.desc}</p>
             </Link>
           ))}
         </div>
       </section>
     ),
     prestasi: prestasi.length > 0 && (
-      <section key="prestasi" className="bg-white py-14">
-        <div className="max-w-6xl mx-auto px-5">
-          <div className="flex items-center justify-between mb-8">
+      <section key="prestasi" className="bg-white py-8 sm:py-14">
+        <div className="max-w-6xl mx-auto px-4 sm:px-5">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-6 sm:mb-8">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
-                <span className="text-lg">🏆</span>
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                <span className="text-base sm:text-lg">🏆</span>
               </div>
-              <h2 className="section-title !mb-0">Prestasi <span>Sekolah</span></h2>
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-display font-bold text-dark">
+                Prestasi <span className="text-secondary">Sekolah</span>
+              </h2>
             </div>
-            <Link to="/galeri/prestasi" className="read-more">
+            <Link to="/galeri/prestasi" className="read-more text-sm">
               Lihat semua
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
             {prestasi.map((p) => (
               <Link
                 key={p.id}
                 to="/galeri/prestasi"
-                className="relative block aspect-square overflow-hidden rounded-xl border border-ink/5 shadow-sm group"
+                className="relative block aspect-square overflow-hidden rounded-lg sm:rounded-xl border border-ink/5 shadow-sm group"
               >
                 <img
                   src={p.foto_url}
                   alt={p.judul}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-                  <span className="text-white text-sm font-medium">{p.judul}</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2 sm:p-3">
+                  <span className="text-white text-xs sm:text-sm font-medium line-clamp-2">{p.judul}</span>
                 </div>
-                <div className="absolute top-2 left-2 bg-secondary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold shadow">
+                <div className="absolute top-1.5 sm:top-2 left-1.5 sm:left-2 bg-secondary text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold shadow">
                   🏆
                 </div>
               </Link>
@@ -260,21 +262,23 @@ export default function Home() {
       </section>
     ),
     berita: berita.length > 0 && (
-      <section key="berita" className="bg-paper py-14">
-        <div className="max-w-6xl mx-auto px-5">
-          <div className="flex items-center justify-between mb-8">
+      <section key="berita" className="bg-paper py-8 sm:py-14">
+        <div className="max-w-6xl mx-auto px-4 sm:px-5">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-6 sm:mb-8">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                <span className="text-lg">📰</span>
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                <span className="text-base sm:text-lg">📰</span>
               </div>
-              <h2 className="section-title !mb-0">Berita <span>& Kegiatan</span></h2>
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-display font-bold text-dark">
+                Berita <span className="text-secondary">& Kegiatan</span>
+              </h2>
             </div>
-            <Link to="/berita" className="read-more">
+            <Link to="/berita" className="read-more text-sm">
               Lihat semua
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             {berita.map((b) => (
               <ArticleCard
                 key={b.id}
@@ -292,15 +296,17 @@ export default function Home() {
       </section>
     ),
     pengumuman: (
-      <section key="pengumuman" className="max-w-6xl mx-auto px-5 py-14">
-        <div className="flex items-center justify-between mb-8">
+      <section key="pengumuman" className="max-w-6xl mx-auto px-4 sm:px-5 py-8 sm:py-14">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-6 sm:mb-8">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center">
-              <span className="text-lg">📢</span>
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-secondary/10 flex items-center justify-center">
+              <span className="text-base sm:text-lg">📢</span>
             </div>
-            <h2 className="section-title !mb-0">Pengumuman <span>Terbaru</span></h2>
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-display font-bold text-dark">
+              Pengumuman <span className="text-secondary">Terbaru</span>
+            </h2>
           </div>
-          <Link to="/pengumuman" className="read-more">
+          <Link to="/pengumuman" className="read-more text-sm">
             Lihat semua
             <ArrowRight className="w-4 h-4" />
           </Link>
@@ -311,7 +317,7 @@ export default function Home() {
             <p>Pengumuman terbaru akan ditampilkan di sini.</p>
           </div>
         ) : (
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             {pengumuman.map((p) => (
               <Link
                 key={p.id}
@@ -324,22 +330,22 @@ export default function Home() {
                     <img
                       src={p.foto_url}
                       alt={p.judul}
-                      className="w-full h-48 object-contain group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-36 sm:h-48 object-contain group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                 )}
-                <div className="p-5">
+                <div className="p-4 sm:p-5">
                   <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <span className="badge badge-secondary">Pengumuman</span>
-                    <span className="flex items-center gap-1 text-xs text-ink-light">
-                      <Calendar className="w-3.5 h-3.5" />
+                    <span className="badge badge-secondary text-xs">Pengumuman</span>
+                    <span className="flex items-center gap-1 text-[10px] sm:text-xs text-ink-light">
+                      <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                       {formatDate(p.created_at)}
                     </span>
                   </div>
-                  <h3 className="font-display font-bold text-base text-ink mb-2 leading-tight line-clamp-2 group-hover:text-secondary transition-colors">
+                  <h3 className="font-display font-bold text-sm sm:text-base text-ink mb-2 leading-tight line-clamp-2 group-hover:text-secondary transition-colors">
                     {p.judul}
                   </h3>
-                  <p className="text-sm text-ink-light leading-relaxed line-clamp-3 mb-3">
+                  <p className="text-xs sm:text-sm text-ink-light leading-relaxed line-clamp-2 sm:line-clamp-3 mb-2 sm:mb-3">
                     {p.isi}
                   </p>
                   <span className="inline-flex items-center gap-1 text-xs font-medium text-secondary group-hover:gap-2 transition-all">
