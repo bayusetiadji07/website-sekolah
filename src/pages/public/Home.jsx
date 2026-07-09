@@ -123,22 +123,37 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
             {tenagaPendidik.slice(0, 4).map((item) => (
-              <div key={item.id} className="card p-5 text-center group hover:border-secondary/30 transition-all duration-300">
-                <div className="mb-4">
-                  {item.foto_url ? (
-                    <img
-                      src={item.foto_url}
-                      alt={item.nama}
-                      className="w-24 h-24 rounded-full object-cover mx-auto shadow-lg group-hover:shadow-xl group-hover:shadow-secondary/30 transition-all duration-300 ring-4 ring-transparent group-hover:ring-secondary/20"
-                    />
-                  ) : (
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary shadow-lg group-hover:shadow-xl group-hover:shadow-secondary/40 flex items-center justify-center mx-auto transition-all duration-300">
-                      <span className="font-display font-bold text-3xl text-white">{item.nama?.[0]}</span>
+              <div key={item.id} className="flip-card h-48">
+                <div className="flip-card-inner">
+                  {/* Front - Foto */}
+                  <div className="flip-card-front">
+                    {item.foto_url ? (
+                      <img
+                        src={item.foto_url}
+                        alt={item.nama}
+                        className="w-24 h-24 rounded-full object-cover shadow-xl ring-4 ring-white/20"
+                      />
+                    ) : (
+                      <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary shadow-xl flex items-center justify-center">
+                        <span className="font-display font-bold text-3xl text-white">{item.nama?.[0]}</span>
+                      </div>
+                    )}
+                    <div className="absolute bottom-4 left-0 right-0 text-center">
+                      <p className="text-xs text-white/60">hover untuk detail</p>
                     </div>
-                  )}
+                  </div>
+                  {/* Back - Info */}
+                  <div className="flip-card-back">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-white/20 to-white/10 flex items-center justify-center mx-auto mb-3">
+                      <span className="font-display font-bold text-2xl text-white">{item.nama?.[0]}</span>
+                    </div>
+                    <h3 className="font-display font-bold text-sm mb-1 text-white">{item.nama}</h3>
+                    <p className="text-xs text-white/70">{item.jabatan}</p>
+                    <div className="mt-3 px-3 py-1 bg-white/20 rounded-full">
+                      <p className="text-xs text-white font-medium">{item.kategori === 'pendidik' ? 'Guru' : 'Staff'}</p>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="font-display font-bold text-base mb-1">{item.nama}</h3>
-                <p className="text-sm text-ink-light">{item.jabatan}</p>
               </div>
             ))}
           </div>
