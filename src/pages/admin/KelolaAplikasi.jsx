@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
 import { adminLinks } from './links'
+import { compressImage } from '../../lib/compressImage'
 
 const empty = { nama: '', url: '', deskripsi: '', ikon_url: '', aktif: true, urutan: 0 }
 
@@ -22,8 +23,9 @@ export default function KelolaAplikasi() {
     const file = e.target.files[0]
     if (!file) return
     setUploading(true)
-    const path = `aplikasi/${Date.now()}-${file.name}`
-    const { error } = await supabase.storage.from('media').upload(path, file)
+    const compressed = await compressImage(file)
+    const path = `aplikasi/${Date.now()}-${compressed.name}`
+    const { error } = await supabase.storage.from('media').upload(path, compressed)
     if (!error) {
       const { data } = supabase.storage.from('media').getPublicUrl(path)
       setForm((f) => ({ ...f, ikon_url: data.publicUrl }))

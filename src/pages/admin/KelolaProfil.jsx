@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
 import { adminLinks } from './links'
+import { compressImage } from '../../lib/compressImage'
 
 const empty = {
   logo_url: '', tagline: '', sambutan_kepala_sekolah: '', nama_kepala_sekolah: '', foto_kepala_sekolah_url: '',
@@ -34,8 +35,9 @@ export default function KelolaProfil() {
     const file = e.target.files[0]
     if (!file) return
     setUploading(field)
-    const path = `profil/${Date.now()}-${file.name}`
-    const { error } = await supabase.storage.from('media').upload(path, file)
+    const compressed = await compressImage(file)
+    const path = `profil/${Date.now()}-${compressed.name}`
+    const { error } = await supabase.storage.from('media').upload(path, compressed)
     if (!error) {
       const { data } = supabase.storage.from('media').getPublicUrl(path)
       setForm((f) => ({ ...f, [field]: data.publicUrl }))

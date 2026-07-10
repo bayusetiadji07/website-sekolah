@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
 import { adminLinks } from './links'
+import { compressImage } from '../../lib/compressImage'
 
 const empty = { nama: '', jabatan: '', kategori: 'pendidik', foto_url: '', aktif: true, urutan: 0 }
 
@@ -22,8 +23,9 @@ export default function KelolaTenagaPendidik() {
     const file = e.target.files[0]
     if (!file) return
     setUploading(true)
-    const path = `tenaga-pendidik/${Date.now()}-${file.name}`
-    const { error } = await supabase.storage.from('media').upload(path, file)
+    const compressed = await compressImage(file)
+    const path = `tenaga-pendidik/${Date.now()}-${compressed.name}`
+    const { error } = await supabase.storage.from('media').upload(path, compressed)
     if (!error) {
       const { data } = supabase.storage.from('media').getPublicUrl(path)
       setForm((f) => ({ ...f, foto_url: data.publicUrl }))

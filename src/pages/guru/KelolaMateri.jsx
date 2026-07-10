@@ -3,6 +3,7 @@ import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
 import { guruLinks } from './links'
+import { compressImage } from '../../lib/compressImage'
 
 const empty = { judul: '', mapel: '', kelas: '', tipe: 'file', link_url: '', status: 'draft' }
 
@@ -31,8 +32,9 @@ export default function KelolaMateriGuru() {
 
     let file_url = editingId ? undefined : null
     if (form.tipe === 'file' && file) {
-      const path = `materi/${user.id}/${Date.now()}-${file.name}`
-      const { error } = await supabase.storage.from('media').upload(path, file)
+      const compressed = await compressImage(file)
+      const path = `materi/${user.id}/${Date.now()}-${compressed.name}`
+      const { error } = await supabase.storage.from('media').upload(path, compressed)
       if (!error) {
         const { data } = supabase.storage.from('media').getPublicUrl(path)
         file_url = data.publicUrl

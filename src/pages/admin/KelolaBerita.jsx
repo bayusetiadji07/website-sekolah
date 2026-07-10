@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
 import { adminLinks } from './links'
+import { compressImage } from '../../lib/compressImage'
 
 const empty = { judul: '', isi: '', status: 'draft', foto_url: '' }
 
@@ -25,8 +26,9 @@ export default function KelolaBerita() {
     const file = e.target.files[0]
     if (!file) return
     setUploading(true)
-    const path = `berita/${Date.now()}-${file.name}`
-    const { error } = await supabase.storage.from('media').upload(path, file)
+    const compressed = await compressImage(file)
+    const path = `berita/${Date.now()}-${compressed.name}`
+    const { error } = await supabase.storage.from('media').upload(path, compressed)
     if (!error) {
       const { data } = supabase.storage.from('media').getPublicUrl(path)
       setForm((f) => ({ ...f, foto_url: data.publicUrl }))
