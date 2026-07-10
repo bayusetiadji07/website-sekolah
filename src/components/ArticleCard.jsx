@@ -75,50 +75,24 @@ export default function ArticleCard({
 
         {/* Actions */}
         <div className="flex flex-wrap items-center gap-3 mt-auto">
-          {readMoreLink ? (
-            linkUrl ? (
-              // Jika ada linkUrl (link eksternal), buka di tab baru
-              <a
-                href={linkUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="read-more"
-              >
-                Baca Selengkapnya
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            ) : to ? (
-              // Jika ada to (link internal), gunakan Link
-              <Link to={to} className="read-more">
-                Baca Selengkapnya
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            ) : null
-          ) : null}
+          {/* Seluruh card sudah jadi link (lihat cardWrapper), jadi ini cuma label visual, bukan <a> lagi supaya tidak nested-anchor */}
+          {readMoreLink && (
+            <span className="read-more">
+              Baca Selengkapnya
+              {linkUrl ? <ExternalLink className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+            </span>
+          )}
 
           {fileUrl && (
             <a
               href={fileUrl}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1 text-xs font-medium text-primary hover:text-primary-dark transition-colors"
+              className="flex items-center gap-1 text-xs font-medium text-primary hover:text-primary-dark transition-colors relative z-10"
               onClick={(e) => e.stopPropagation()}
             >
               <Download className="w-3.5 h-3.5" />
               Unduh
-            </a>
-          )}
-
-          {linkUrl && !readMoreLink && (
-            <a
-              href={linkUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-1 text-xs font-medium text-primary hover:text-primary-dark transition-colors"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              Selengkapnya
             </a>
           )}
         </div>

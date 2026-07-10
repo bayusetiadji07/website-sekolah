@@ -15,6 +15,7 @@ import Fasilitas from './pages/public/profil/Fasilitas'
 import Kemitraan from './pages/public/profil/Kemitraan'
 import Pengumuman from './pages/public/Pengumuman'
 import Berita from './pages/public/Berita'
+import BeritaDetail from './pages/public/BeritaDetail'
 import Agenda from './pages/public/Agenda'
 import GaleriOverview from './pages/public/galeri/GaleriOverview'
 import GaleriKegiatan from './pages/public/galeri/GaleriKegiatan'
@@ -75,6 +76,7 @@ export default function App() {
       <Route path="/profil/kemitraan" element={<PublicLayout><Kemitraan /></PublicLayout>} />
       <Route path="/pengumuman" element={<PublicLayout><Pengumuman /></PublicLayout>} />
       <Route path="/berita" element={<PublicLayout><Berita /></PublicLayout>} />
+      <Route path="/berita/:id" element={<PublicLayout><BeritaDetail /></PublicLayout>} />
       <Route path="/agenda" element={<PublicLayout><Agenda /></PublicLayout>} />
       <Route path="/galeri" element={<PublicLayout><GaleriOverview /></PublicLayout>} />
       <Route path="/galeri/kegiatan" element={<PublicLayout><GaleriKegiatan /></PublicLayout>} />
