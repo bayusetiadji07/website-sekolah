@@ -33,15 +33,15 @@ export default function ArticleCard({
 
   const content = (
     <>
-      {/* Image - menggunakan aspect-auto agar gambar tidak terpotong */}
+      {/* Image - rasio tetap 16:9 agar tinggi kartu seragam */}
       {image && (
-        <div className="card-image-wrapper aspect-auto w-full">
-          <img src={image} alt={title} className="card-image w-full h-auto max-h-64 object-cover" />
+        <div className="card-image-wrapper aspect-video w-full">
+          <img src={image} alt={title} className="card-image w-full h-full object-cover" />
         </div>
       )}
 
       {/* Content */}
-      <div className="p-5">
+      <div className="p-5 flex flex-col flex-1">
         {/* Meta */}
         <div className="flex flex-wrap items-center gap-2 mb-3">
           {category && (
@@ -102,11 +102,11 @@ export default function ArticleCard({
 
   // Tentukan link untuk card wrapper dan "Baca Selengkapnya"
   const cardWrapper = readMoreLink ? (
-    <a href={linkUrl || to} target={linkUrl ? "_blank" : undefined} rel={linkUrl ? "noreferrer" : undefined} className={`card group ${className}`}>
+    <a href={linkUrl || to} target={linkUrl ? "_blank" : undefined} rel={linkUrl ? "noreferrer" : undefined} className={`card group h-full flex flex-col ${className}`}>
       {content}
     </a>
   ) : (
-    <article className={`card ${className}`}>
+    <article className={`card h-full flex flex-col ${className}`}>
       {content}
     </article>
   )
