@@ -197,7 +197,12 @@ export default function Navbar() {
                   Galeri
                 </p>
                 {galeriTabs.map((t) => (
-                  <MobileNavLink key={t.to} to={t.to} indent icon={t.icon}>
+                  <MobileNavLink
+                    key={t.to}
+                    to={t.to}
+                    indent
+                    icon={t.icon ? <t.icon className="w-5 h-5" /> : <Image className="w-5 h-5" />}
+                  >
                     {t.label}
                   </MobileNavLink>
                 ))}
