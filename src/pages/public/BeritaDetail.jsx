@@ -92,9 +92,7 @@ export default function BeritaDetail() {
               <h2 className="font-display font-bold text-2xl sm:text-3xl text-ink mb-6 leading-tight">
                 {data.judul}
               </h2>
-              <p className="text-ink-light leading-relaxed text-base whitespace-pre-wrap">
-                {data.isi}
-              </p>
+              <div className="rich-content text-ink-light text-base" dangerouslySetInnerHTML={{ __html: data.isi }} />
               <div className="mt-8 pt-6 border-t border-ink/10">
                 <Link to="/berita" className="read-more">
                   <ArrowLeft className="w-4 h-4" />

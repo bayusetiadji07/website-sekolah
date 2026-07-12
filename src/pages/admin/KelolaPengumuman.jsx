@@ -3,6 +3,8 @@ import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
 import { adminLinks } from './links'
 import { compressImage } from '../../lib/compressImage'
+import RichTextEditor from '../../components/RichTextEditor'
+import { stripHtml } from '../../lib/richText'
 
 const empty = { judul: '', isi: '', status: 'draft', foto_url: '', file_url: '', link_url: '' }
 
@@ -93,13 +95,11 @@ export default function KelolaPengumuman() {
           onChange={(e) => setForm({ ...form, judul: e.target.value })}
           className="w-full border border-ink/20 rounded px-3 py-2 text-sm"
         />
-        <textarea
+        <RichTextEditor
           placeholder="Isi pengumuman"
-          required
           rows={4}
           value={form.isi}
-          onChange={(e) => setForm({ ...form, isi: e.target.value })}
-          className="w-full border border-ink/20 rounded px-3 py-2 text-sm"
+          onChange={(html) => setForm({ ...form, isi: html })}
         />
         <div>
           <span className="block text-xs text-ink/70 mb-1">Foto pengumuman (opsional)</span>
@@ -162,7 +162,7 @@ export default function KelolaPengumuman() {
                   {item.status === 'published' ? 'Terpublikasi' : 'Draft'}
                 </span>
                 <h3 className="font-display font-bold mt-1">{item.judul}</h3>
-                <p className="text-sm text-ink/70 line-clamp-2">{item.isi}</p>
+                <p className="text-sm text-ink/70 line-clamp-2">{stripHtml(item.isi)}</p>
                 <div className="flex gap-3 mt-1">
                   {item.file_url && <span className="text-xs text-rust">📎 Ada lampiran file</span>}
                   {item.link_url && <span className="text-xs text-rust">🔗 Ada link forward</span>}

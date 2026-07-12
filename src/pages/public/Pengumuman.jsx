@@ -105,9 +105,7 @@ export default function Pengumuman() {
                     <h3 className="font-display font-bold text-2xl text-ink mb-4 leading-tight">
                       {p.judul}
                     </h3>
-                    <p className="text-ink-light leading-relaxed text-base mb-6 whitespace-pre-wrap">
-                      {p.isi}
-                    </p>
+                    <div className="rich-content text-ink-light text-base mb-6" dangerouslySetInnerHTML={{ __html: p.isi }} />
                     {/* Actions */}
                     <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-ink/10">
                       {p.link_url && (
@@ -188,9 +186,7 @@ export default function Pengumuman() {
                     <h3 className="font-display font-bold text-lg text-ink mb-3 leading-tight">
                       {p.judul}
                     </h3>
-                    <p className="text-ink-light leading-relaxed mb-4 whitespace-pre-wrap">
-                      {p.isi}
-                    </p>
+                    <div className="rich-content text-ink-light mb-4" dangerouslySetInnerHTML={{ __html: p.isi }} />
                     {/* Actions */}
                     <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-ink/5">
                       {p.link_url && (

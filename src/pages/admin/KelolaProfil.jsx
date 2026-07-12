@@ -3,10 +3,12 @@ import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
 import { adminLinks } from './links'
 import { compressImage } from '../../lib/compressImage'
+import RichTextEditor from '../../components/RichTextEditor'
 
 const empty = {
   logo_url: '', tagline: '', sambutan_kepala_sekolah: '', nama_kepala_sekolah: '', foto_kepala_sekolah_url: '',
   visi: '', misi: '', sejarah: '', foto_sekolah_url: '',
+  moto: '', sejarah_youtube_url: '', jenis_institusi: '', tahun_berdiri: '', jenjang_pendidikan: '',
   alamat: '', telepon: '', email: '', jam_operasional: '', maps_embed_url: '',
   instagram_url: '', facebook_url: '', youtube_url: '', tiktok_url: '',
 }
@@ -90,20 +92,38 @@ export default function KelolaProfil() {
             {form.foto_kepala_sekolah_url && <img src={form.foto_kepala_sekolah_url} className="h-20 w-20 rounded-full object-cover mt-2" />}
           </Field>
           <Field label="Isi sambutan">
-            <textarea rows={5} className={inputCls} value={form.sambutan_kepala_sekolah} onChange={(e) => setForm({ ...form, sambutan_kepala_sekolah: e.target.value })} />
+            <RichTextEditor value={form.sambutan_kepala_sekolah} onChange={(html) => setForm({ ...form, sambutan_kepala_sekolah: html })} rows={5} placeholder="Tulis sambutan kepala sekolah..." />
           </Field>
         </section>
 
         <section className="bg-white border border-ink/10 rounded-lg p-5 space-y-3">
           <h2 className="font-display font-bold">Visi, Misi & Sejarah</h2>
           <Field label="Visi">
-            <textarea rows={2} className={inputCls} value={form.visi} onChange={(e) => setForm({ ...form, visi: e.target.value })} />
+            <RichTextEditor value={form.visi} onChange={(html) => setForm({ ...form, visi: html })} rows={2} placeholder="Tulis visi sekolah..." />
           </Field>
-          <Field label="Misi (satu poin per baris)">
-            <textarea rows={5} className={inputCls} value={form.misi} onChange={(e) => setForm({ ...form, misi: e.target.value })} />
+          <Field label="Misi (gunakan tombol daftar poin di toolbar)">
+            <RichTextEditor value={form.misi} onChange={(html) => setForm({ ...form, misi: html })} rows={5} placeholder="Tulis misi sekolah, gunakan tombol daftar poin..." />
           </Field>
           <Field label="Sejarah singkat">
-            <textarea rows={5} className={inputCls} value={form.sejarah} onChange={(e) => setForm({ ...form, sejarah: e.target.value })} />
+            <RichTextEditor value={form.sejarah} onChange={(html) => setForm({ ...form, sejarah: html })} rows={6} placeholder="Tulis sejarah sekolah..." />
+          </Field>
+          <Field label="Moto sekolah (tampil sebagai kutipan di halaman Sejarah)">
+            <input className={inputCls} placeholder="Contoh: Mendidik dengan hati, berprestasi dengan karakter." value={form.moto} onChange={(e) => setForm({ ...form, moto: e.target.value })} />
+          </Field>
+          <div className="grid sm:grid-cols-3 gap-3">
+            <Field label="Jenis institusi">
+              <input className={inputCls} placeholder="SMP Negeri" value={form.jenis_institusi} onChange={(e) => setForm({ ...form, jenis_institusi: e.target.value })} />
+            </Field>
+            <Field label="Tahun berdiri">
+              <input className={inputCls} placeholder="Contoh: 1985" value={form.tahun_berdiri} onChange={(e) => setForm({ ...form, tahun_berdiri: e.target.value })} />
+            </Field>
+            <Field label="Jenjang pendidikan">
+              <input className={inputCls} placeholder="Jenjang SMP" value={form.jenjang_pendidikan} onChange={(e) => setForm({ ...form, jenjang_pendidikan: e.target.value })} />
+            </Field>
+          </div>
+          <Field label="Video YouTube sejarah sekolah (URL, opsional)">
+            <input className={inputCls} placeholder="https://www.youtube.com/watch?v=..." value={form.sejarah_youtube_url} onChange={(e) => setForm({ ...form, sejarah_youtube_url: e.target.value })} />
+            <p className="text-xs text-ink/70 mt-1">Kalau diisi, video akan otomatis tampil (embed) di halaman Sejarah Sekolah.</p>
           </Field>
         </section>
 

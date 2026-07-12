@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../../lib/supabase'
-import { Target, Rocket, CheckCircle2, ArrowRight } from 'lucide-react'
+import { Target, Rocket, ArrowRight } from 'lucide-react'
 
 export default function VisiMisi() {
   const [p, setP] = useState(null)
@@ -10,8 +10,6 @@ export default function VisiMisi() {
     supabase.from('pengaturan_sekolah').select('visi, misi').eq('id', 1).single()
       .then(({ data }) => setP(data))
   }, [])
-
-  const misiList = (p?.misi || '').split('\n').map((s) => s.trim()).filter(Boolean)
 
   return (
     <div>
@@ -45,9 +43,11 @@ export default function VisiMisi() {
             </div>
           </div>
           <div className="p-6 sm:p-8">
-            <p className="text-ink leading-relaxed text-lg whitespace-pre-line">
-              {p?.visi || 'Visi sekolah belum diisi.'}
-            </p>
+            {p?.visi ? (
+              <div className="rich-content text-ink text-lg" dangerouslySetInnerHTML={{ __html: p.visi }} />
+            ) : (
+              <p className="text-ink-light italic">Visi sekolah belum diisi.</p>
+            )}
           </div>
         </div>
 
@@ -65,17 +65,8 @@ export default function VisiMisi() {
             </div>
           </div>
           <div className="p-6 sm:p-8">
-            {misiList.length > 0 ? (
-              <ul className="space-y-4">
-                {misiList.map((m, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-secondary/10 flex items-center justify-center shrink-0 mt-0.5">
-                      <CheckCircle2 className="w-4 h-4 text-secondary" />
-                    </div>
-                    <p className="text-ink leading-relaxed">{m}</p>
-                  </li>
-                ))}
-              </ul>
+            {p?.misi ? (
+              <div className="rich-content misi-content text-ink" dangerouslySetInnerHTML={{ __html: p.misi }} />
             ) : (
               <p className="text-ink-light italic">Misi sekolah belum diisi.</p>
             )}

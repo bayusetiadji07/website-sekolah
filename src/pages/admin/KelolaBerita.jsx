@@ -3,6 +3,7 @@ import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
 import { adminLinks } from './links'
 import { compressImage } from '../../lib/compressImage'
+import RichTextEditor from '../../components/RichTextEditor'
 
 const empty = { judul: '', isi: '', status: 'draft', foto_url: '' }
 
@@ -66,13 +67,11 @@ export default function KelolaBerita() {
           onChange={(e) => setForm({ ...form, judul: e.target.value })}
           className="w-full border border-ink/20 rounded px-3 py-2 text-sm"
         />
-        <textarea
+        <RichTextEditor
           placeholder="Isi berita"
-          required
-          rows={4}
+          rows={5}
           value={form.isi}
-          onChange={(e) => setForm({ ...form, isi: e.target.value })}
-          className="w-full border border-ink/20 rounded px-3 py-2 text-sm"
+          onChange={(html) => setForm({ ...form, isi: html })}
         />
         <div>
           <input type="file" accept="image/*" onChange={handleUpload} className="text-sm" />

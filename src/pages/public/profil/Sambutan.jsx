@@ -62,9 +62,11 @@ export default function Sambutan() {
               )}
               <div className="flex-1">
                 <Quote className="w-10 h-10 text-secondary/20 mb-3" />
-                <p className="text-ink leading-relaxed text-lg italic whitespace-pre-line">
-                  {p?.sambutan_kepala_sekolah || 'Sambutan kepala sekolah belum diisi.'}
-                </p>
+                {p?.sambutan_kepala_sekolah ? (
+                  <div className="rich-content text-ink text-lg italic" dangerouslySetInnerHTML={{ __html: p.sambutan_kepala_sekolah }} />
+                ) : (
+                  <p className="text-ink-light italic">Sambutan kepala sekolah belum diisi.</p>
+                )}
               </div>
             </div>
           </div>

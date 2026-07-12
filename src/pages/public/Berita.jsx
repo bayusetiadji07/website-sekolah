@@ -4,6 +4,7 @@ import { supabase } from '../../lib/supabase'
 import { SkeletonList } from '../../components/Skeleton'
 import ArticleCard from '../../components/ArticleCard'
 import { Newspaper, ArrowRight, Clock } from 'lucide-react'
+import { stripHtml } from '../../lib/richText'
 
 export default function Berita() {
   const [data, setData] = useState([])
@@ -69,7 +70,7 @@ export default function Berita() {
               category="Featured"
               date={formatDate(data[0]?.created_at)}
               title={data[0]?.judul}
-              excerpt={data[0]?.isi?.substring(0, 200)}
+              excerpt={stripHtml(data[0]?.isi).substring(0, 200)}
               to={`/berita/${data[0]?.id}`}
               badgeColor="secondary"
               className="max-w-4xl"
@@ -97,7 +98,7 @@ export default function Berita() {
                   category="Berita"
                   date={formatDate(b.created_at)}
                   title={b.judul}
-                  excerpt={b.isi}
+                  excerpt={stripHtml(b.isi)}
                   to={`/berita/${b.id}`}
                   badgeColor="primary"
                 />

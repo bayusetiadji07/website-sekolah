@@ -7,6 +7,7 @@ import HeroCarousel from '../../components/HeroCarousel'
 import ArticleCard from '../../components/ArticleCard'
 import VideoGallery from '../../components/VideoGallery'
 import { ChevronRight, ArrowRight, Users, Calendar, Play } from 'lucide-react'
+import { stripHtml } from '../../lib/richText'
 
 const sectionInfo = {
   profil: { to: '/profil/sejarah', label: 'Tentang Kami', desc: 'Sejarah, sambut, visi & misi sekolah', icon: 'BookOpen' },
@@ -186,7 +187,7 @@ export default function Home() {
               </div>
               <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-ink/5">
                 <p className="text-ink/80 italic leading-relaxed text-sm sm:text-base md:text-lg mb-4 line-clamp-4 sm:line-clamp-none">
-                  "{pengaturan.sambutan_kepala_sekolah}"
+                  "{stripHtml(pengaturan.sambutan_kepala_sekolah)}"
                 </p>
                 {pengaturan.nama_kepala_sekolah && (
                   <div className="border-t border-ink/10 pt-3 sm:pt-4">
@@ -294,7 +295,7 @@ export default function Home() {
                 category="Berita"
                 date={formatDate(b.created_at)}
                 title={b.judul}
-                excerpt={b.isi}
+                excerpt={stripHtml(b.isi)}
                 to={`/berita/${b.id}`}
                 badgeColor="primary"
               />
@@ -354,7 +355,7 @@ export default function Home() {
                     {p.judul}
                   </h3>
                   <p className="text-xs sm:text-sm text-ink-light leading-relaxed line-clamp-2 sm:line-clamp-3 mb-2 sm:mb-3">
-                    {p.isi}
+                    {stripHtml(p.isi)}
                   </p>
                   <span className="inline-flex items-center gap-1 text-xs font-medium text-secondary group-hover:gap-2 transition-all">
                     Lihat detail
