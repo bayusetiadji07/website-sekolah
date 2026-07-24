@@ -105,14 +105,14 @@ function drawTandaTangan(doc, y, pengaturanSekolah) {
   // jarak 4mm dari label "Kepala Sekolah" di atas & nama tercetak di bawah supaya tak menimpa teks.
   if (pengaturanSekolah?.stempel_sekolah_url) {
     try {
-      doc.addImage(pengaturanSekolah.stempel_sekolah_url, 'PNG', pageWidth - marginX - 55, y + 4, 28, 28)
+      doc.addImage(pengaturanSekolah.stempel_sekolah_url, 'PNG', pageWidth - marginX - 45, y + 3, 28, 28)
     } catch {
       // gambar gagal dimuat - lanjut tanpa stempel
     }
   }
   if (pengaturanSekolah?.ttd_kepala_sekolah_url) {
     try {
-      doc.addImage(pengaturanSekolah.ttd_kepala_sekolah_url, 'PNG', pageWidth - marginX - 40, y + 3, 22, 22)
+      doc.addImage(pengaturanSekolah.ttd_kepala_sekolah_url, 'PNG', pageWidth - marginX - 32, y + 1, 22, 22)
     } catch {
       // gambar gagal dimuat - lanjut tanpa TTD
     }
