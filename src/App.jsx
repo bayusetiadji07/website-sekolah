@@ -26,6 +26,9 @@ import Aplikasi from './pages/public/Aplikasi'
 import Kontak from './pages/public/Kontak'
 import Saran from './pages/public/Saran'
 import Login from './pages/Login'
+import SipasBeranda from './pages/public/sipas/SipasBeranda'
+import AjukanSurat from './pages/public/sipas/AjukanSurat'
+import CekStatus from './pages/public/sipas/CekStatus'
 
 import AdminDashboard from './pages/admin/Dashboard'
 import KelolaProfil from './pages/admin/KelolaProfil'
@@ -45,6 +48,8 @@ import KelolaUser from './pages/admin/KelolaUser'
 import KelolaMateriAdmin from './pages/admin/KelolaMateri'
 
 import KelolaMateriGuru from './pages/guru/KelolaMateri'
+
+import SipasDashboard from './pages/sipas/Dashboard'
 
 function PublicLayout({ children }) {
   const location = useLocation()
@@ -87,6 +92,12 @@ export default function App() {
       <Route path="/kontak" element={<PublicLayout><Kontak /></PublicLayout>} />
       <Route path="/saran" element={<PublicLayout><Saran /></PublicLayout>} />
       <Route path="/masuk" element={<PublicLayout><Login /></PublicLayout>} />
+
+      <Route path="/sipas" element={<PublicLayout><SipasBeranda /></PublicLayout>} />
+      <Route path="/sipas/ajukan" element={<PublicLayout><AjukanSurat /></PublicLayout>} />
+      <Route path="/sipas/status" element={<PublicLayout><CekStatus /></PublicLayout>} />
+      <Route path="/sipas/status/:noTiket" element={<PublicLayout><CekStatus /></PublicLayout>} />
+      <Route path="/sipas/dashboard" element={<ProtectedRoute allowedRoles={['admin', 'tu']}><SipasDashboard /></ProtectedRoute>} />
 
       <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
       <Route path="/admin/profil" element={<ProtectedRoute allowedRoles={['admin']}><KelolaProfil /></ProtectedRoute>} />

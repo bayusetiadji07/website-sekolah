@@ -32,6 +32,7 @@ export default function Login() {
     setLoading(false)
     if (profile?.role === 'admin') navigate('/admin')
     else if (profile?.role === 'guru') navigate('/guru')
+    else if (profile?.role === 'tu') navigate('/sipas/dashboard')
     else setError('Akun ini belum memiliki akses. Hubungi admin.')
   }
 

@@ -40,6 +40,7 @@ export default function KelolaUser() {
               <option value="">Belum ada peran</option>
               <option value="guru">Guru</option>
               <option value="admin">Admin</option>
+              <option value="tu">Staf TU (SIPAS)</option>
             </select>
           </div>
         ))}
