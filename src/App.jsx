@@ -50,6 +50,7 @@ import KelolaMateriAdmin from './pages/admin/KelolaMateri'
 import KelolaMateriGuru from './pages/guru/KelolaMateri'
 
 import SipasDashboard from './pages/sipas/Dashboard'
+import SipasLaporan from './pages/sipas/Laporan'
 
 function PublicLayout({ children }) {
   const location = useLocation()
@@ -98,6 +99,7 @@ export default function App() {
       <Route path="/sipas/status" element={<PublicLayout><CekStatus /></PublicLayout>} />
       <Route path="/sipas/status/:noTiket" element={<PublicLayout><CekStatus /></PublicLayout>} />
       <Route path="/sipas/dashboard" element={<ProtectedRoute allowedRoles={['admin', 'tu']}><SipasDashboard /></ProtectedRoute>} />
+      <Route path="/sipas/laporan" element={<ProtectedRoute allowedRoles={['admin', 'tu']}><SipasLaporan /></ProtectedRoute>} />
 
       <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
       <Route path="/admin/profil" element={<ProtectedRoute allowedRoles={['admin']}><KelolaProfil /></ProtectedRoute>} />
