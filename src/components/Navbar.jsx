@@ -97,6 +97,11 @@ export default function Navbar() {
               </Link>
             </NavDropdown>
 
+            <NavLink to="/materi" active={location.pathname === '/materi'}>
+              <BookOpen className="w-4 h-4 inline-block mr-1" />
+              Pembelajaran
+            </NavLink>
+
             <NavLink to="/aplikasi" active={location.pathname === '/aplikasi'}>
               Aplikasi
             </NavLink>
