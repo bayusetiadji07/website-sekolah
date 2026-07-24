@@ -63,20 +63,28 @@ function drawKopSurat(doc, pengaturanSekolah) {
     }
   }
 
-  doc.setFont('helvetica', 'bold')
+  // Sesuai template asli: nama pemda REGULER, nama sekolah TEBAL, alamat reguler,
+  // baris laman+email MIRING - bukan semua tebal.
+  doc.setFont('helvetica', 'normal')
   doc.setFontSize(11)
   doc.text('PEMERINTAH KABUPATEN SITUBONDO', pageWidth / 2, y, { align: 'center' })
   y += 6
+  doc.setFont('helvetica', 'bold')
   doc.setFontSize(14)
   doc.text(namaSekolah.toUpperCase(), pageWidth / 2, y, { align: 'center' })
   y += 5
   doc.setFont('helvetica', 'normal')
   doc.setFontSize(9.5)
-  const kontak = [alamat, email].filter(Boolean)
-  kontak.forEach((line) => {
-    doc.text(line, pageWidth / 2, y, { align: 'center' })
+  if (alamat) {
+    doc.text(alamat, pageWidth / 2, y, { align: 'center' })
     y += 4.5
-  })
+  }
+  doc.setFont('helvetica', 'italic')
+  const kontakLine = ['Laman www.smpn3besuki.sch.id', email ? `E-Mail : ${email}` : ''].filter(Boolean).join('  ')
+  if (kontakLine) {
+    doc.text(kontakLine, pageWidth / 2, y, { align: 'center' })
+    y += 4.5
+  }
 
   y += 2
   doc.setLineWidth(1)
