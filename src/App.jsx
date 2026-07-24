@@ -22,6 +22,7 @@ import GaleriKegiatan from './pages/public/galeri/GaleriKegiatan'
 import GaleriPrestasi from './pages/public/galeri/GaleriPrestasi'
 import GaleriVideo from './pages/public/galeri/GaleriVideo'
 import Materi from './pages/public/Materi'
+import Pembelajaran from './pages/public/Pembelajaran'
 import Aplikasi from './pages/public/Aplikasi'
 import Kontak from './pages/public/Kontak'
 import Saran from './pages/public/Saran'
@@ -89,6 +90,7 @@ export default function App() {
       <Route path="/galeri/prestasi" element={<PublicLayout><GaleriPrestasi /></PublicLayout>} />
       <Route path="/galeri/video" element={<PublicLayout><GaleriVideo /></PublicLayout>} />
       <Route path="/materi" element={<PublicLayout><Materi /></PublicLayout>} />
+      <Route path="/pembelajaran" element={<PublicLayout><Pembelajaran /></PublicLayout>} />
       <Route path="/aplikasi" element={<PublicLayout><Aplikasi /></PublicLayout>} />
       <Route path="/kontak" element={<PublicLayout><Kontak /></PublicLayout>} />
       <Route path="/saran" element={<PublicLayout><Saran /></PublicLayout>} />
