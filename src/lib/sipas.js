@@ -47,9 +47,17 @@ function drawKopSurat(doc, pengaturanSekolah) {
   const alamat = pengaturanSekolah?.alamat || ''
   const email = pengaturanSekolah?.email || ''
 
+  if (pengaturanSekolah?.logo_pemkab_url) {
+    try {
+      // logo Pemkab asli rasio ~75x106 (potret) - jaga rasio biar tak gepeng
+      doc.addImage(pengaturanSekolah.logo_pemkab_url, 'PNG', marginX, y - 9, 15.5, 22)
+    } catch {
+      // logo gagal dimuat (mis. CORS) - lanjut tanpa logo
+    }
+  }
   if (pengaturanSekolah?.logo_url) {
     try {
-      doc.addImage(pengaturanSekolah.logo_url, 'PNG', marginX, y - 8, 20, 20)
+      doc.addImage(pengaturanSekolah.logo_url, 'PNG', pageWidth - marginX - 20, y - 8, 20, 20)
     } catch {
       // logo gagal dimuat (mis. CORS) - lanjut tanpa logo
     }
@@ -89,20 +97,22 @@ function drawTandaTangan(doc, y, pengaturanSekolah) {
   doc.text(`Besuki, ${formatTanggal(new Date())}`, pageWidth - marginX, y, { align: 'right' })
   y += 6
   doc.text('Kepala Sekolah', pageWidth - marginX, y, { align: 'right' })
-  const namaY = y + 25
+  const namaY = y + 33
 
-  // Stempel (di bawah/kiri blok TTD) + tanda tangan (menimpa sebagian stempel) - ditaruh sebelum
-  // teks nama supaya nama tetap kebaca di atas gambar.
+  // Stempel (bawah-kiri, di belakang) + tanda tangan (menimpa sebagian stempel, atas-kanan) -
+  // ditaruh sebelum teks nama supaya nama tetap kebaca di atas gambar. Sumber ttd/stempel sama2
+  // kanvas persegi 500x500 dgn banyak ruang kosong transparan di sekitar goresan/cap. Diberi
+  // jarak 4mm dari label "Kepala Sekolah" di atas & nama tercetak di bawah supaya tak menimpa teks.
   if (pengaturanSekolah?.stempel_sekolah_url) {
     try {
-      doc.addImage(pengaturanSekolah.stempel_sekolah_url, 'PNG', pageWidth - marginX - 65, y + 2, 32, 32)
+      doc.addImage(pengaturanSekolah.stempel_sekolah_url, 'PNG', pageWidth - marginX - 55, y + 4, 28, 28)
     } catch {
       // gambar gagal dimuat - lanjut tanpa stempel
     }
   }
   if (pengaturanSekolah?.ttd_kepala_sekolah_url) {
     try {
-      doc.addImage(pengaturanSekolah.ttd_kepala_sekolah_url, 'PNG', pageWidth - marginX - 55, y + 6, 40, 20)
+      doc.addImage(pengaturanSekolah.ttd_kepala_sekolah_url, 'PNG', pageWidth - marginX - 40, y + 3, 22, 22)
     } catch {
       // gambar gagal dimuat - lanjut tanpa TTD
     }
