@@ -96,6 +96,69 @@ h1, h2, h3, h4, .font-display {
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* ===== Navbar: efek aliran warna saat disentuh mouse ===== */
+.navbar-flow {
+  position: relative;
+}
+
+/* Lapisan cahaya warna yang mengalir dari kanan ke kiri saat hover */
+.navbar-flow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(249, 115, 22, 0.28) 38%,
+    rgba(250, 204, 21, 0.24) 50%,
+    rgba(56, 189, 248, 0.24) 62%,
+    transparent 80%
+  );
+  background-size: 250% 100%;
+  background-position: 200% 0;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.navbar-flow:hover::after {
+  opacity: 1;
+  animation: navbarFlow 3.5s linear infinite;
+}
+
+@keyframes navbarFlow {
+  from { background-position: 200% 0; }
+  to { background-position: -100% 0; }
+}
+
+/* Garis warna tipis di dasar navbar, ikut mengalir saat hover */
+.navbar-flow-line {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--color-secondary),
+    var(--color-sunny),
+    var(--color-sky),
+    var(--color-grape),
+    var(--color-secondary)
+  );
+  background-size: 300% 100%;
+  opacity: 0.45;
+  transition: opacity 0.35s ease;
+}
+
+.navbar-flow:hover .navbar-flow-line {
+  opacity: 1;
+  animation: navbarFlow 3.5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar-flow:hover::after,
+  .navbar-flow:hover .navbar-flow-line {
+    animation: none;
+  }
+}
+
 /* Glass card - elevated */
 .glass-card {
   background: rgba(255, 255, 255, 0.85);

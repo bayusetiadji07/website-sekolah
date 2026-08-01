@@ -32,8 +32,8 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="glass-dark text-white sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+      <header className="glass-dark navbar-flow text-white sticky top-0 z-40">
+        <div className="relative z-10 max-w-7xl mx-auto px-5 h-16 flex items-center justify-between gap-5 xl:gap-8">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 font-display text-lg font-bold text-white shrink-0 group">
             {logoUrl ? (
@@ -48,7 +48,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden xl:flex items-center gap-1">
             <NavLink to="/" active={location.pathname === '/'}>
               Beranda
             </NavLink>
@@ -113,7 +113,7 @@ export default function Navbar() {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden xl:flex items-center gap-3">
             <Link
               to="/saran"
               className="btn btn-secondary text-sm py-2"
@@ -126,7 +126,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             type="button"
-            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors"
+            className="xl:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? 'Tutup menu' : 'Buka menu'}
           >
@@ -134,13 +134,13 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Bottom Border */}
-        <div className="lg:hidden h-px bg-white/10" />
+        {/* Garis warna di dasar navbar (ikut mengalir saat hover) */}
+        <div className="navbar-flow-line relative z-10" />
       </header>
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50 xl:hidden">
           {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
