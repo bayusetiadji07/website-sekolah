@@ -31,7 +31,6 @@ export default function Login() {
 
     setLoading(false)
     if (profile?.role === 'admin') navigate('/admin')
-    else if (profile?.role === 'guru') navigate('/guru')
     else if (profile?.role === 'tu') navigate('/sipas/dashboard')
     else setError('Akun ini belum memiliki akses. Hubungi admin.')
   }
@@ -43,7 +42,7 @@ export default function Login() {
         className="bg-white border border-ink/10 rounded-lg shadow-sm p-8 w-full max-w-sm"
       >
         <h1 className="font-display text-2xl font-bold mb-1">Masuk</h1>
-        <p className="text-sm text-ink/70 mb-6">Untuk admin dan guru sekolah</p>
+        <p className="text-sm text-ink/70 mb-6">Untuk admin sekolah</p>
 
         {error && (
           <p className="text-sm text-rust bg-rust/10 border border-rust/30 rounded px-3 py-2 mb-4">

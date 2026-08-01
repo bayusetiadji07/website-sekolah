@@ -12,21 +12,20 @@ const quickActions = [
   { to: '/admin/aplikasi', label: 'Atur Aplikasi Sekolah' },
   { to: '/admin/profil', label: 'Atur Profil & Kontak' },
   { to: '/admin/tampilan', label: 'Atur Tampilan Website' },
-  { to: '/admin/pengguna', label: 'Kelola Guru' },
+  { to: '/admin/pengguna', label: 'Kelola Pengguna' },
 ]
 
 export default function AdminDashboard() {
-  const [counts, setCounts] = useState({ pengumuman: 0, berita: 0, galeri: 0, pembelajaran: 0, aplikasi: 0, guru: 0 })
+  const [counts, setCounts] = useState({ pengumuman: 0, berita: 0, galeri: 0, pembelajaran: 0, aplikasi: 0 })
 
   useEffect(() => {
     async function load() {
-      const [p, b, gal, pem, ap, g] = await Promise.all([
+      const [p, b, gal, pem, ap] = await Promise.all([
         supabase.from('pengumuman').select('id', { count: 'exact', head: true }),
         supabase.from('berita_kegiatan').select('id', { count: 'exact', head: true }),
         supabase.from('galeri').select('id', { count: 'exact', head: true }),
         supabase.from('pembelajaran_links').select('id', { count: 'exact', head: true }),
         supabase.from('app_links').select('id', { count: 'exact', head: true }),
-        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'guru'),
       ])
       setCounts({
         pengumuman: p.count || 0,
@@ -34,7 +33,6 @@ export default function AdminDashboard() {
         galeri: gal.count || 0,
         pembelajaran: pem.count || 0,
         aplikasi: ap.count || 0,
-        guru: g.count || 0,
       })
     }
     load()
@@ -50,7 +48,6 @@ export default function AdminDashboard() {
           { label: 'Galeri Foto', value: counts.galeri },
           { label: 'Pembelajaran', value: counts.pembelajaran },
           { label: 'Aplikasi Sekolah', value: counts.aplikasi },
-          { label: 'Guru Aktif', value: counts.guru },
         ].map((c) => (
           <div key={c.label} className="bg-white border border-ink/10 rounded-lg p-5">
             <p className="text-2xl font-display font-bold">{c.value}</p>

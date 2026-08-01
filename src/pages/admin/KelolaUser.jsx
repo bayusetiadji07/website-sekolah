@@ -20,7 +20,7 @@ export default function KelolaUser() {
 
   return (
     <DashboardLayout links={adminLinks} title="Admin">
-      <h1 className="font-display text-2xl font-bold mb-2">Kelola Guru & Pengguna</h1>
+      <h1 className="font-display text-2xl font-bold mb-2">Kelola Pengguna</h1>
       <p className="text-sm text-ink/70 mb-6">
         Akun baru dibuat lewat Supabase Authentication (undangan email), lalu tetapkan perannya di sini.
       </p>
@@ -38,7 +38,6 @@ export default function KelolaUser() {
               className="border border-ink/20 rounded px-3 py-1.5 text-sm"
             >
               <option value="">Belum ada peran</option>
-              <option value="guru">Guru</option>
               <option value="admin">Admin</option>
               <option value="tu">Staf TU (SIPAS)</option>
             </select>

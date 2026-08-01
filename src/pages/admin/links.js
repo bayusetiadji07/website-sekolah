@@ -12,5 +12,5 @@ export const adminLinks = [
   { to: '/admin/aplikasi', label: 'Aplikasi Sekolah' },
   { to: '/admin/saran', label: 'Kotak Saran' },
   { to: '/admin/tampilan', label: 'Pengaturan Tampilan' },
-  { to: '/admin/pengguna', label: 'Kelola Guru' },
+  { to: '/admin/pengguna', label: 'Kelola Pengguna' },
 ]

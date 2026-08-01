@@ -21,7 +21,6 @@ import GaleriOverview from './pages/public/galeri/GaleriOverview'
 import GaleriKegiatan from './pages/public/galeri/GaleriKegiatan'
 import GaleriPrestasi from './pages/public/galeri/GaleriPrestasi'
 import GaleriVideo from './pages/public/galeri/GaleriVideo'
-import Materi from './pages/public/Materi'
 import Pembelajaran from './pages/public/Pembelajaran'
 import Aplikasi from './pages/public/Aplikasi'
 import Kontak from './pages/public/Kontak'
@@ -46,9 +45,6 @@ import KelolaAplikasi from './pages/admin/KelolaAplikasi'
 import KelolaPembelajaran from './pages/admin/KelolaPembelajaran'
 import KelolaSaran from './pages/admin/KelolaSaran'
 import KelolaUser from './pages/admin/KelolaUser'
-import KelolaMateriAdmin from './pages/admin/KelolaMateri'
-
-import KelolaMateriGuru from './pages/guru/KelolaMateri'
 
 import SipasDashboard from './pages/sipas/Dashboard'
 import SipasLaporan from './pages/sipas/Laporan'
@@ -89,7 +85,6 @@ export default function App() {
       <Route path="/galeri/kegiatan" element={<PublicLayout><GaleriKegiatan /></PublicLayout>} />
       <Route path="/galeri/prestasi" element={<PublicLayout><GaleriPrestasi /></PublicLayout>} />
       <Route path="/galeri/video" element={<PublicLayout><GaleriVideo /></PublicLayout>} />
-      <Route path="/materi" element={<PublicLayout><Materi /></PublicLayout>} />
       <Route path="/pembelajaran" element={<PublicLayout><Pembelajaran /></PublicLayout>} />
       <Route path="/aplikasi" element={<PublicLayout><Aplikasi /></PublicLayout>} />
       <Route path="/kontak" element={<PublicLayout><Kontak /></PublicLayout>} />
@@ -114,13 +109,10 @@ export default function App() {
       <Route path="/admin/agenda" element={<ProtectedRoute allowedRoles={['admin']}><KelolaAgenda /></ProtectedRoute>} />
       <Route path="/admin/galeri" element={<ProtectedRoute allowedRoles={['admin']}><KelolaGaleri /></ProtectedRoute>} />
       <Route path="/admin/video" element={<ProtectedRoute allowedRoles={['admin']}><KelolaVideo /></ProtectedRoute>} />
-      <Route path="/admin/materi" element={<ProtectedRoute allowedRoles={['admin']}><KelolaMateriAdmin /></ProtectedRoute>} />
       <Route path="/admin/aplikasi" element={<ProtectedRoute allowedRoles={['admin']}><KelolaAplikasi /></ProtectedRoute>} />
       <Route path="/admin/pembelajaran" element={<ProtectedRoute allowedRoles={['admin']}><KelolaPembelajaran /></ProtectedRoute>} />
       <Route path="/admin/saran" element={<ProtectedRoute allowedRoles={['admin']}><KelolaSaran /></ProtectedRoute>} />
       <Route path="/admin/pengguna" element={<ProtectedRoute allowedRoles={['admin']}><KelolaUser /></ProtectedRoute>} />
-
-      <Route path="/guru" element={<ProtectedRoute allowedRoles={['guru']}><KelolaMateriGuru /></ProtectedRoute>} />
     </Routes>
     </>
   )

@@ -5,7 +5,7 @@ const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
-  const [profile, setProfile] = useState(null) // { role: 'admin' | 'guru', nama, mapel }
+  const [profile, setProfile] = useState(null) // { role: 'admin' | 'tu', nama, mapel }
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
