@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ProtectedRoute from './components/ProtectedRoute'
 import FaviconUpdater from './components/FaviconUpdater'
+import CursorSparkle from './components/CursorSparkle'
 import { recordVisitOnce } from './lib/visitorCounter'
 
 import Home from './pages/public/Home'
@@ -68,6 +69,7 @@ export default function App() {
   return (
     <>
     <FaviconUpdater />
+    <CursorSparkle />
     <Routes>
       <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
       <Route path="/profil" element={<Navigate to="/profil/sejarah" replace />} />
