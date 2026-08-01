@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../../lib/supabase'
 import { Quote, GraduationCap } from 'lucide-react'
+import { markDropCap } from '../../../lib/richText'
 
 export default function Sambutan() {
   const [p, setP] = useState(null)
@@ -12,6 +13,11 @@ export default function Sambutan() {
       .eq('id', 1).single()
       .then(({ data }) => setP(data))
   }, [])
+
+  const isiSambutan = useMemo(
+    () => markDropCap(p?.sambutan_kepala_sekolah),
+    [p?.sambutan_kepala_sekolah]
+  )
 
   return (
     <div>
@@ -31,49 +37,60 @@ export default function Sambutan() {
       </div>
 
       <div className="max-w-3xl mx-auto px-5 py-12">
-        {/* Principal Card */}
-        <div className="card overflow-hidden mb-8">
-          {/* Header with gradient */}
-          <div className="bg-gradient-to-br from-primary to-primary-light p-6 text-white">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
-                <GraduationCap className="w-8 h-8" />
-              </div>
-              <div>
-                <p className="text-white/70 text-sm">Kepala Sekolah</p>
-                <h2 className="font-display font-bold text-xl">
-                  {p?.nama_kepala_sekolah || 'Nama Kepala Sekolah'}
-                </h2>
-              </div>
-            </div>
+        <article className="card overflow-hidden">
+          {/* Pita gradien sebagai latar potret */}
+          <div className="bg-gradient-to-br from-primary to-primary-light px-6 pt-8 pb-24 text-center text-white">
+            <p className="text-xs uppercase tracking-[0.2em] text-white/70">Sambutan</p>
+            <h2 className="font-display font-bold text-2xl mt-1">Kepala Sekolah</h2>
           </div>
 
-          {/* Photo and Quote */}
-          <div className="p-6 sm:p-8">
-            <div className="flex flex-col sm:flex-row gap-6">
-              {p?.foto_kepala_sekolah_url && (
-                <div className="shrink-0">
-                  <img
-                    src={p.foto_kepala_sekolah_url}
-                    alt={p?.nama_kepala_sekolah}
-                    className="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl object-cover shadow-lg mx-auto sm:mx-0"
-                  />
-                </div>
-              )}
-              <div className="flex-1">
-                <Quote className="w-10 h-10 text-secondary/20 mb-3" />
-                {p?.sambutan_kepala_sekolah ? (
-                  <div className="rich-content text-ink text-lg italic" dangerouslySetInnerHTML={{ __html: p.sambutan_kepala_sekolah }} />
-                ) : (
-                  <p className="text-ink-light italic">Sambutan kepala sekolah belum diisi.</p>
-                )}
+          {/* Potret resmi, rasio 4:5, menumpang di batas pita */}
+          <div className="px-6 sm:px-10 -mt-20 text-center">
+            {p?.foto_kepala_sekolah_url ? (
+              <img
+                src={p.foto_kepala_sekolah_url}
+                alt={p?.nama_kepala_sekolah}
+                className="w-44 sm:w-52 aspect-[4/5] object-cover rounded-2xl mx-auto shadow-xl ring-4 ring-white"
+              />
+            ) : (
+              <div className="w-44 sm:w-52 aspect-[4/5] rounded-2xl mx-auto shadow-xl ring-4 ring-white bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                <GraduationCap className="w-14 h-14 text-white" />
               </div>
-            </div>
+            )}
+            <p className="font-display font-bold text-xl text-ink mt-5">
+              {p?.nama_kepala_sekolah || 'Nama Kepala Sekolah'}
+            </p>
+            <p className="text-sm text-ink-light">Kepala Sekolah SMP Negeri 3 Besuki</p>
+            <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-gradient-to-r from-secondary to-sunny" />
           </div>
-        </div>
+
+          {/* Isi sambutan: selebar penuh, tegak, dengan drop cap */}
+          <div className="px-6 sm:px-10 pt-8 pb-6">
+            <Quote className="w-9 h-9 text-secondary/25 mb-2" />
+            {p?.sambutan_kepala_sekolah ? (
+              <div
+                className="rich-content sambutan-body"
+                dangerouslySetInnerHTML={{ __html: isiSambutan }}
+              />
+            ) : (
+              <p className="text-ink-light italic">Sambutan kepala sekolah belum diisi.</p>
+            )}
+          </div>
+
+          {/* Blok tanda tangan ala surat resmi */}
+          {p?.nama_kepala_sekolah && (
+            <div className="px-6 sm:px-10 pb-8 pt-5 border-t border-ink/10 text-right">
+              <p className="text-sm text-ink-light">Hormat kami,</p>
+              <p className="font-display font-bold text-lg text-primary mt-1">
+                {p.nama_kepala_sekolah}
+              </p>
+              <p className="text-sm text-ink-light">Kepala Sekolah</p>
+            </div>
+          )}
+        </article>
 
         {/* Quote Box */}
-        <div className="quote-box text-center">
+        <div className="quote-box text-center mt-10">
           <p className="text-lg font-medium">
             "Pendidikan adalah senjata paling ampuh yang bisa kamu gunakan untuk mengubah dunia."
           </p>

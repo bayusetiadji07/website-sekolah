@@ -7,7 +7,7 @@ import HeroCarousel from '../../components/HeroCarousel'
 import ArticleCard from '../../components/ArticleCard'
 import VideoGallery from '../../components/VideoGallery'
 import { ChevronRight, ArrowRight, Users, Calendar, Play } from 'lucide-react'
-import { stripHtml } from '../../lib/richText'
+import { stripHtml, excerpt } from '../../lib/richText'
 
 const sectionInfo = {
   profil: { to: '/profil/sejarah', label: 'Tentang Kami', desc: 'Sejarah, sambut, visi & misi sekolah', icon: 'BookOpen' },
@@ -165,14 +165,14 @@ export default function Home() {
                   <img
                     src={pengaturan.foto_kepala_sekolah_url}
                     alt={pengaturan.nama_kepala_sekolah}
-                    className="w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-2xl object-cover shadow-2xl ring-4 ring-secondary/20"
+                    className="w-52 sm:w-60 md:w-64 lg:w-72 aspect-[4/5] rounded-2xl object-cover shadow-2xl ring-4 ring-secondary/20"
                   />
                   <div className="absolute -bottom-2 sm:-bottom-3 -right-2 sm:-right-3 bg-secondary text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl shadow-lg">
                     <p className="font-display font-bold text-xs sm:text-sm">Kepala Sekolah</p>
                   </div>
                 </div>
               ) : (
-                <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-2xl bg-gradient-to-br from-primary to-secondary shadow-2xl flex items-center justify-center">
+                <div className="w-52 sm:w-60 md:w-64 lg:w-72 aspect-[4/5] rounded-2xl bg-gradient-to-br from-primary to-secondary shadow-2xl flex items-center justify-center">
                   <span className="font-display font-bold text-5xl sm:text-6xl text-white">KS</span>
                 </div>
               )}
@@ -186,8 +186,9 @@ export default function Home() {
                 <h2 className="text-lg sm:text-xl font-display font-bold text-ink">Sambutan</h2>
               </div>
               <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-ink/5">
-                <p className="text-ink/80 italic leading-relaxed text-sm sm:text-base md:text-lg mb-4 line-clamp-4 sm:line-clamp-none">
-                  "{stripHtml(pengaturan.sambutan_kepala_sekolah)}"
+                {/* Beranda hanya menampilkan penggoda; naskah lengkap ada di halaman Sambutan */}
+                <p className="text-ink/80 italic leading-relaxed text-sm sm:text-base md:text-lg mb-4">
+                  "{excerpt(pengaturan.sambutan_kepala_sekolah, 230)}"
                 </p>
                 {pengaturan.nama_kepala_sekolah && (
                   <div className="border-t border-ink/10 pt-3 sm:pt-4">
