@@ -10,9 +10,14 @@ export default function KelolaVideo() {
   const [form, setForm] = useState({ judul: '', video_url: '', deskripsi: '', aktif: true, urutan: 0 })
   const [editingId, setEditingId] = useState(null)
   const [previewThumbnail, setPreviewThumbnail] = useState(null)
+  const [pesan, setPesan] = useState(null) // { tipe: 'sukses' | 'galat', teks: string }
 
   async function load() {
-    const { data } = await supabase.from('galeri_video').select('*').order('urutan').order('created_at', { ascending: false })
+    const { data, error } = await supabase.from('galeri_video').select('*').order('urutan').order('created_at', { ascending: false })
+    if (error) {
+      setPesan({ tipe: 'galat', teks: `Gagal memuat daftar video: ${error.message}` })
+      return
+    }
     setItems(data || [])
   }
 
@@ -34,21 +39,29 @@ export default function KelolaVideo() {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    const dataToSave = { ...form }
+    setPesan(null)
 
-    // Generate thumbnail from YouTube URL if not provided
-    if (form.video_url && !form.thumbnail_url) {
-      const videoId = getYouTubeVideoId(form.video_url)
-      if (videoId) {
-        dataToSave.thumbnail_url = getYouTubeThumbnail(videoId)
-      }
+    const videoId = getYouTubeVideoId(form.video_url)
+    if (!videoId) {
+      setPesan({
+        tipe: 'galat',
+        teks: 'Link YouTube tidak dikenali. Pastikan formatnya seperti https://www.youtube.com/watch?v=... atau https://youtu.be/...',
+      })
+      return
     }
 
-    if (editingId) {
-      await supabase.from('galeri_video').update(dataToSave).eq('id', editingId)
-    } else {
-      await supabase.from('galeri_video').insert(dataToSave)
+    const dataToSave = { ...form, thumbnail_url: form.thumbnail_url || getYouTubeThumbnail(videoId) }
+
+    const { error } = editingId
+      ? await supabase.from('galeri_video').update(dataToSave).eq('id', editingId)
+      : await supabase.from('galeri_video').insert(dataToSave)
+
+    if (error) {
+      setPesan({ tipe: 'galat', teks: `Gagal menyimpan: ${error.message}` })
+      return
     }
+
+    setPesan({ tipe: 'sukses', teks: editingId ? 'Perubahan tersimpan.' : 'Video berhasil ditambahkan.' })
     setForm({ judul: '', video_url: '', deskripsi: '', aktif: true, urutan: 0 })
     setEditingId(null)
     setPreviewThumbnail(null)
@@ -56,13 +69,21 @@ export default function KelolaVideo() {
   }
 
   async function toggleAktif(item) {
-    await supabase.from('galeri_video').update({ aktif: !item.aktif }).eq('id', item.id)
+    const { error } = await supabase.from('galeri_video').update({ aktif: !item.aktif }).eq('id', item.id)
+    if (error) {
+      setPesan({ tipe: 'galat', teks: `Gagal mengubah status: ${error.message}` })
+      return
+    }
     load()
   }
 
   async function handleDelete(id) {
     if (!confirm('Hapus video ini?')) return
-    await supabase.from('galeri_video').delete().eq('id', id)
+    const { error } = await supabase.from('galeri_video').delete().eq('id', id)
+    if (error) {
+      setPesan({ tipe: 'galat', teks: `Gagal menghapus: ${error.message}` })
+      return
+    }
     load()
   }
 
@@ -90,6 +111,18 @@ export default function KelolaVideo() {
   return (
     <DashboardLayout links={adminLinks} title="Admin">
       <h1 className="font-display text-2xl font-bold mb-6">Kelola Galeri Video</h1>
+
+      {pesan && (
+        <div
+          className={`mb-5 rounded-lg border px-4 py-3 text-sm ${
+            pesan.tipe === 'galat'
+              ? 'border-red-300 bg-red-50 text-red-700'
+              : 'border-green-300 bg-green-50 text-green-700'
+          }`}
+        >
+          {pesan.teks}
+        </div>
+      )}
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="bg-white border border-ink/10 rounded-lg p-5 mb-8 space-y-4">

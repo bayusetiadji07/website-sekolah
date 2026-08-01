@@ -1,25 +1,30 @@
 import { useState } from 'react'
-import { Play, X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Play, X } from 'lucide-react'
+
+// Pola URL YouTube yang dikenali. Mencakup tautan bagikan (youtu.be),
+// tautan biasa (watch?v=), Shorts, siaran langsung (live), embed, dan /v/.
+const YOUTUBE_PATTERNS = [
+  // watch?v=xxx — juga bila v bukan parameter pertama, mis. ?app=desktop&v=xxx
+  /youtube\.com\/watch\?(?:[^#]*&)?v=([a-zA-Z0-9_-]{11})/,
+  /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+  /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+  /youtube\.com\/v\/([a-zA-Z0-9_-]{11})/,
+  /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+  /youtube\.com\/live\/([a-zA-Z0-9_-]{11})/,
+]
 
 // Extract YouTube video ID from various URL formats
 export function getYouTubeVideoId(url) {
   if (!url) return null
+  const clean = url.trim()
 
-  // Handle youtube.com/watch?v=xxx
-  const watchMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/)
-  if (watchMatch) return watchMatch[1]
+  for (const pattern of YOUTUBE_PATTERNS) {
+    const match = clean.match(pattern)
+    if (match) return match[1]
+  }
 
-  // Handle youtube.com/embed/xxx
-  const embedMatch = url.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/)
-  if (embedMatch) return embedMatch[1]
-
-  // Handle youtube.com/v/xxx
-  const vMatch = url.match(/youtube\.com\/v\/([a-zA-Z0-9_-]{11})/)
-  if (vMatch) return vMatch[1]
-
-  // Handle youtube.com/shorts/xxx
-  const shortsMatch = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/)
-  if (shortsMatch) return shortsMatch[1]
+  // Admin menempelkan ID videonya saja
+  if (/^[a-zA-Z0-9_-]{11}$/.test(clean)) return clean
 
   return null
 }
