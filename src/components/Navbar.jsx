@@ -102,11 +102,6 @@ export default function Navbar() {
               Pembelajaran
             </NavLink>
 
-            <NavLink to="/materi" active={location.pathname === '/materi'}>
-              <BookOpen className="w-4 h-4 inline-block mr-1" />
-              Materi
-            </NavLink>
-
             <NavLink to="/aplikasi" active={location.pathname === '/aplikasi'}>
               Aplikasi
             </NavLink>
@@ -223,10 +218,6 @@ export default function Navbar() {
 
               <MobileNavLink to="/pembelajaran" icon={<BookOpen className="w-5 h-5" />}>
                 Pembelajaran
-              </MobileNavLink>
-
-              <MobileNavLink to="/materi" icon={<BookOpen className="w-5 h-5" />}>
-                Materi Pembelajaran
               </MobileNavLink>
 
               <MobileNavLink to="/aplikasi" icon={<BookOpen className="w-5 h-5" />}>
