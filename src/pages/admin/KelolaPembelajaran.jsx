@@ -3,6 +3,7 @@ import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
 import { adminLinks } from './links'
 import { compressImage } from '../../lib/compressImage'
+import { normalizeUrl } from '../../lib/url'
 
 const empty = { nama_guru: '', mapel: '', url: '', deskripsi: '', ikon_url: '', aktif: true, urutan: 0 }
 
@@ -35,10 +36,12 @@ export default function KelolaPembelajaran() {
 
   async function handleSubmit(e) {
     e.preventDefault()
+    // Lengkapi https:// bila admin mengetik alamat tanpa protokol
+    const payload = { ...form, url: normalizeUrl(form.url) }
     if (editingId) {
-      await supabase.from('pembelajaran_links').update(form).eq('id', editingId)
+      await supabase.from('pembelajaran_links').update(payload).eq('id', editingId)
     } else {
-      await supabase.from('pembelajaran_links').insert(form)
+      await supabase.from('pembelajaran_links').insert(payload)
     }
     setForm(empty)
     setEditingId(null)

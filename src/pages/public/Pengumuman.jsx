@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { SkeletonList } from '../../components/Skeleton'
 import { Megaphone, Clock, Pin, Calendar, Download, ExternalLink, FileText } from 'lucide-react'
+import { normalizeUrl } from '../../lib/url'
 
 export default function Pengumuman() {
   const [data, setData] = useState([])
@@ -110,7 +111,7 @@ export default function Pengumuman() {
                     <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-ink/10">
                       {p.link_url && (
                         <a
-                          href={p.link_url}
+                          href={normalizeUrl(p.link_url)}
                           target="_blank"
                           rel="noreferrer"
                           className="inline-flex items-center gap-2 bg-secondary text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-secondary-dark transition-colors"
@@ -191,7 +192,7 @@ export default function Pengumuman() {
                     <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-ink/5">
                       {p.link_url && (
                         <a
-                          href={p.link_url}
+                          href={normalizeUrl(p.link_url)}
                           target="_blank"
                           rel="noreferrer"
                           className="inline-flex items-center gap-2 text-sm font-medium text-secondary hover:text-secondary-dark transition-colors"

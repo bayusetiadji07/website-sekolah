@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../../lib/supabase'
 import { Handshake, ArrowRight, ExternalLink } from 'lucide-react'
+import { normalizeUrl } from '../../../lib/url'
 
 export default function Kemitraan() {
   const [data, setData] = useState([])
@@ -79,7 +80,7 @@ export default function Kemitraan() {
                     )}
                     {k.url && (
                       <a
-                        href={k.url}
+                        href={normalizeUrl(k.url)}
                         target="_blank"
                         rel="noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary-dark mt-2 font-medium"
@@ -93,7 +94,7 @@ export default function Kemitraan() {
               )
 
               return k.url ? (
-                <a key={k.id} href={k.url} target="_blank" rel="noreferrer" className="block">
+                <a key={k.id} href={normalizeUrl(k.url)} target="_blank" rel="noreferrer" className="block">
                   {card}
                 </a>
               ) : (

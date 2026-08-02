@@ -3,6 +3,7 @@ import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
 import { adminLinks } from './links'
 import { compressImage } from '../../lib/compressImage'
+import { normalizeUrl } from '../../lib/url'
 
 const empty = { nama: '', deskripsi: '', logo_url: '', url: '', aktif: true, urutan: 0 }
 
@@ -35,10 +36,12 @@ export default function KelolaKemitraan() {
 
   async function handleSubmit(e) {
     e.preventDefault()
+    // Lengkapi https:// bila admin mengetik alamat tanpa protokol
+    const payload = { ...form, url: normalizeUrl(form.url) }
     if (editingId) {
-      await supabase.from('kemitraan').update(form).eq('id', editingId)
+      await supabase.from('kemitraan').update(payload).eq('id', editingId)
     } else {
-      await supabase.from('kemitraan').insert(form)
+      await supabase.from('kemitraan').insert(payload)
     }
     setForm(empty)
     setEditingId(null)

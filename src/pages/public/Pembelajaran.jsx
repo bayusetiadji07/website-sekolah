@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { ExternalLink, GraduationCap, ArrowRight } from 'lucide-react'
+import { normalizeUrl } from '../../lib/url'
 
 export default function Pembelajaran() {
   const [data, setData] = useState([])
@@ -69,7 +70,7 @@ export default function Pembelajaran() {
             {data.map((p) => (
               <a
                 key={p.id}
-                href={p.url}
+                href={normalizeUrl(p.url)}
                 target="_blank"
                 rel="noreferrer"
                 className="card p-5 flex items-center gap-4 group"

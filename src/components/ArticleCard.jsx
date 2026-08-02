@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, Calendar, User, Download, ExternalLink } from 'lucide-react'
+import { normalizeUrl } from '../lib/url'
 
 /**
  * Card untuk berita, pengumuman, dll.
@@ -102,7 +103,7 @@ export default function ArticleCard({
 
   // Tentukan link untuk card wrapper dan "Baca Selengkapnya"
   const cardWrapper = readMoreLink ? (
-    <a href={linkUrl || to} target={linkUrl ? "_blank" : undefined} rel={linkUrl ? "noreferrer" : undefined} className={`card group h-full flex flex-col ${className}`}>
+    <a href={linkUrl ? normalizeUrl(linkUrl) : to} target={linkUrl ? "_blank" : undefined} rel={linkUrl ? "noreferrer" : undefined} className={`card group h-full flex flex-col ${className}`}>
       {content}
     </a>
   ) : (
