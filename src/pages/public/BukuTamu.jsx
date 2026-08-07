@@ -16,6 +16,7 @@ const empty = {
 
 export default function BukuTamu() {
   const fotoInputRef = useRef(null)
+  const fotoBoxRef = useRef(null)
   const [form, setForm] = useState(empty)
   const [stafList, setStafList] = useState([])
   const [foto, setFoto] = useState(null)
@@ -68,6 +69,11 @@ export default function BukuTamu() {
 
     if (!/^(\+62|0)[\d\-\s]{8,15}$/.test(form.no_hp.trim())) {
       setError('Format nomor HP tidak valid. Contoh: 081234567890')
+      return
+    }
+    if (!foto) {
+      setError('Foto wajib diisi. Silakan buka kamera dan ambil foto terlebih dahulu.')
+      fotoBoxRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       return
     }
 
@@ -246,8 +252,10 @@ export default function BukuTamu() {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-ink mb-1.5">Foto (opsional)</label>
+              <div ref={fotoBoxRef}>
+                <label className="block text-sm font-medium text-ink mb-1.5">
+                  Foto <span className="text-secondary">*</span>
+                </label>
                 {foto ? (
                   <div className="flex items-center gap-4">
                     <img
@@ -265,7 +273,7 @@ export default function BukuTamu() {
                         onClick={hapusFoto}
                         className="text-xs text-secondary font-medium mt-1 inline-flex items-center gap-1"
                       >
-                        <Trash2 className="w-3 h-3" /> Hapus foto
+                        <Trash2 className="w-3 h-3" /> Ambil ulang foto
                       </button>
                     </div>
                   </div>
@@ -279,20 +287,21 @@ export default function BukuTamu() {
                     ) : (
                       <>
                         <Camera className="w-4 h-4" />
-                        Ambil / Unggah Foto
+                        Buka Kamera & Ambil Foto
                       </>
                     )}
                     <input
                       ref={fotoInputRef}
                       type="file"
                       accept="image/*"
+                      capture="user"
                       onChange={handleFoto}
                       className="hidden"
                     />
                   </label>
                 )}
                 <p className="text-xs text-ink-light mt-1.5">
-                  Bisa langsung memakai kamera HP Anda. Foto otomatis dikompres agar hemat kuota.
+                  Tombol di atas langsung membuka kamera HP Anda. Foto otomatis dikompres agar hemat kuota.
                 </p>
               </div>
 
