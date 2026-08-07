@@ -11,8 +11,20 @@ export const JENIS_SURAT = [
   { value: 'koreksi_ijazah', label: 'Surat Keterangan Kesalahan Penulisan Ijazah' },
 ]
 
+// Surat Tugas terpisah krn pemohonnya guru (bukan siswa) - dipilih via halaman ajukan sendiri
+export const JENIS_SURAT_GURU = [
+  { value: 'surat_tugas', label: 'Surat Tugas' },
+]
+
 export function jenisSuratLabel(value) {
-  return JENIS_SURAT.find((j) => j.value === value)?.label || value
+  return [...JENIS_SURAT, ...JENIS_SURAT_GURU].find((j) => j.value === value)?.label || value
+}
+
+// Prefiks nomor surat dinas beda per jenis (contoh dari format resmi sekolah)
+export function nomorSuratSaran(jenisSurat) {
+  const year = new Date().getFullYear()
+  const prefix = jenisSurat === 'surat_tugas' ? '800.1.11.1' : '400.3.5.6'
+  return `${prefix}/    /431.301.3.9/${year}`
 }
 
 const STATUS_META = {
@@ -160,7 +172,12 @@ export async function generateSuratPdf(pengajuan, pengaturanSekolah, formatTempl
   const namaSekolah = pengaturanSekolah?.nama_sekolah || 'SMP Negeri 3 Besuki'
   let y = drawKopSurat(doc, pengaturanSekolah)
 
-  const judul = pengajuan.jenis_surat === 'aktif' ? 'SURAT KETERANGAN' : jenisSuratLabel(pengajuan.jenis_surat).toUpperCase()
+  const judul =
+    pengajuan.jenis_surat === 'aktif'
+      ? 'SURAT KETERANGAN'
+      : pengajuan.jenis_surat === 'surat_tugas'
+        ? 'SURAT TUGAS'
+        : jenisSuratLabel(pengajuan.jenis_surat).toUpperCase()
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(13)
   doc.text(judul, pageWidth / 2, y, { align: 'center' })
@@ -203,6 +220,35 @@ export async function generateSuratPdf(pengajuan, pengaturanSekolah, formatTempl
     y += penutupLines.length * 6 + 4
 
     const demikian = 'Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.'
+    const demikianLines = doc.splitTextToSize(demikian, pageWidth - marginX * 2)
+    doc.text(demikianLines, marginX, y, { lineHeightFactor: 1.6 })
+    y += demikianLines.length * 6 + 14
+  } else if (pengajuan.jenis_surat === 'surat_tugas') {
+    const pembuka = `Berdasarkan surat dari ${pengajuan.dasar_surat_dari || '-'} Nomor : ${pengajuan.dasar_surat_nomor || '-'} tanggal ${pengajuan.dasar_surat_tanggal || '-'} perihal ${pengajuan.dasar_surat_perihal || '-'}, maka kepala sekolah memberi tugas kepada :`
+    const pembukaLines = doc.splitTextToSize(pembuka, pageWidth - marginX * 2)
+    doc.text(pembukaLines, marginX, y, { lineHeightFactor: 1.6 })
+    y += pembukaLines.length * 6 + 6
+
+    const dataRows = [
+      ['Nama', pengajuan.nama_guru || '-'],
+      ['N I P', pengajuan.nip || '-'],
+      ['Pangkat / Gol', pengajuan.pangkat_golongan || '-'],
+      ['Jabatan', pengajuan.jabatan || '-'],
+      ['Unit Kerja', pengajuan.unit_kerja || '-'],
+      ['Hari/Tanggal', pengajuan.hari_tanggal_tugas || '-'],
+      ['Tempat', pengajuan.tempat_tugas || '-'],
+    ]
+    const labelX = marginX + 5
+    const colonX = marginX + 45
+    dataRows.forEach(([label, value]) => {
+      const valueLines = doc.splitTextToSize(`: ${value}`, pageWidth - marginX - colonX)
+      doc.text(label, labelX, y)
+      doc.text(valueLines, colonX, y)
+      y += Math.max(6, valueLines.length * 6)
+    })
+    y += 6
+
+    const demikian = 'Demikian surat tugas ini dibuat untuk dapat dipergunakan sebagaimana mestinya.'
     const demikianLines = doc.splitTextToSize(demikian, pageWidth - marginX * 2)
     doc.text(demikianLines, marginX, y, { lineHeightFactor: 1.6 })
     y += demikianLines.length * 6 + 14

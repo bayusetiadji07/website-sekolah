@@ -29,6 +29,7 @@ import Saran from './pages/public/Saran'
 import Login from './pages/Login'
 import SipasBeranda from './pages/public/sipas/SipasBeranda'
 import AjukanSurat from './pages/public/sipas/AjukanSurat'
+import AjukanSuratTugas from './pages/public/sipas/AjukanSuratTugas'
 import CekStatus from './pages/public/sipas/CekStatus'
 import BukuTamu from './pages/public/BukuTamu'
 
@@ -99,6 +100,7 @@ export default function App() {
 
       <Route path="/sipas" element={<PublicLayout><SipasBeranda /></PublicLayout>} />
       <Route path="/sipas/ajukan" element={<PublicLayout><AjukanSurat /></PublicLayout>} />
+      <Route path="/sipas/ajukan-tugas" element={<PublicLayout><AjukanSuratTugas /></PublicLayout>} />
       <Route path="/sipas/status" element={<PublicLayout><CekStatus /></PublicLayout>} />
       <Route path="/sipas/status/:noTiket" element={<PublicLayout><CekStatus /></PublicLayout>} />
       <Route path="/sipas/dashboard" element={<ProtectedRoute allowedRoles={['admin', 'tu']}><SipasDashboard /></ProtectedRoute>} />

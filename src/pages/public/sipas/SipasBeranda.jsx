@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import { FileText, Search, ClipboardList, ArrowRight, Clock } from 'lucide-react'
-import { JENIS_SURAT } from '../../../lib/sipas'
+import { FileText, Search, ClipboardList, ArrowRight, Clock, Briefcase } from 'lucide-react'
+import { JENIS_SURAT, JENIS_SURAT_GURU } from '../../../lib/sipas'
 
 export default function SipasBeranda() {
   return (
@@ -18,20 +18,35 @@ export default function SipasBeranda() {
       </div>
 
       <div className="max-w-4xl mx-auto px-5 py-12">
-        <div className="grid sm:grid-cols-2 gap-5 mb-10">
+        <div className="grid sm:grid-cols-2 gap-5 mb-5">
           <Link to="/sipas/ajukan" className="card p-6 flex items-start gap-4 group">
             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
               <FileText className="w-6 h-6 text-primary" />
             </div>
             <div>
               <h2 className="font-display font-bold text-lg mb-1 flex items-center gap-2">
-                Ajukan Surat
+                Ajukan Surat Siswa
                 <ArrowRight className="w-4 h-4 text-ink-light" />
               </h2>
-              <p className="text-sm text-ink-light">Isi formulir pengajuan surat sesuai kebutuhan.</p>
+              <p className="text-sm text-ink-light">Untuk siswa: isi formulir pengajuan surat sesuai kebutuhan.</p>
             </div>
           </Link>
 
+          <Link to="/sipas/ajukan-tugas" className="card p-6 flex items-start gap-4 group">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+              <Briefcase className="w-6 h-6 text-primary" />
+            </div>
+            <div>
+              <h2 className="font-display font-bold text-lg mb-1 flex items-center gap-2">
+                Ajukan Surat Tugas
+                <ArrowRight className="w-4 h-4 text-ink-light" />
+              </h2>
+              <p className="text-sm text-ink-light">Untuk guru/tendik: ajukan surat tugas penugasan.</p>
+            </div>
+          </Link>
+        </div>
+
+        <div className="mb-10">
           <Link to="/sipas/status" className="card p-6 flex items-start gap-4 group">
             <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
               <Search className="w-6 h-6 text-secondary" />
@@ -53,8 +68,18 @@ export default function SipasBeranda() {
             </div>
             <div>
               <h2 className="font-display font-bold text-base mb-1">Jenis Surat yang Dilayani</h2>
-              <ul className="text-sm text-ink-light grid sm:grid-cols-2 gap-x-6 gap-y-1 mt-2">
+              <p className="text-xs text-ink-light uppercase tracking-wide font-semibold mt-3 mb-1">Untuk Siswa</p>
+              <ul className="text-sm text-ink-light grid sm:grid-cols-2 gap-x-6 gap-y-1">
                 {JENIS_SURAT.map((j) => (
+                  <li key={j.value} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
+                    {j.label}
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs text-ink-light uppercase tracking-wide font-semibold mt-4 mb-1">Untuk Guru/Tendik</p>
+              <ul className="text-sm text-ink-light grid sm:grid-cols-2 gap-x-6 gap-y-1">
+                {JENIS_SURAT_GURU.map((j) => (
                   <li key={j.value} className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
                     {j.label}

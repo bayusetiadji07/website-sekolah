@@ -89,14 +89,29 @@ export default function CekStatus() {
             </div>
 
             <dl className="grid sm:grid-cols-2 gap-4 text-sm mb-6">
-              <div>
-                <dt className="text-ink-light">Nama Siswa</dt>
-                <dd className="font-medium">{data.nama_siswa}</dd>
-              </div>
-              <div>
-                <dt className="text-ink-light">Kelas</dt>
-                <dd className="font-medium">{data.kelas || '-'}</dd>
-              </div>
+              {data.jenis_pemohon === 'guru' ? (
+                <>
+                  <div>
+                    <dt className="text-ink-light">Nama</dt>
+                    <dd className="font-medium">{data.nama_guru}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-ink-light">Jabatan</dt>
+                    <dd className="font-medium">{data.jabatan || '-'}</dd>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <dt className="text-ink-light">Nama Siswa</dt>
+                    <dd className="font-medium">{data.nama_siswa}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-ink-light">Kelas</dt>
+                    <dd className="font-medium">{data.kelas || '-'}</dd>
+                  </div>
+                </>
+              )}
               <div>
                 <dt className="text-ink-light">Jenis Surat</dt>
                 <dd className="font-medium">{jenisSuratLabel(data.jenis_surat)}</dd>

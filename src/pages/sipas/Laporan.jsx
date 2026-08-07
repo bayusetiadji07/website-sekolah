@@ -1,7 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
-import { JENIS_SURAT, jenisSuratLabel, statusMeta } from '../../lib/sipas'
+import { JENIS_SURAT, JENIS_SURAT_GURU, jenisSuratLabel, statusMeta } from '../../lib/sipas'
+
+function pemohonName(item) {
+  return item.jenis_pemohon === 'guru' ? item.nama_guru : item.nama_siswa
+}
+
+function pemohonSub(item) {
+  return item.jenis_pemohon === 'guru' ? (item.jabatan || 'Guru/Tendik') : item.kelas
+}
 import { sipasLinks } from './links'
 import { Download, FileDown } from 'lucide-react'
 
@@ -49,7 +57,7 @@ export default function SipasLaporan() {
       if (filter.kelas && i.kelas !== filter.kelas) return false
       if (filter.cari) {
         const q = filter.cari.toLowerCase()
-        const match = (i.nama_siswa || '').toLowerCase().includes(q) || (i.no_tiket || '').toLowerCase().includes(q)
+        const match = (pemohonName(i) || '').toLowerCase().includes(q) || (i.no_tiket || '').toLowerCase().includes(q)
         if (!match) return false
       }
       return true
@@ -69,12 +77,13 @@ export default function SipasLaporan() {
   }
 
   function exportCsv() {
-    const header = ['No Tiket', 'Tanggal Ajuan', 'Nama Siswa', 'Kelas', 'Jenis Surat', 'Status', 'Nomor Surat', 'Keperluan', 'No Telepon', 'Catatan Admin']
+    const header = ['No Tiket', 'Tanggal Ajuan', 'Jenis Pemohon', 'Nama', 'Kelas/Jabatan', 'Jenis Surat', 'Status', 'Nomor Surat', 'Keperluan', 'No Telepon', 'Catatan Admin']
     const rows = filtered.map((i) => [
       i.no_tiket,
       formatTanggal(i.tanggal_ajuan),
-      i.nama_siswa,
-      i.kelas,
+      i.jenis_pemohon === 'guru' ? 'Guru/Tendik' : 'Siswa',
+      pemohonName(i),
+      pemohonSub(i),
       jenisSuratLabel(i.jenis_surat),
       statusMeta(i.status).label,
       i.nomor_surat || '',
@@ -97,7 +106,7 @@ export default function SipasLaporan() {
       <div className="flex items-start justify-between gap-4 mb-2 flex-wrap">
         <div>
           <h1 className="font-display text-2xl font-bold mb-2">Laporan Riwayat Pengajuan</h1>
-          <p className="text-sm text-ink/70">Riwayat lengkap seluruh surat yang pernah diajukan siswa.</p>
+          <p className="text-sm text-ink/70">Riwayat lengkap seluruh surat yang pernah diajukan siswa maupun guru/tendik.</p>
         </div>
         <button onClick={exportCsv} className="btn btn-secondary text-sm py-2 shrink-0">
           <FileDown className="w-4 h-4" />
@@ -142,7 +151,7 @@ export default function SipasLaporan() {
             <label className="block text-xs text-ink/60 mb-1">Jenis Surat</label>
             <select value={filter.jenisSurat} onChange={(e) => setFilter({ ...filter, jenisSurat: e.target.value })} className={inputCls}>
               <option value="">Semua</option>
-              {JENIS_SURAT.map((j) => (
+              {[...JENIS_SURAT, ...JENIS_SURAT_GURU].map((j) => (
                 <option key={j.value} value={j.value}>{j.label}</option>
               ))}
             </select>
@@ -185,8 +194,8 @@ export default function SipasLaporan() {
               <tr className="border-b border-ink/10 text-left text-xs text-ink/60 uppercase">
                 <th className="px-3 py-2 whitespace-nowrap">No. Tiket</th>
                 <th className="px-3 py-2 whitespace-nowrap">Tanggal</th>
-                <th className="px-3 py-2 whitespace-nowrap">Nama Siswa</th>
-                <th className="px-3 py-2 whitespace-nowrap">Kelas</th>
+                <th className="px-3 py-2 whitespace-nowrap">Nama</th>
+                <th className="px-3 py-2 whitespace-nowrap">Kelas/Jabatan</th>
                 <th className="px-3 py-2 whitespace-nowrap">Jenis Surat</th>
                 <th className="px-3 py-2 whitespace-nowrap">Status</th>
                 <th className="px-3 py-2 whitespace-nowrap">Surat</th>
@@ -197,8 +206,8 @@ export default function SipasLaporan() {
                 <tr key={i.id} className="border-b border-ink/5 last:border-0">
                   <td className="px-3 py-2 font-mono text-xs whitespace-nowrap">{i.no_tiket}</td>
                   <td className="px-3 py-2 whitespace-nowrap">{formatTanggal(i.tanggal_ajuan)}</td>
-                  <td className="px-3 py-2">{i.nama_siswa}</td>
-                  <td className="px-3 py-2 whitespace-nowrap">{i.kelas}</td>
+                  <td className="px-3 py-2">{pemohonName(i)}</td>
+                  <td className="px-3 py-2 whitespace-nowrap">{pemohonSub(i)}</td>
                   <td className="px-3 py-2">{jenisSuratLabel(i.jenis_surat)}</td>
                   <td className="px-3 py-2 whitespace-nowrap">
                     <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${statusMeta(i.status).className}`}>

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
-import { jenisSuratLabel, statusMeta, generateSuratPdf } from '../../lib/sipas'
+import { jenisSuratLabel, statusMeta, generateSuratPdf, nomorSuratSaran } from '../../lib/sipas'
 import { sipasLinks } from './links'
 import { FileCheck, FileX, FileDown, Loader2 } from 'lucide-react'
 
@@ -46,7 +46,7 @@ export default function SipasDashboard() {
   function selectItem(item) {
     setSelectedId(item.id)
     setCatatan(item.catatan_admin || '')
-    setNomorSurat(item.nomor_surat || `400.3.5.6/    /431.301.3.9/${new Date().getFullYear()}`)
+    setNomorSurat(item.nomor_surat || nomorSuratSaran(item.jenis_surat))
     setMsg('')
   }
 
@@ -104,7 +104,7 @@ export default function SipasDashboard() {
   return (
     <DashboardLayout links={sipasLinks} title="SIPAS">
       <h1 className="font-display text-2xl font-bold mb-2">Antrean Pengajuan Surat</h1>
-      <p className="text-sm text-ink/70 mb-6">Kelola pengajuan surat dari siswa: proses, setujui, atau tolak.</p>
+      <p className="text-sm text-ink/70 mb-6">Kelola pengajuan surat dari siswa maupun guru/tendik: proses, setujui, atau tolak.</p>
 
       <div className="flex gap-2 mb-5 flex-wrap">
         {TABS.map((t) => (
@@ -131,7 +131,11 @@ export default function SipasDashboard() {
             >
               <div className="min-w-0">
                 <p className="font-mono text-xs text-ink/60">{item.no_tiket}</p>
-                <p className="font-medium truncate">{item.nama_siswa} · {item.kelas}</p>
+                {item.jenis_pemohon === 'guru' ? (
+                  <p className="font-medium truncate">{item.nama_guru} <span className="text-ink/50 text-xs font-normal">(Guru/Tendik)</span></p>
+                ) : (
+                  <p className="font-medium truncate">{item.nama_siswa} · {item.kelas}</p>
+                )}
                 <p className="text-sm text-ink/70 truncate">{jenisSuratLabel(item.jenis_surat)}</p>
               </div>
               <span className={`text-xs font-semibold px-3 py-1.5 rounded-full shrink-0 ${statusMeta(item.status).className}`}>
@@ -141,7 +145,19 @@ export default function SipasDashboard() {
 
             {selectedId === item.id && (
               <div className="border-t border-ink/10 p-4 bg-paper/50 space-y-3">
-                <p className="text-sm text-ink/80 whitespace-pre-line"><span className="text-ink/60">Keperluan: </span>{item.keperluan || '-'}</p>
+                {item.jenis_pemohon === 'guru' ? (
+                  <div className="text-sm text-ink/80 space-y-1">
+                    <p><span className="text-ink/60">NIP: </span>{item.nip || '-'}</p>
+                    <p><span className="text-ink/60">Pangkat/Gol: </span>{item.pangkat_golongan || '-'}</p>
+                    <p><span className="text-ink/60">Jabatan: </span>{item.jabatan || '-'}</p>
+                    <p><span className="text-ink/60">Unit Kerja: </span>{item.unit_kerja || '-'}</p>
+                    <p><span className="text-ink/60">Dasar Surat: </span>{item.dasar_surat_dari} No. {item.dasar_surat_nomor} tgl {item.dasar_surat_tanggal} perihal {item.dasar_surat_perihal}</p>
+                    <p><span className="text-ink/60">Hari/Tanggal Tugas: </span>{item.hari_tanggal_tugas || '-'}</p>
+                    <p><span className="text-ink/60">Tempat Tugas: </span>{item.tempat_tugas || '-'}</p>
+                  </div>
+                ) : (
+                  <p className="text-sm text-ink/80 whitespace-pre-line"><span className="text-ink/60">Keperluan: </span>{item.keperluan || '-'}</p>
+                )}
                 {item.no_telepon && (
                   <p className="text-sm text-ink/80">
                     <span className="text-ink/60">Telepon/WA: </span>
