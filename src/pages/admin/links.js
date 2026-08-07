@@ -13,4 +13,7 @@ export const adminLinks = [
   { to: '/admin/saran', label: 'Kotak Saran' },
   { to: '/admin/tampilan', label: 'Pengaturan Tampilan' },
   { to: '/admin/pengguna', label: 'Kelola Pengguna' },
+  // Layanan TU — admin ikut punya akses, jadi disediakan pintu masuknya di sini
+  { to: '/buku-tamu/dashboard', label: 'Buku Tamu' },
+  { to: '/sipas/dashboard', label: 'SIPAS — Surat' },
 ]
