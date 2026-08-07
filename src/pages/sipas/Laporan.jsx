@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import DashboardLayout from '../../components/DashboardLayout'
 import { supabase } from '../../lib/supabase'
+import { useAuth } from '../../context/AuthContext'
 import { JENIS_SURAT, JENIS_SURAT_GURU, jenisSuratLabel, statusMeta } from '../../lib/sipas'
+import { sipasLinks } from './links'
+import { Download, FileDown, Trash2 } from 'lucide-react'
+
+const inputCls = 'border border-ink/15 rounded-lg px-3 py-2 text-sm w-full'
+
+const emptyFilter = { dari: '', sampai: '', jenisSurat: '', status: '', kelas: '', cari: '' }
 
 function pemohonName(item) {
   return item.jenis_pemohon === 'guru' ? item.nama_guru : item.nama_siswa
@@ -10,12 +17,6 @@ function pemohonName(item) {
 function pemohonSub(item) {
   return item.jenis_pemohon === 'guru' ? (item.jabatan || 'Guru/Tendik') : item.kelas
 }
-import { sipasLinks } from './links'
-import { Download, FileDown } from 'lucide-react'
-
-const inputCls = 'border border-ink/15 rounded-lg px-3 py-2 text-sm w-full'
-
-const emptyFilter = { dari: '', sampai: '', jenisSurat: '', status: '', kelas: '', cari: '' }
 
 function formatTanggal(value) {
   if (!value) return '-'
@@ -28,19 +29,21 @@ function toCsvValue(value) {
 }
 
 export default function SipasLaporan() {
+  const { profile } = useAuth()
+  const isAdmin = profile?.role === 'admin'
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState(emptyFilter)
+  const [deletingId, setDeletingId] = useState(null)
+
+  async function load() {
+    const { data } = await supabase.from('pengajuan').select('*').order('tanggal_ajuan', { ascending: false })
+    setItems(data || [])
+    setLoading(false)
+  }
 
   useEffect(() => {
-    supabase
-      .from('pengajuan')
-      .select('*')
-      .order('tanggal_ajuan', { ascending: false })
-      .then(({ data }) => {
-        setItems(data || [])
-        setLoading(false)
-      })
+    load()
   }, [])
 
   const kelasOptions = useMemo(
@@ -65,11 +68,23 @@ export default function SipasLaporan() {
   }, [items, filter])
 
   const summary = useMemo(() => {
-    const base = { total: filtered.length, diajukan: 0, diproses: 0, selesai: 0, ditolak: 0 }
+    const base = { total: filtered.length, diajukan: 0, diproses: 0, selesai: 0, ditolak: 0, siswa: 0, guru: 0 }
     filtered.forEach((i) => {
       if (base[i.status] !== undefined) base[i.status] += 1
+      if (i.jenis_pemohon === 'guru') base.guru += 1
+      else base.siswa += 1
     })
     return base
+  }, [filtered])
+
+  const perJenisSurat = useMemo(() => {
+    const counts = {}
+    filtered.forEach((i) => {
+      counts[i.jenis_surat] = (counts[i.jenis_surat] || 0) + 1
+    })
+    return Object.entries(counts)
+      .map(([jenis, count]) => ({ jenis, label: jenisSuratLabel(jenis), count }))
+      .sort((a, b) => b.count - a.count)
   }, [filtered])
 
   function resetFilter() {
@@ -99,6 +114,21 @@ export default function SipasLaporan() {
     a.download = `laporan-sipas-${new Date().toISOString().slice(0, 10)}.csv`
     a.click()
     URL.revokeObjectURL(url)
+  }
+
+  async function handleDelete(item) {
+    if (!confirm(`Hapus pengajuan ${item.no_tiket} secara permanen? Tindakan ini tidak bisa dibatalkan.`)) return
+    setDeletingId(item.id)
+    try {
+      if (item.file_url) {
+        const path = item.file_url.split('/media/')[1]
+        if (path) await supabase.storage.from('media').remove([path])
+      }
+      await supabase.from('pengajuan').delete().eq('id', item.id)
+      await load()
+    } finally {
+      setDeletingId(null)
+    }
   }
 
   return (
@@ -134,6 +164,37 @@ export default function SipasLaporan() {
         <div className="bg-red-50 border border-red-100 rounded-lg p-3 text-center">
           <p className="text-xl font-bold text-red-700">{summary.ditolak}</p>
           <p className="text-xs text-ink/60">Ditolak</p>
+        </div>
+      </div>
+
+      <div className="grid sm:grid-cols-2 gap-3 mb-5">
+        <div className="bg-white border border-ink/10 rounded-lg p-4">
+          <p className="text-xs font-semibold uppercase tracking-wide text-ink/50 mb-3">Pemohon</p>
+          <div className="flex gap-6">
+            <div>
+              <p className="text-lg font-bold">{summary.siswa}</p>
+              <p className="text-xs text-ink/60">Siswa</p>
+            </div>
+            <div>
+              <p className="text-lg font-bold">{summary.guru}</p>
+              <p className="text-xs text-ink/60">Guru/Tendik</p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white border border-ink/10 rounded-lg p-4">
+          <p className="text-xs font-semibold uppercase tracking-wide text-ink/50 mb-3">Per Jenis Surat</p>
+          {perJenisSurat.length === 0 ? (
+            <p className="text-xs text-ink/50">Belum ada data.</p>
+          ) : (
+            <div className="space-y-1.5">
+              {perJenisSurat.map((j) => (
+                <div key={j.jenis} className="flex items-center justify-between gap-3 text-sm">
+                  <span className="text-ink/70 truncate">{j.label}</span>
+                  <span className="font-semibold shrink-0">{j.count}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -199,6 +260,7 @@ export default function SipasLaporan() {
                 <th className="px-3 py-2 whitespace-nowrap">Jenis Surat</th>
                 <th className="px-3 py-2 whitespace-nowrap">Status</th>
                 <th className="px-3 py-2 whitespace-nowrap">Surat</th>
+                {isAdmin && <th className="px-3 py-2 whitespace-nowrap">Aksi</th>}
               </tr>
             </thead>
             <tbody>
@@ -224,6 +286,18 @@ export default function SipasLaporan() {
                       <span className="text-ink/40">-</span>
                     )}
                   </td>
+                  {isAdmin && (
+                    <td className="px-3 py-2 whitespace-nowrap">
+                      <button
+                        onClick={() => handleDelete(i)}
+                        disabled={deletingId === i.id}
+                        className="text-rust underline text-xs inline-flex items-center gap-1 disabled:opacity-50"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        {deletingId === i.id ? 'Menghapus...' : 'Hapus'}
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

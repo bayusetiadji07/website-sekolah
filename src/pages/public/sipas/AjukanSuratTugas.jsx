@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../../../lib/supabase'
 import { Send, CheckCircle, Briefcase, ArrowRight } from 'lucide-react'
 
 const empty = {
-  guru_id: '',
+  nama_guru: '',
   nip: '',
   pangkat_golongan: '',
   jabatan: '',
@@ -21,25 +21,9 @@ const empty = {
 export default function AjukanSuratTugas() {
   const navigate = useNavigate()
   const [form, setForm] = useState(empty)
-  const [guruList, setGuruList] = useState([])
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
   const [noTiket, setNoTiket] = useState('')
-
-  useEffect(() => {
-    supabase.rpc('sipas_daftar_guru').then(({ data }) => setGuruList(data || []))
-  }, [])
-
-  function handleGuruChange(guruId) {
-    const guru = guruList.find((g) => g.id === guruId)
-    setForm((f) => ({
-      ...f,
-      guru_id: guruId,
-      nip: guru?.nip || '',
-      pangkat_golongan: guru?.pangkat_golongan || '',
-      jabatan: guru?.jabatan || '',
-    }))
-  }
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -47,7 +31,7 @@ export default function AjukanSuratTugas() {
     setError('')
 
     const { data: generatedNoTiket, error: rpcError } = await supabase.rpc('sipas_ajukan_surat_tugas', {
-      p_guru_id: form.guru_id,
+      p_nama_guru: form.nama_guru.trim(),
       p_nip: form.nip.trim(),
       p_pangkat_golongan: form.pangkat_golongan.trim(),
       p_jabatan: form.jabatan.trim(),
@@ -119,7 +103,7 @@ export default function AjukanSuratTugas() {
                 <div>
                   <h2 className="font-display font-bold text-base mb-1">Data Penugasan</h2>
                   <p className="text-sm text-ink-light">
-                    Pilih nama Anda, lalu lengkapi data dasar penugasan sesuai surat/undangan yang diterima.
+                    Isi nama Anda, lalu lengkapi data dasar penugasan sesuai surat/undangan yang diterima.
                   </p>
                 </div>
               </div>
@@ -130,12 +114,7 @@ export default function AjukanSuratTugas() {
                 <label className="block text-sm font-medium text-ink mb-1.5">
                   Nama Guru/Tendik <span className="text-secondary">*</span>
                 </label>
-                <select required value={form.guru_id} onChange={(e) => handleGuruChange(e.target.value)} className={inputCls}>
-                  <option value="">Pilih nama</option>
-                  {guruList.map((g) => (
-                    <option key={g.id} value={g.id}>{g.nama_guru}</option>
-                  ))}
-                </select>
+                <input type="text" required value={form.nama_guru} onChange={(e) => setForm({ ...form, nama_guru: e.target.value })} className={inputCls} placeholder="Nama lengkap beserta gelar" />
               </div>
 
               <div className="grid sm:grid-cols-2 gap-5">
