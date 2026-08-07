@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { KATEGORI_KUNJUNGAN, kompresFoto, fmtUkuran, fmtJam } from '../../lib/bukuTamu'
-import { BookUser, Camera, CheckCircle, Loader2, LogIn, Trash2 } from 'lucide-react'
+import { Camera, CheckCircle, Loader2, LogIn, Trash2 } from 'lucide-react'
+import logoBukuTamu from '../../assets/logo-buku-tamu.png'
 
 const empty = {
   nama: '',
@@ -133,9 +134,11 @@ export default function BukuTamu() {
           <>
             <div className="glass-card rounded-2xl p-6 mb-8">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <BookUser className="w-5 h-5 text-primary" />
-                </div>
+                <img
+                  src={logoBukuTamu}
+                  alt="Logo Buku Tamu Digital"
+                  className="w-14 h-14 rounded-xl bg-white object-contain p-1 shrink-0"
+                />
                 <div>
                   <h2 className="font-display font-bold text-base mb-1">Isi Data Kunjungan</h2>
                   <p className="text-sm text-ink-light">
