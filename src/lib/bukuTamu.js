@@ -145,3 +145,84 @@ export function unduhCsv(namaBerkas, rows, kolom = KOLOM_TAMU) {
   a.click()
   URL.revokeObjectURL(a.href)
 }
+
+/* ---------- Cetak massal PDF (Laporan Bulanan & Laporan Tahunan) ---------- */
+
+export const NAMA_BULAN = [
+  'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+  'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember',
+]
+
+/**
+ * Cetak laporan buku tamu ke PDF (ringkasan + tabel kategori + tabel utama,
+ * berpaginasi otomatis lewat jspdf-autotable). Dipakai untuk laporan bulanan
+ * (daftar per-tamu) maupun tahunan (rekap per-bulan).
+ */
+export async function cetakPdfLaporan({ subjudul, periode, ringkasan, kategoriRows, tabelHead, tabelBody, namaFile, dicetakOleh }) {
+  const [{ default: jsPDF }] = await Promise.all([
+    import('jspdf'),
+    import('jspdf-autotable'),
+  ])
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' })
+  const pageWidth = doc.internal.pageSize.getWidth()
+  const pageHeight = doc.internal.pageSize.getHeight()
+
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(13)
+  doc.text('SMP NEGERI 3 BESUKI', pageWidth / 2, 16, { align: 'center' })
+  doc.setFontSize(11)
+  doc.text('Laporan Buku Tamu Digital', pageWidth / 2, 22, { align: 'center' })
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(9.5)
+  doc.text(`${subjudul} — ${periode}`, pageWidth / 2, 28, { align: 'center' })
+  doc.setDrawColor(180)
+  doc.line(14, 32, pageWidth - 14, 32)
+
+  let y = 39
+  doc.setFontSize(9)
+  ringkasan.forEach((r, i) => {
+    const x = 14 + (i % 2) * 95
+    doc.setFont('helvetica', 'bold')
+    doc.text(String(r.value), x, y)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(110)
+    doc.text(r.label, x, y + 4.2)
+    doc.setTextColor(20)
+    if (i % 2 === 1) y += 12
+  })
+  if (ringkasan.length % 2 === 1) y += 12
+  y += 2
+
+  if (kategoriRows?.length) {
+    doc.autoTable({
+      startY: y,
+      head: [['Kategori Kunjungan', 'Jumlah']],
+      body: kategoriRows,
+      theme: 'plain',
+      styles: { fontSize: 8.5, cellPadding: 1.3 },
+      headStyles: { fontStyle: 'bold', fillColor: [246, 242, 232], textColor: [36, 31, 22] },
+      margin: { left: 14 },
+      tableWidth: 95,
+    })
+    y = doc.lastAutoTable.finalY + 7
+  }
+
+  doc.autoTable({
+    startY: y,
+    head: [tabelHead],
+    body: tabelBody,
+    styles: { fontSize: 7.3, cellPadding: 1.6, overflow: 'linebreak' },
+    headStyles: { fillColor: [25, 51, 86], textColor: 255, fontStyle: 'bold' },
+    alternateRowStyles: { fillColor: [246, 242, 232] },
+    margin: { left: 14, right: 14, bottom: 16 },
+    didDrawPage: () => {
+      doc.setFontSize(7.3)
+      doc.setTextColor(140)
+      doc.text(`Dicetak ${fmtTanggalJam(new Date().toISOString())} WIB oleh ${dicetakOleh || '-'}`, 14, pageHeight - 8)
+      doc.text(`Hal. ${doc.internal.getCurrentPageInfo().pageNumber}`, pageWidth - 14, pageHeight - 8, { align: 'right' })
+      doc.setTextColor(20)
+    },
+  })
+
+  doc.save(namaFile)
+}

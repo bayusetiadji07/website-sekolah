@@ -54,6 +54,7 @@ import SipasLaporan from './pages/sipas/Laporan'
 
 import BukuTamuDashboard from './pages/bukutamu/Dashboard'
 import BukuTamuLaporan from './pages/bukutamu/Laporan'
+import BukuTamuLaporanTahunan from './pages/bukutamu/LaporanTahunan'
 
 function PublicLayout({ children }) {
   const location = useLocation()
@@ -109,6 +110,7 @@ export default function App() {
       <Route path="/buku-tamu" element={<PublicLayout><BukuTamu /></PublicLayout>} />
       <Route path="/buku-tamu/dashboard" element={<ProtectedRoute allowedRoles={['admin', 'tu']}><BukuTamuDashboard /></ProtectedRoute>} />
       <Route path="/buku-tamu/laporan" element={<ProtectedRoute allowedRoles={['admin', 'tu']}><BukuTamuLaporan /></ProtectedRoute>} />
+      <Route path="/buku-tamu/laporan-tahunan" element={<ProtectedRoute allowedRoles={['admin', 'tu']}><BukuTamuLaporanTahunan /></ProtectedRoute>} />
 
       <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
       <Route path="/admin/profil" element={<ProtectedRoute allowedRoles={['admin']}><KelolaProfil /></ProtectedRoute>} />
